@@ -1,0 +1,86 @@
+﻿@page "/contractors"
+
+<PageTitle>Contractors</PageTitle>
+
+@using BlazorApp1.Data
+@using BlazorApp1.Services
+@using BlazorTable
+
+@inject ContractorService ContractorService
+@inject NavigationManager NavManager
+<h1>Contractors</h1>
+
+
+@if (contractors == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+            @*<table class="table table-hover">
+        <thead>
+            <tr>
+                        <th scope="col text-center">Name</th>
+                        <th scope="col text-center">NIP</th>
+                        
+                        <th scope="col text-center">Country</th>
+                        <th scope="col text-center">City</th>
+                        <th scope="col text-center">See Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var contractor in contractors)
+            {
+            
+
+               
+                    <tr ondblclick="window.location='contractors/@contractor.nip'">
+
+            
+                
+                        <td scope="row">@contractor.name</td>
+                        <td scope="row">@contractor.nip</td>
+                        <td scope="row">@contractor.country_id</td>
+                        <td scope="row">@contractor.address.city</td>
+                        <td scope="row">
+                                <a href="contractors/@contractor.nip">
+                        Details
+                        </a>
+                        </td>
+                    </tr>
+                   
+                    
+                        }
+
+
+                    </tbody>
+                </table>*@
+
+            <Table RowClickAction="ItemClicked" TableItem="Contractor" Items="contractors" PageSize="100">
+                <Column TableItem="Contractor" Title="Name" Field="@(x => x.name)" Sortable="true" Filterable="true" Width="50%" />
+                <Column TableItem="Contractor" Title="NIP" Field="@(x => x.nip)" Sortable="true" Filterable="true" Width="20%" />
+                <Column TableItem="Contractor" Title="Country" Field="@(x => x.country_id)" Sortable="true" Filterable="true" Width="20%" />
+                
+                <Column TableItem="Contractor" Title="City" Field="@(x => x.address.city)" Sortable="true" Filterable="true" Width="10%" />   
+                <Pager ShowPageNumber="true" ShowTotalCount="true" />
+            </Table>
+}
+
+@code {
+    private Contractor[]? contractors;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var contractors_service = await ContractorService.GetContractorsAsync();
+
+        contractors = contractors_service.ToArray();
+
+
+    }
+
+    private void ItemClicked(Contractor contractor) {
+
+        NavManager.NavigateTo("/contractors/" + contractor.nip);
+    }
+
+}

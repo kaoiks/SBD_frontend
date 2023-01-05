@@ -1,0 +1,36 @@
+﻿@page "/vehicles/{id}"
+
+<PageTitle>Vehicles</PageTitle>
+
+@using BlazorApp1.Data
+@using BlazorApp1.Services
+
+@inject VehicleService VehicleService
+
+<h1>@id</h1>
+
+@if (vehicle == null)
+{
+}
+else{
+<div scope="row">@vehicle.vin</div>
+<div scope="row">@vehicle.kilometers_done</div>
+<div scope="row">@vehicle.year_of_production</div>
+<div scope="row">@vehicle.car_review</div>
+}
+@code {
+    [Parameter]
+    public string? id { get; set; }
+
+
+    private Vehicle? vehicle;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var vehicles_service = await VehicleService.GetVehicleAsync(id);
+
+        vehicle = vehicles_service;
+
+        //forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    }
+}
