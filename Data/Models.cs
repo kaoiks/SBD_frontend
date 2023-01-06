@@ -65,4 +65,33 @@
         public string country_id { get; set; }
     }
 
+
+    public class FormVehicle
+    {
+        public string vin { get; set; }
+        public int year_of_production { get; set; }
+        public DateTime car_review { get; set; }
+        public double fuel_usage { get; set; }
+        public int kilometers_done { get; set; }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

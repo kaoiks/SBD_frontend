@@ -1,5 +1,6 @@
 using BlazorApp1.Data;
 using BlazorApp1.Services;
+using Blazored.Toast;
 using BlazorTable;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -13,6 +14,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<VehicleService>();
 builder.Services.AddSingleton<ContractorService>();
 builder.Services.AddBlazorTable();
+builder.Services.AddBlazoredToast();
 
 var app = builder.Build();
 

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "q9OPvHQi5BCnfuuyHPc4stwfF7YtrV6m42MfiassbWo=",
+  "Hash": "bZ0Ql7RakDr5rbna5lpExlnP9HawY6LVl8KygUEbAKE=",
   "Source": "BlazorApp1",
   "BasePath": "_content/BlazorApp1",
   "Mode": "Default",
@@ -16,6 +16,23 @@
     }
   ],
   "Assets": [
+    {
+      "Identity": "C:\\Users\\dev\\.nuget\\packages\\blazored.toast\\4.0.0\\staticwebassets\\Blazored.Toast.bundle.scp.css",
+      "SourceId": "Blazored.Toast",
+      "SourceType": "Package",
+      "ContentRoot": "C:\\Users\\dev\\.nuget\\packages\\blazored.toast\\4.0.0\\staticwebassets\\",
+      "BasePath": "_content/Blazored.Toast",
+      "RelativePath": "Blazored.Toast.bundle.scp.css",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ProjectBundle",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\dev\\.nuget\\packages\\blazored.toast\\4.0.0\\staticwebassets\\Blazored.Toast.bundle.scp.css"
+    },
     {
       "Identity": "C:\\Users\\dev\\.nuget\\packages\\blazortable\\1.17.0\\staticwebassets\\BlazorTable.min.js",
       "SourceId": "BlazorTable",

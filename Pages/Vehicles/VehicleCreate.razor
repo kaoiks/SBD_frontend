@@ -1,6 +1,13 @@
 ﻿@page "/vehicles/create"
 @using Microsoft.Extensions.Logging
 @inject ILogger<VehicleCreate> Logger
+@using BlazorApp1.Services
+@using BlazorApp1.Data
+@inject VehicleService VehicleService
+@inject NavigationManager NavManager
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+
 
 <h1>Add Vehicle</h1>
 
@@ -44,25 +51,36 @@
     <button class="btn btn-primary" type="submit">Submit</button>
 
 </EditForm>
+
+
+<BlazoredToasts Position="ToastPosition.BottomRight"
+                Timeout="10"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                SuccessIcon="fa fa-thumbs-up"
+                ErrorIcon="fa fa-bug" />
+
 </div>
 @code {
 
 
-    public class FormVehicle
-    {
-        public string vin { get; set; }
-        public int year_of_production { get; set; }
-        public DateOnly car_review { get; set; }
-        public double fuel_usage { get; set; }
-        public int kilometers_done { get; set; }
-    }
 
-    private FormVehicle vehicle = new() { year_of_production = 2022, car_review = DateOnly.FromDateTime(DateTime.Now) };
+    private FormVehicle vehicle = new() { year_of_production = 2022, car_review = DateTime.Now };
 
-    private void HandleValidSubmit()
+    private async void HandleValidSubmit()
     {
         Logger.LogInformation("HandleValidSubmit called");
 
-        Console.WriteLine(vehicle.car_review.ToString());
+        vehicle.vin = vehicle.vin.ToUpper();
+        var result = await VehicleService.AddVehicleAsync(vehicle);
+        if (result == null){
+
+        }
+        else{
+            toastService.ShowSuccess("Vehicle created successfully.");
+            NavManager.NavigateTo("/vehicles");
+        }
     }
+
+
 }
