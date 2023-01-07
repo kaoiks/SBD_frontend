@@ -22,7 +22,7 @@ else
                 
 
 }
-<a href="costs/create" class="btn btn-primary" role="button">Add Cost</a>
+<a href="costs/create/{id}" class="btn btn-primary" role="button">Add Cost</a>
 @if (repairCosts == null)
 {
 <p><em>Loading...</em></p>
@@ -41,7 +41,7 @@ else
 </Table>
 }
 @code {
-    //private RepairCost[]? repairCosts;
+    
     [Parameter]
     public string? id { get; set; }
 
@@ -54,8 +54,7 @@ else
     protected override async Task OnInitializedAsync()
     {
 
-        //var repairCosts_service = await RepairCostService.GetRepairCostsByRepairAsync(id);
-        //repairCosts = repairCosts_service.ToArray();
+      
 
 
         var repairs_service = await RepairService.GetRepairAsync(id);

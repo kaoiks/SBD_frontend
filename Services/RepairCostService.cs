@@ -33,13 +33,7 @@ namespace BlazorApp1.Services
             return model;
 
         }
-        public async Task<List<RepairCost>> GetRepairCostsByRepairAsync(string nip)
-        {
-            var response = await httpClient.GetFromJsonAsync<RepairCost[]>("api/costs/?repair=" +nip);
-            var model = response.ToList();
-            return model;
-
-        }
+       
         public async Task<RepairCost> AddRepairCostAsync(FormRepairCost form_repairCost)
         {
 

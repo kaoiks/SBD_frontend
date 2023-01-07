@@ -1,0 +1,87 @@
+﻿@page "/costs/create/{id}"
+@using Microsoft.Extensions.Logging
+@inject ILogger<RepairCostCreate> Logger
+@using BlazorApp1.Services
+@using BlazorApp1.Data
+@inject RepairCostService RepairCostService
+
+@inject NavigationManager NavManager
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+
+
+<h1>Add RepairCost</h1>
+
+<div class="d-flex justify-content-start bd-highlight mb-3">
+    <EditForm Model="@repairCost" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+
+        <p>
+            <label>
+                Invoice Number:
+                <InputText @bind-Value="repairCost.invoice_id" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Date:
+                <InputDate @bind-Value="repairCost.date" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Amount:
+                <InputText @bind-Value="repairCost.amount" />
+            </label>
+        </p>
+       
+
+
+
+
+        <button class="btn btn-primary" type="submit">Submit</button>
+
+    </EditForm>
+
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
+
+</div>
+@code {
+    [Parameter]
+    public static int id { get; set; }
+    
+    private FormRepairCost repairCost = new() { date = DateTime.Now, repair=id};
+
+    
+
+    private async void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+
+
+
+        var result = await RepairCostService.AddRepairCostAsync(repairCost);
+
+        if (result == null)
+        {
+
+        }
+        else
+        {
+            toastService.ShowSuccess("RepairCost created successfully.");
+            NavManager.NavigateTo("/repairs/{id}");
+        }
+    }
+
+
+}
+
+
