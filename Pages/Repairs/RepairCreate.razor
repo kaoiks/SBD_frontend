@@ -1,0 +1,100 @@
+﻿@page "/repairs/create"
+@using Microsoft.Extensions.Logging
+@inject ILogger<RepairCreate> Logger
+@using BlazorApp1.Services
+@using BlazorApp1.Data
+@inject RepairService RepairService
+@inject VehicleService VehicleService
+@inject NavigationManager NavManager
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+
+
+<h1>Add Repair</h1>
+
+<div class="d-flex justify-content-start bd-highlight mb-3">
+    <EditForm Model="@repair" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <p>
+            @if (vehicles == null)
+            {
+
+            }
+            else
+            {
+                <label>
+                    VIN:
+                    <InputSelect @bind-Value=repair.vin>
+                        @foreach (var vehicle in vehicles)
+                        {
+                            <option value="@vehicle.vin">@vehicle.vin</option>
+                        }
+                    </InputSelect>
+                </label>
+
+            }
+
+        </p>
+        
+        <p>
+            <label>
+                Description:
+                <InputText style="width=50%; height=50%;" @bind-Value="repair.description" />
+            </label>
+        </p>
+
+
+
+
+        <button class="btn btn-primary" type="submit">Submit</button>
+
+    </EditForm>
+
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
+
+</div>
+@code {
+
+
+    private FormRepair repair = new();//{ repair_date = DateTime.Now };
+
+    private Vehicle[]? vehicles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var vehicles_service = await VehicleService.GetVehiclesAsync();
+
+        vehicles = vehicles_service.ToArray();
+
+    }
+
+    private async void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+
+
+
+        var result = await RepairService.AddRepairAsync(repair);
+
+        if (result == null)
+        {
+
+        }
+        else
+        {
+            toastService.ShowSuccess("Repair created successfully.");
+            NavManager.NavigateTo("/repairs");
+        }
+    }
+
+
+}
+

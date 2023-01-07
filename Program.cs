@@ -15,6 +15,9 @@ builder.Services.AddSingleton<VehicleService>();
 builder.Services.AddSingleton<ContractorService>();
 builder.Services.AddSingleton<AddressService>();
 builder.Services.AddSingleton<InvoiceService>();
+builder.Services.AddSingleton<InsuranceService>();
+builder.Services.AddSingleton<RepairService>();
+builder.Services.AddSingleton<RepairCostService>();
 builder.Services.AddBlazorTable();
 builder.Services.AddBlazoredToast();
 

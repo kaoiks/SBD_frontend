@@ -1,0 +1,120 @@
+﻿@page "/insurances/create"
+@using Microsoft.Extensions.Logging
+@inject ILogger<InsuranceCreate> Logger
+@using BlazorApp1.Services
+@using BlazorApp1.Data
+@inject InsuranceService InsuranceService
+@inject VehicleService VehicleService
+@inject NavigationManager NavManager
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+
+
+<h1>Add Insurance</h1>
+
+<div class="d-flex justify-content-start bd-highlight mb-3">
+    <EditForm Model="@insurance" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+
+        <p>
+            <label>
+                Insurance Number:
+                <InputText @bind-Value="insurance.insurance_number" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Start Date:
+                <InputDate @bind-Value="insurance.start_date" />
+            </label>
+        </p>
+        <p>
+            <label>
+                End Date:
+                <InputDate @bind-Value="insurance.end_date" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Amount:
+                <InputNumber @bind-Value="insurance.amount" />
+            </label>
+        </p>
+        <p>
+            @if (vehicles == null)
+            {
+
+            }
+            else
+            {
+                <label>
+                VIN:
+                <InputSelect @bind-Value=insurance.vin>
+                    @foreach (var vehicle in vehicles)
+                    {
+                        <option value="@vehicle.vin">@vehicle.vin</option>
+                    }
+                </InputSelect>
+                </label>
+
+            }
+
+        </p>
+
+
+
+
+        <button class="btn btn-primary" type="submit">Submit</button>
+
+    </EditForm>
+
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
+
+</div>
+@code {
+
+
+    private FormInsurance insurance = new() { start_date = DateTime.Now, end_date=DateTime.Now };
+
+    private Vehicle[]? vehicles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var vehicles_service = await VehicleService.GetVehiclesAsync();
+
+        vehicles = vehicles_service.ToArray();
+
+    }
+
+    private async void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+
+
+
+        var result = await InsuranceService.AddInsuranceAsync(insurance);
+
+        if (result == null)
+        {
+
+        }
+        else
+        {
+            toastService.ShowSuccess("Insurance created successfully.");
+            NavManager.NavigateTo("/insurances");
+            
+        }
+    }
+
+
+}
+
+

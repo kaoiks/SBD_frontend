@@ -1,0 +1,39 @@
+﻿@page "/insurances/{id}"
+
+<PageTitle>Insurance</PageTitle>
+
+@using BlazorApp1.Data
+@using BlazorApp1.Services
+
+@inject InsuranceService InsuranceService
+
+<h1>@id</h1>
+
+@if (insurance == null)
+{
+}
+else
+{
+    <div scope="row">@insurance.insurance_number</div>
+    <div scope="row">@insurance.start_date</div>
+    <div scope="row">@insurance.end_date</div>
+    <div scope="row">@insurance.amount</div>
+    <div scope="row">@insurance.vehicle</div>
+  
+
+}
+@code {
+    [Parameter]
+    public string? id { get; set; }
+
+
+    private Insurance? insurance;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var insurances_service = await InsuranceService.GetInsuranceAsync(id);
+
+        insurance = insurances_service;
+    }
+}
+

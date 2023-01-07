@@ -1,0 +1,52 @@
+﻿@page "/repairs"
+
+<PageTitle>Repairs</PageTitle>
+
+@using BlazorApp1.Data
+@using BlazorApp1.Services
+@using BlazorTable
+
+@inject RepairService RepairService
+@inject NavigationManager NavManager
+<h1>Repairs</h1>
+<a href="repairs/create" class="btn btn-primary" role="button">Add Repair</a>
+
+@if (repairs == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <Table RowClickAction="ItemClicked" TableItem="Repair" Items="repairs" PageSize="100">
+        <Column TableItem="Repair" Title="Repair ID" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" />
+        <Column TableItem="Repair" Title="Repair Date" Field="@(x => x.repair_date)" Sortable="true" Filterable="true" Width="20%" />
+        <Column TableItem="Repair" Title="Description" Field="@(x => x.description)" Sortable="true" Filterable="true" Width="40%" />
+        <Column TableItem="Repair" Title="Vehicle" Field="@(x => x.vehicle)" Sortable="true" Filterable="true" Width="20%" />
+
+        <Pager ShowPageNumber="true" ShowTotalCount="true" />
+    </Table>
+}
+
+@code {
+    private Repair[]? repairs;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var repairs_service = await RepairService.GetRepairsAsync();
+
+        repairs = repairs_service.ToArray();
+
+
+    }
+
+    private void ItemClicked(Repair repair)
+    {
+
+        NavManager.NavigateTo("/repairs/" + repair.id);
+    }
+
+}
+
+

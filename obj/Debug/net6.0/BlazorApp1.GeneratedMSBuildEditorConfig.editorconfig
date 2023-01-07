@@ -48,12 +48,40 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Insurances/InsuranceCreate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5zdXJhbmNlc1xJbnN1cmFuY2VDcmVhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Insurances/InsuranceDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5zdXJhbmNlc1xJbnN1cmFuY2VEZXRhaWxzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Insurances/Insurances.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5zdXJhbmNlc1xJbnN1cmFuY2VzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Invoices/InvoiceCreate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW52b2ljZXNcSW52b2ljZUNyZWF0ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Invoices/InvoiceDetails.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW52b2ljZXNcSW52b2ljZURldGFpbHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Invoices/Invoices.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW52b2ljZXNcSW52b2ljZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Repairs/RepairCreate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwYWlyc1xSZXBhaXJDcmVhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Repairs/RepairDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwYWlyc1xSZXBhaXJEZXRhaWxzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Repairs/Repairs.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwYWlyc1xSZXBhaXJzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Vehicles/VehicleCreate.razor]

@@ -1,0 +1,112 @@
+﻿@page "/invoices/create"
+@using Microsoft.Extensions.Logging
+@inject ILogger<InvoiceCreate> Logger
+@using BlazorApp1.Services
+@using BlazorApp1.Data
+@inject InvoiceService InvoiceService
+@inject ContractorService ContractorService
+@inject NavigationManager NavManager
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+
+
+<h1>Add Invoice</h1>
+
+<div class="d-flex justify-content-start bd-highlight mb-3">
+    <EditForm Model="@invoice" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+
+        <p>
+            <label>
+                Invoice Number:
+                <InputText @bind-Value="invoice.invoice_number" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Date:
+                <InputDate @bind-Value="invoice.date" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Amount:
+                <InputText @bind-Value="invoice.amount" />
+            </label>
+        </p>
+        <p>
+            @if (contractors == null)
+            {
+    
+            }
+            else
+            {
+                <label>
+                Contractor:
+                <InputSelect @bind-Value=invoice.contractor>
+                @foreach (var contractor in contractors)
+                {
+                    <option value="@contractor.nip">@contractor.name</option>
+                }
+                </InputSelect>
+                </label>
+            
+            }
+            
+        </p>
+      
+
+       
+
+        <button class="btn btn-primary" type="submit">Submit</button>
+
+    </EditForm>
+
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
+
+</div>
+@code {
+
+
+    private FormInvoice invoice = new() {date=DateTime.Now};
+
+    private Contractor[]? contractors;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var contractors_service = await ContractorService.GetContractorsAsync();
+
+        contractors = contractors_service.ToArray();
+
+    }
+
+    private async void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+
+     
+
+        var result = await InvoiceService.AddInvoiceAsync(invoice);
+
+        if (result == null)
+        {
+
+        }
+        else
+        {
+            toastService.ShowSuccess("Invoice created successfully.");
+            NavManager.NavigateTo("/invoices");
+        }
+    }
+
+
+}
+

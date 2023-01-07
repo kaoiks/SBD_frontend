@@ -101,11 +101,36 @@
     {
         public string amount { get; set; }
         public string invoice_number { get; set; }
-        public string date { get; set; }
+        public DateTime date { get; set; }
+
+        public string contractor { get; set; }
     }
 
+    public class FormInsurance
+    {
+        public string insurance_number { get; set; }
+        public DateTime start_date { get; set; }
+        public DateTime end_date { get; set; }
+        public double amount { get; set; }
+        public string vin { get; set; }
+    }
 
+    public class FormRepair
+    {
+       
+        
+        //public DateTime repair_date { get; set; }
+        public string description { get; set; }
+        public string vin { get; set; }
+    }
 
+    public class FormRepairCost
+    {
+        public string amount { get; set; }
+        public DateTime date { get; set; }
+        public string invoice_id { get; set; }
+        public int repair { get; set; }
+    }
 
 
 

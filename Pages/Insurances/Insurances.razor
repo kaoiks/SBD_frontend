@@ -1,0 +1,56 @@
+﻿@page "/insurances"
+
+<PageTitle>Insurances</PageTitle>
+
+@using BlazorApp1.Data
+@using BlazorApp1.Services
+@using BlazorTable
+
+@inject InsuranceService InsuranceService
+@inject NavigationManager NavManager
+<h1>Insurances</h1>
+<a href="insurances/create" class="btn btn-primary" role="button">Add Insurance</a>
+
+@if (insurances == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <Table RowClickAction="ItemClicked" TableItem="Insurance" Items="insurances" PageSize="100">
+        <Column TableItem="Insurance" Title="Insurance Number" Field="@(x => x.insurance_number)" Sortable="true" Filterable="true" Width="10%" />
+        <Column TableItem="Insurance" Title="Start Date" Field="@(x => x.start_date)" Sortable="true" Filterable="true" Width="20%" />
+        <Column TableItem="Insurance" Title="End Date" Field="@(x => x.end_date)" Sortable="true" Filterable="true" Width="20%" />
+        <Column TableItem="Insurance" Title="Amount" Field="@(x => x.amount)" Sortable="true" Filterable="true" Width="10%" />
+        <Column TableItem="Insurance" Title="VIN" Field="@(x => x.vehicle)" Sortable="true" Filterable="true" Width="10%" />
+        
+
+        <Pager ShowPageNumber="true" ShowTotalCount="true" />
+    </Table>
+}
+
+@code {
+
+
+
+    private Insurance[]? insurances;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var insurances_service = await InsuranceService.GetInsurancesAsync();
+
+        insurances = insurances_service.ToArray();
+
+
+    }
+
+    private void ItemClicked(Insurance insurance)
+    {
+
+        NavManager.NavigateTo("/insurances/" + insurance.insurance_number);
+    }
+
+}
+
