@@ -5,80 +5,93 @@ build_property.UsingMicrosoftNETSdkWeb = true
 build_property.ProjectTypeGuids = 
 build_property.InvariantGlobalization = 
 build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = BlazorApp1
 build_property.RootNamespace = BlazorApp1
-build_property.ProjectDir = C:\Users\dev\source\repos\BlazorApp1\
+build_property.ProjectDir = C:\rzeczy z pulpitu\STUDIA\SEMESTR 5\SQL\projekt\kody\frontend_sbd\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\dev\source\repos\BlazorApp1
+build_property.MSBuildProjectDirectory = C:\rzeczy z pulpitu\STUDIA\SEMESTR 5\SQL\projekt\kody\frontend_sbd
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/dev/source/repos/BlazorApp1/App.razor]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/App.razor]
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dev/source/repos/BlazorApp1/Pages/Contractors/ContractorDetails.razor]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Contractors/ContractorCreate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udHJhY3RvcnNcQ29udHJhY3RvckNyZWF0ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Contractors/ContractorDetails.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udHJhY3RvcnNcQ29udHJhY3RvckRldGFpbHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dev/source/repos/BlazorApp1/Pages/Contractors/Contractors.razor]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Contractors/Contractors.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udHJhY3RvcnNcQ29udHJhY3RvcnMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dev/source/repos/BlazorApp1/Pages/Counter.razor]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dev/source/repos/BlazorApp1/Pages/Drivers/Drivers.razor]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Drivers/Drivers.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRHJpdmVyc1xEcml2ZXJzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dev/source/repos/BlazorApp1/Pages/FetchData.razor]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/FetchData.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hEYXRhLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dev/source/repos/BlazorApp1/Pages/Index.razor]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dev/source/repos/BlazorApp1/Pages/Vehicles/VehicleCreate.razor]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Invoices/InvoiceDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW52b2ljZXNcSW52b2ljZURldGFpbHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Invoices/Invoices.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW52b2ljZXNcSW52b2ljZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Vehicles/VehicleCreate.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVoaWNsZXNcVmVoaWNsZUNyZWF0ZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dev/source/repos/BlazorApp1/Pages/Vehicles/VehicleDetails.razor]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Vehicles/VehicleDetails.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVoaWNsZXNcVmVoaWNsZURldGFpbHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dev/source/repos/BlazorApp1/Pages/Vehicles/Vehicles.razor]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Vehicles/Vehicles.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVoaWNsZXNcVmVoaWNsZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dev/source/repos/BlazorApp1/Shared/SurveyPrompt.razor]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Shared/SurveyPrompt.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dev/source/repos/BlazorApp1/_Imports.razor]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dev/source/repos/BlazorApp1/Shared/MainLayout.razor]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-45rkf8v3vv
 
-[C:/Users/dev/source/repos/BlazorApp1/Shared/NavMenu.razor]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Shared/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-b5wscdn8ts
 
-[C:/Users/dev/source/repos/BlazorApp1/Pages/Error.cshtml]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dev/source/repos/BlazorApp1/Pages/_Host.cshtml]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/_Host.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/dev/source/repos/BlazorApp1/Pages/_Layout.cshtml]
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

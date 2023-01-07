@@ -13,6 +13,8 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<VehicleService>();
 builder.Services.AddSingleton<ContractorService>();
+builder.Services.AddSingleton<AddressService>();
+builder.Services.AddSingleton<InvoiceService>();
 builder.Services.AddBlazorTable();
 builder.Services.AddBlazoredToast();
 

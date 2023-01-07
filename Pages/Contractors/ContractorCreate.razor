@@ -1,0 +1,104 @@
+﻿@page "/contractors/create"
+@using Microsoft.Extensions.Logging
+@inject ILogger<ContractorCreate> Logger
+@using BlazorApp1.Services
+@using BlazorApp1.Data
+@inject ContractorService ContractorService
+@inject AddressService AddressService
+@inject NavigationManager NavManager
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+
+
+<h1>Add Contractor</h1>
+
+<div class="d-flex justify-content-start bd-highlight mb-3">
+    <EditForm Model="@contractor" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+
+        <p>
+            <label>
+                Name:
+                <InputText @bind-Value="contractor.name" />
+            </label>
+        </p>
+        <p>
+            <label>
+                NIP:
+                <InputText @bind-Value="contractor.nip" />
+            </label>
+        </p>
+       <p>
+            <label>
+                Street:
+                <InputText @bind-Value="address.street" />
+            </label>
+        </p>
+       
+        <p>
+            <label>
+                City:
+                <InputText @bind-Value="address.city" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Postal Code:
+                <InputText @bind-Value="address.postal_code" />
+            </label>
+        </p>
+        
+        <p>
+            <label>
+                Country ID:
+                <InputText @bind-Value="contractor.country_id" />
+            </label>
+        </p>
+
+
+        <button class="btn btn-primary" type="submit">Submit</button>
+
+    </EditForm>
+
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
+
+</div>
+@code {
+
+
+    private FormAddress address = new() { type = 1 };
+
+    private FormContractor contractor = new() ;
+
+    private async void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+
+        var result_address = await AddressService.AddAddressAsync(address);
+
+    
+        contractor.address = result_address.id;
+
+        var result = await ContractorService.AddContractorAsync(contractor);
+
+        if (result == null)
+        {
+
+        }
+        else
+        {
+            toastService.ShowSuccess("Contractor created successfully.");
+            NavManager.NavigateTo("/contractors");
+        }
+    }
+
+
+}

@@ -1,15 +1,17 @@
 ﻿using BlazorApp1.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Diagnostics;
 using System.Text;
+using System.Text.Json;
 
 namespace BlazorApp1.Services
 {
-    public class ContractorService : IContractorService
+    public class AddressService : IAddressService
     {
         private readonly HttpClient httpClient;
 
-        public ContractorService()
+        public AddressService()
         {
             httpClient = new HttpClient()
             {
@@ -17,35 +19,34 @@ namespace BlazorApp1.Services
             };
         }
 
-        public async Task<List<Contractor>> GetContractorsAsync()
+        public async Task<List<Address>> GetAddressesAsync()
         {
-            var response = await httpClient.GetFromJsonAsync<Contractor[]>("api/contractors");
+            var response = await httpClient.GetFromJsonAsync<Address[]>("api/addresses");
             var model = response.ToList();
             return model;
 
         }
 
-        public async Task<Contractor> GetContractorAsync(string nip)
+        public async Task<Address> GetAddressAsync(string nip)
         {
-            var model = await httpClient.GetFromJsonAsync<Contractor>("api/contractors/" + nip);
+            var model = await httpClient.GetFromJsonAsync<Address>("api/addresses/" + nip);
             return model;
 
         }
-
-        public async Task<Contractor> AddContractorAsync(FormContractor form_contractor)
+        public async Task<Address> AddAddressAsync(FormAddress form_Address)
         {
 
-            string jsonString = JsonConvert.SerializeObject(form_contractor, new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
+            string jsonString = JsonConvert.SerializeObject(form_Address, new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
 
             Console.WriteLine(jsonString);
-            var request = new HttpRequestMessage(HttpMethod.Post, "api/contractors");
+            var request = new HttpRequestMessage(HttpMethod.Post, "api/addresses");
             request.Content = new StringContent(jsonString,
                                                             Encoding.UTF8,
                                                                 "application/json");
             request.Headers.Add("Accept", "application/json");
             var response = await httpClient.SendAsync(request);
 
-            var result = response.Content.ReadFromJsonAsync<Contractor>().Result;
+            var result = response.Content.ReadFromJsonAsync<Address>().Result;
             if ((int)response.StatusCode == 201)
             {
                 return result;
@@ -57,4 +58,6 @@ namespace BlazorApp1.Services
 
         }
     }
+
+
 }

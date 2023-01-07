@@ -54,6 +54,10 @@
         public string amount { get; set; }
         public string invoice_number { get; set; }
         public string date { get; set; }
+
+        public string contractor_name { get; set; }
+
+
     }
 
     public class Contractor
@@ -75,10 +79,30 @@
         public int kilometers_done { get; set; }
     }
 
+    public class FormContractor
+    {
+        public string nip { get; set; }
 
+        public int address { get; set; }
+        public string name { get; set; }
+        public string country_id { get; set; }
+    }
 
+    public class FormAddress
+    {
+       // public int id { get; set; }
+        public string street { get; set; }
+        public string city { get; set; }
+        public string postal_code { get; set; }
+        public int type { get; set; }
+    }
 
-
+    public class FormInvoice
+    {
+        public string amount { get; set; }
+        public string invoice_number { get; set; }
+        public string date { get; set; }
+    }
 
 
 

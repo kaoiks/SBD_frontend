@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dev\\source\\repos\\BlazorApp1\\BlazorApp1.csproj": {}
+    "C:\\rzeczy z pulpitu\\STUDIA\\SEMESTR 5\\SQL\\projekt\\kody\\frontend_sbd\\BlazorApp1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dev\\source\\repos\\BlazorApp1\\BlazorApp1.csproj": {
+    "C:\\rzeczy z pulpitu\\STUDIA\\SEMESTR 5\\SQL\\projekt\\kody\\frontend_sbd\\BlazorApp1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dev\\source\\repos\\BlazorApp1\\BlazorApp1.csproj",
+        "projectUniqueName": "C:\\rzeczy z pulpitu\\STUDIA\\SEMESTR 5\\SQL\\projekt\\kody\\frontend_sbd\\BlazorApp1.csproj",
         "projectName": "BlazorApp1",
-        "projectPath": "C:\\Users\\dev\\source\\repos\\BlazorApp1\\BlazorApp1.csproj",
-        "packagesPath": "C:\\Users\\dev\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dev\\source\\repos\\BlazorApp1\\obj\\",
+        "projectPath": "C:\\rzeczy z pulpitu\\STUDIA\\SEMESTR 5\\SQL\\projekt\\kody\\frontend_sbd\\BlazorApp1.csproj",
+        "packagesPath": "C:\\Users\\kubzy\\.nuget\\packages\\",
+        "outputPath": "C:\\rzeczy z pulpitu\\STUDIA\\SEMESTR 5\\SQL\\projekt\\kody\\frontend_sbd\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\dev\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\kubzy\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -82,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
