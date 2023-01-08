@@ -33,7 +33,7 @@
         <p>
             <label>
                 Amount:
-                <InputText @bind-Value="repairCost.amount" />
+                <InputNumber @bind-Value="repairCost.amount" step='0.01' />
             </label>
         </p>
        
@@ -56,17 +56,17 @@
 </div>
 @code {
     [Parameter]
-    public static int id { get; set; }
-    
-    private FormRepairCost repairCost = new() { date = DateTime.Now, repair=id};
+    public string id { get; set; }
 
-    
+    private FormRepairCost repairCost = new() { date = DateTime.Now};
+
+
 
     private async void HandleValidSubmit()
     {
         Logger.LogInformation("HandleValidSubmit called");
 
-
+        repairCost.repair = Int32.Parse(id);
 
         var result = await RepairCostService.AddRepairCostAsync(repairCost);
 
@@ -76,8 +76,9 @@
         }
         else
         {
+            
             toastService.ShowSuccess("RepairCost created successfully.");
-            NavManager.NavigateTo("/repairs/{id}");
+            NavManager.NavigateTo("/repairs/"+repairCost.repair);
         }
     }
 

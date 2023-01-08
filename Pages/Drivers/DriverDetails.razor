@@ -1,0 +1,51 @@
+﻿@page "/drivers/{id}"
+
+<PageTitle>Drivers</PageTitle>
+
+@using BlazorApp1.Data
+@using BlazorApp1.Services
+
+@inject DriverService DriverService
+@inject AddressService AddressService
+
+<h1>@id</h1>
+
+@if (driver == null)
+{
+}
+else
+{
+    <div scope="row">@driver.name</div>
+    <div scope="row">@driver.surname</div>
+    <div scope="row">@driver.pesel</div>
+    <div scope="row">@driver.address.street</div>
+    <div scope="row">@driver.address.city</div>
+    <div scope="row">@driver.address.postal_code</div>
+    <div scope="row">@driver.date_of_birth</div>
+    <div scope="row">@driver.driver_license_number</div>
+    <div scope="row">@driver.date_qualification_certificate</div>
+    <div scope="row">@driver.date_bhp_course</div>
+
+}
+
+
+
+
+
+
+@code {
+    [Parameter]
+    public string? id { get; set; }
+
+
+
+    private Driver? driver;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var drivers_service = await DriverService.GetDriverAsync(id);
+
+
+        driver = drivers_service;
+    }
+}

@@ -1,0 +1,56 @@
+﻿@page "/settlements"
+
+<PageTitle>Settlements</PageTitle>
+
+@using BlazorApp1.Data
+@using BlazorApp1.Services
+@using BlazorTable
+
+@inject SettlementService SettlementService
+@inject NavigationManager NavManager
+<h1>Settlements</h1>
+<a href="settlements/create" class="btn btn-primary" role="button">Add Settlement</a>
+
+@if (settlements == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <Table RowClickAction="ItemClicked" TableItem="Settlement" Items="settlements" PageSize="100">
+        <Column TableItem="Settlement" Title="ID" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" />
+        <Column TableItem="Settlement" Title="Month" Field="@(x => x.month)" Sortable="true" Filterable="true" Width="15%" />
+        <Column TableItem="Settlement" Title="Year" Field="@(x => x.year)" Sortable="true" Filterable="true" Width="15%" />
+        <Column TableItem="Settlement" Title="Days Stationary" Field="@(x => x.days_stationary)" Sortable="true" Filterable="true" Width="15%" />
+        <Column TableItem="Settlement" Title="Days Leave" Field="@(x => x.days_leave)" Sortable="true" Filterable="true" Width="10%" />
+        <Column TableItem="Settlement" Title="Saturdays" Field="@(x => x.saturdays)" Sortable="true" Filterable="true" Width="10%" />
+        <Column TableItem="Settlement" Title="Rate for Kilometer" Field="@(x => x.rate_for_kilometer)" Sortable="true" Filterable="true" Width="10%" />
+        <Column TableItem="Settlement" Title="Kilometers Done" Field="@(x => x.kilometers_done)" Sortable="true" Filterable="true" Width="10%" />
+        <Column TableItem="Settlement" Title="Driver" Field="@(x => x.driver)" Sortable="true" Filterable="true" Width="10%" />
+        <Pager ShowPageNumber="true" ShowTotalCount="true" />
+    </Table>
+}
+
+@code {
+    private Settlement[]? settlements;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var settlements_service = await SettlementService.GetSettlementsAsync();
+
+        settlements = settlements_service.ToArray();
+
+
+    }
+
+    private void ItemClicked(Settlement settlement)
+    {
+
+        NavManager.NavigateTo("/settlements/" + settlement.id);
+    }
+
+}
+
+

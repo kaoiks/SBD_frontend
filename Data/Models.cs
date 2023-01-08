@@ -126,17 +126,90 @@
 
     public class FormRepairCost
     {
-        public string amount { get; set; }
+        public double amount { get; set; }
         public DateTime date { get; set; }
         public string invoice_id { get; set; }
         public int repair { get; set; }
     }
 
+    public class Driver
+    {
+        public string pesel { get; set; }
+        public Address address { get; set; }
+        public string name { get; set; }
+        public string surname { get; set; }
+        public string date_of_birth { get; set; }
+        public string driver_license_number { get; set; }
+        public string date_qualification_certificate { get; set; }
 
+        public string date_bhp_course { get; set; }
+    }
 
+    public class FormDriver
+    {
+        public string pesel { get; set; }
+        public int address { get; set; }
+        public string name { get; set; }
+        public string surname { get; set; }
+        public DateTime date_of_birth { get; set; }
+        public string driver_license_number { get; set; }
+        public DateTime date_qualification_certificate { get; set; }
 
+        public DateTime date_bhp_course { get; set; }
+    }
 
+    public class Trail
+    {
+        public int route_id { get; set; }
+        public string date { get; set; }
+        public string begin { get; set; }
+        public string end { get; set; }
+        public int distance { get; set; }
+        public Driver driver { get; set; }
+        public Contractor contractor { get; set; }
 
+        public Vehicle vehicle { get; set; }
+    }
+
+    public class FormTrail
+    {
+       
+        public DateTime date { get; set; }
+        public string begin { get; set; }
+        public string end { get; set; }
+        public int distance { get; set; }
+        public string driver { get; set; }
+        public string contractor { get; set; }
+
+        public string vehicle { get; set; }
+    }
+
+    public class Settlement
+    {
+        public int id { get; set; }
+        public int month { get; set; }
+        public int year { get; set; }
+        public int days_stationary { get; set; }
+        public int days_leave { get; set; }
+        public int saturdays { get; set; }
+        public double rate_for_kilometer { get; set; }
+
+        public int kilometers_done { get; set; }
+        public string driver { get; set; }
+    }
+    public class FormSettlement
+    {
+       
+        public int month { get; set; }
+        public int year { get; set; }
+        public int days_stationary { get; set; }
+        public int days_leave { get; set; }
+        public int saturdays { get; set; }
+        public double rate_for_kilometer { get; set; }
+
+        public int kilometers_done { get; set; }
+        public string driver { get; set; }
+    }
 
 
 

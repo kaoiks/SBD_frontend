@@ -1,5 +1,4 @@
 ﻿@page "/repairs/{id}"
-
 <PageTitle>Repairs</PageTitle>
 
 @using BlazorApp1.Data
@@ -22,7 +21,8 @@ else
                 
 
 }
-<a href="costs/create/{id}" class="btn btn-primary" role="button">Add Cost</a>
+<a href="costs/create/@id" class="btn btn-primary" role="button">Add Cost</a>
+
 @if (repairCosts == null)
 {
 <p><em>Loading...</em></p>
@@ -50,6 +50,8 @@ else
 
 
     private Repair? repair;
+
+  
 
     protected override async Task OnInitializedAsync()
     {

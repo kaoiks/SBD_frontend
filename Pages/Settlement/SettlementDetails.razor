@@ -1,0 +1,60 @@
+﻿@page "/settlements/{id}"
+<PageTitle>Settlements</PageTitle>
+
+@using BlazorApp1.Data
+@using BlazorApp1.Services
+@using BlazorTable
+@inject SettlementService SettlementService
+
+
+
+
+<h1>@id</h1>
+
+@if (settlement == null)
+{
+}
+else
+{
+    <div scope="row">@settlement.id</div>
+    <div scope="row">@settlement.month</div>
+    <div scope="row">@settlement.year</div>
+        <div scope="row">@settlement.days_stationary</div>
+    <div scope="row">@settlement.days_leave</div>
+    <div scope="row">@settlement.saturdays</div>
+    <div scope="row">@settlement.rate_for_kilometer</div>
+    <div scope="row">@settlement.kilometers_done</div>
+        <div scope="row">@settlement.driver</div>
+
+
+
+}
+
+
+@code {
+
+    [Parameter]
+    public string? id { get; set; }
+
+
+    
+
+
+    private Settlement? settlement;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+
+
+
+        var settlements_service = await SettlementService.GetSettlementAsync(id);
+
+        settlement = settlements_service;
+        
+    }
+}
+
+

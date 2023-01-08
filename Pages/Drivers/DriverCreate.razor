@@ -1,0 +1,129 @@
+﻿@page "/drivers/create"
+@using Microsoft.Extensions.Logging
+@inject ILogger<DriverCreate> Logger
+@using BlazorApp1.Services
+@using BlazorApp1.Data
+@inject DriverService DriverService
+@inject AddressService AddressService
+@inject NavigationManager NavManager
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+
+
+<h1>Add Driver</h1>
+
+<div class="d-flex justify-content-start bd-highlight mb-3">
+    <EditForm Model="@driver" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+
+        <p>
+            <label>
+                Name:
+                <InputText @bind-Value="driver.name" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Surname:
+                <InputText @bind-Value="driver.surname" />
+            </label>
+        </p>
+        <p>
+            <label>
+                PESEL:
+                <InputText @bind-Value="driver.pesel" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Street:
+                <InputText @bind-Value="address.street" />
+            </label>
+        </p>
+
+        <p>
+            <label>
+                City:
+                <InputText @bind-Value="address.city" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Postal Code:
+                <InputText @bind-Value="address.postal_code" />
+            </label>
+        </p>
+
+        <p>
+            <label>
+                Date of Birth:
+                <InputDate @bind-Value="driver.date_of_birth" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Driver License Number:
+                <InputText @bind-Value="driver.driver_license_number" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Qualification Certificate Expiration Date:
+                <InputDate @bind-Value="driver.date_qualification_certificate" />
+            </label>
+        </p>
+        <p>
+            <label>
+                BHP Course Expiration Date:
+                <InputDate @bind-Value="driver.date_bhp_course" />
+            </label>
+        </p>
+
+
+        <button class="btn btn-primary" type="submit">Submit</button>
+
+    </EditForm>
+
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
+
+</div>
+@code {
+
+
+    private FormAddress address = new() { type = 2 };
+
+    private FormDriver driver = new() {date_of_birth=DateTime.Now, date_bhp_course=DateTime.Now, date_qualification_certificate=DateTime.Now};
+
+    private async void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+
+        var result_address = await AddressService.AddAddressAsync(address);
+
+
+        driver.address = result_address.id;
+
+        var result = await DriverService.AddDriverAsync(driver);
+
+        if (result == null)
+        {
+
+        }
+        else
+        {
+            toastService.ShowSuccess("Driver created successfully.");
+            NavManager.NavigateTo("/drivers");
+        }
+    }
+
+
+}
+

@@ -1,0 +1,171 @@
+﻿@page "/routes/create"
+@using Microsoft.Extensions.Logging
+@inject ILogger<RouteCreate> Logger
+@using BlazorApp1.Services
+@using BlazorApp1.Data
+@inject RouteService RouteService
+@inject ContractorService ContractorService
+@inject DriverService DriverService
+@inject VehicleService VehicleService
+@inject NavigationManager NavManager
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+
+
+<h1>Add Route</h1>
+
+<div class="d-flex justify-content-start bd-highlight mb-3">
+    <EditForm Model="@trail" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+
+        <p>
+            <label>
+                Date:
+                <InputDate @bind-Value="trail.date" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Begin:
+                <InputText @bind-Value="trail.begin" />
+            </label>
+        </p>
+        <p>
+            <label>
+                End:
+                <InputText @bind-Value="trail.end" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Distance:
+                <InputNumber @bind-Value="trail.distance" />
+            </label>
+        </p>
+        <p>
+            @if (drivers == null)
+            {
+
+            }
+            else
+            {
+                <label>
+                    Driver:
+                    <InputSelect @bind-Value=trail.driver>
+                        @foreach (var driver in drivers)
+                        {
+                            <option value="@driver.pesel">@driver.surname</option>
+                        }
+                    </InputSelect>
+                </label>
+
+            }
+
+        </p>
+        <p>
+            @if (vehicles == null)
+            {
+
+            }
+            else
+            {
+                <label>
+                    Vehicle:
+                    <InputSelect @bind-Value=trail.vehicle>
+                        @foreach (var vehicle in vehicles)
+                        {
+                            <option value="@vehicle.vin">@vehicle.vin</option>
+                        }
+                    </InputSelect>
+                </label>
+
+            }
+
+        </p>
+        <p>
+            @if (contractors == null)
+            {
+
+            }
+            else
+            {
+                <label>
+                    Contractor:
+                    <InputSelect @bind-Value=trail.contractor>
+                        @foreach (var contractor in contractors)
+                        {
+                            <option value="@contractor.nip">@contractor.name</option>
+                        }
+                    </InputSelect>
+                </label>
+
+            }
+
+        </p>
+        
+
+
+
+        <button class="btn btn-primary" type="submit">Submit</button>
+
+    </EditForm>
+
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
+
+</div>
+@code {
+
+
+    private FormTrail trail = new() { date = DateTime.Now };
+
+    private Contractor[]? contractors;
+    private Driver[]? drivers;
+    private Vehicle[]? vehicles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var contractors_service = await ContractorService.GetContractorsAsync();
+
+        contractors = contractors_service.ToArray();
+
+        var vehicles_service = await VehicleService.GetVehiclesAsync();
+
+        vehicles = vehicles_service.ToArray();
+
+        var drivers_service = await DriverService.GetDriversAsync();
+
+        drivers = drivers_service.ToArray();
+
+    }
+
+    private async void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+
+
+
+        var result = await RouteService.AddRouteAsync(trail);
+
+        if (result == null)
+        {
+
+        }
+        else
+        {
+            toastService.ShowSuccess("Route created successfully.");
+            NavManager.NavigateTo("/routes");
+        }
+    }
+
+
+}
+
+

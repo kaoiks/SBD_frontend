@@ -1,0 +1,50 @@
+﻿@page "/routes/{id}"
+
+<PageTitle>Routes</PageTitle>
+
+@using BlazorApp1.Data
+@using BlazorApp1.Services
+
+@inject RouteService RouteService
+@inject DriverService DriverService
+@inject VehicleService VehicleService
+@inject ContractorService ContractorService
+
+<h1>@id</h1>
+
+@if (trail == null)
+{
+}
+else
+{
+    <div scope="row">@trail.route_id</div>
+    <div scope="row">@trail.driver.pesel</div>
+    <div scope="row">@trail.driver.name</div>
+    <div scope="row">@trail.driver.surname</div>
+    <div scope="row">@trail.contractor.nip</div>
+    <div scope="row">@trail.contractor.name</div>
+    <div scope="row">@trail.vehicle.vin</div>
+    <div scope="row">@trail.vehicle.fuel_usage</div>
+    <div scope="row">@trail.date</div>
+    <div scope="row">@trail.begin</div>
+        <div scope="row">@trail.end</div>
+    <div scope="row">@trail.distance</div>
+
+
+
+}
+
+@code {
+    [Parameter]
+    public string? id { get; set; }
+
+
+    private Trail? trail;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var trails_service = await RouteService.GetRouteAsync(id);
+
+        trail = trails_service;
+    }
+}
