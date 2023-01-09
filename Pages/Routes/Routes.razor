@@ -9,7 +9,7 @@
 @inject RouteService RouteService
 @inject NavigationManager NavManager
 <h1>Routes</h1>
-<a href="routes/create" class="btn btn-primary" role="button">Add Route</a>
+
 
 @if (routes == null)
 {
@@ -19,18 +19,19 @@ else
 {
 
     <Table RowClickAction="ItemClicked" TableItem="Trail" Items="routes" PageSize="100">
-        <Column TableItem="Trail" Title="ID" Field="@(x => x.route_id)" Sortable="true" Filterable="true" Width="10%" />
+       @* <Column TableItem="Trail" Title="ID" Field="@(x => x.route_id)" Sortable="true" Filterable="true" Width="10%" />*@
         <Column TableItem="Trail" Title="Driver" Field="@(x => x.driver.pesel)" Sortable="true" Filterable="true" Width="15%" />
-        <Column TableItem="Trail" Title="Contractor" Field="@(x => x.contractor.nip)" Sortable="true" Filterable="true" Width="15%" />
+       
         <Column TableItem="Trail" Title="Vehicle" Field="@(x => x.vehicle.vin)" Sortable="true" Filterable="true" Width="15%" />
         <Column TableItem="Trail" Title="Date" Field="@(x => x.date)" Sortable="true" Filterable="true" Width="10%" />
-        <Column TableItem="Trail" Title="Begin" Field="@(x => x.begin)" Sortable="true" Filterable="true" Width="10%" />
-        <Column TableItem="Trail" Title="End" Field="@(x => x.end)" Sortable="true" Filterable="true" Width="10%" />
-        <Column TableItem="Trail" Title="Distance [km]" Field="@(x => x.distance)" Sortable="true" Filterable="true" Width="10%" />
+        @*<Column TableItem="Trail" Title="Contractor" Field="@(x => x.contractor.nip)" Sortable="true" Filterable="true" Width="15%" />
+    <Column TableItem="Trail" Title="Begin" Field="@(x => x.begin)" Sortable="true" Filterable="true" Width="10%" />
+    <Column TableItem="Trail" Title="End" Field="@(x => x.end)" Sortable="true" Filterable="true" Width="10%" />
+    <Column TableItem="Trail" Title="Distance [km]" Field="@(x => x.distance)" Sortable="true" Filterable="true" Width="10%" />*@
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
     </Table>
 }
-
+<a href="routes/create" class="btn btn-primary" role="button">Add Route</a>
 @code {
     private Trail[]? routes;
 

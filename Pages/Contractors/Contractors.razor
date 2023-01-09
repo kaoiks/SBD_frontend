@@ -9,7 +9,7 @@
 @inject ContractorService ContractorService
 @inject NavigationManager NavManager
 <h1>Contractors</h1>
-<a href="contractors/create" class="btn btn-primary" role="button">Add Contractor</a>
+
 
 @if (contractors == null)
 {
@@ -21,13 +21,13 @@ else
             <Table RowClickAction="ItemClicked" TableItem="Contractor" Items="contractors" PageSize="100">
                 <Column TableItem="Contractor" Title="Name" Field="@(x => x.name)" Sortable="true" Filterable="true" Width="50%" />
                 <Column TableItem="Contractor" Title="NIP" Field="@(x => x.nip)" Sortable="true" Filterable="true" Width="20%" />
-                <Column TableItem="Contractor" Title="Country" Field="@(x => x.country_id)" Sortable="true" Filterable="true" Width="10%" />
+                @*<Column TableItem="Contractor" Title="Country" Field="@(x => x.country_id)" Sortable="true" Filterable="true" Width="10%" />
                   <Column TableItem="Contractor" Title="City" Field="@(x => x.address.city)" Sortable="true" Filterable="true" Width="10%" />
-        <Column TableItem="Contractor" Title="Street" Field="@(x => x.address.street)" Sortable="true" Filterable="true" Width="10%" />
+        <Column TableItem="Contractor" Title="Street" Field="@(x => x.address.street)" Sortable="true" Filterable="true" Width="10%" />*@
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
             </Table>
 }
-
+<a href="contractors/create" class="btn btn-primary" role="button">Add Contractor</a>
 @code {
     private Contractor[]? contractors;
 

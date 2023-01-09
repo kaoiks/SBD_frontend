@@ -8,19 +8,45 @@
 @inject ContractorService ContractorService
 @inject AddressService AddressService
 
-<h1>@id</h1>
+<h1>Details of the Selected Contractor</h1>
 
 @if (contractor == null)
 {
 }
 else{
-<div scope="row">@contractor.nip</div>
-<div scope="row">@contractor.name</div>
-<div scope="row">@contractor.country_id</div>
-<div scope="row">@contractor.address.street</div>
-   <div scope="row">@contractor.address.city</div>
-    <div scope="row">@contractor.address.postal_code</div>
 
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col text-center">NIP</th>
+                <th scope="col text-center">Name</th>
+                <th scope="col text-center">Country ID</th>
+                <th scope="col text-center">Street</th>
+                <th scope="col text-center">City</th>
+                <th scope="col text-center">Postal Code</th>
+                
+
+
+            </tr>
+        </thead>
+        <tbody>
+
+
+
+            <tr>
+
+                <td scope="row">@contractor.nip</td>
+                <td scope="row">@contractor.name</td>
+                <td scope="row">@contractor.country_id</td>
+                <td scope="row">@contractor.address.street</td>
+                <td scope="row">@contractor.address.city</td>
+                <td scope="row">@contractor.address.postal_code</td>
+
+
+            </tr>
+
+        </tbody>
+    </table>
 }
 
 @code {

@@ -9,7 +9,7 @@
 @inject InsuranceService InsuranceService
 @inject NavigationManager NavManager
 <h1>Insurances</h1>
-<a href="insurances/create" class="btn btn-primary" role="button">Add Insurance</a>
+
 
 @if (insurances == null)
 {
@@ -20,8 +20,8 @@ else
 
     <Table RowClickAction="ItemClicked" TableItem="Insurance" Items="insurances" PageSize="100">
         <Column TableItem="Insurance" Title="Insurance Number" Field="@(x => x.insurance_number)" Sortable="true" Filterable="true" Width="10%" />
-        <Column TableItem="Insurance" Title="Start Date" Field="@(x => x.start_date)" Sortable="true" Filterable="true" Width="20%" />
-        <Column TableItem="Insurance" Title="End Date" Field="@(x => x.end_date)" Sortable="true" Filterable="true" Width="20%" />
+        @*<Column TableItem="Insurance" Title="Start Date" Field="@(x => x.start_date)" Sortable="true" Filterable="true" Width="20%" />
+        <Column TableItem="Insurance" Title="End Date" Field="@(x => x.end_date)" Sortable="true" Filterable="true" Width="20%" />*@
         <Column TableItem="Insurance" Title="Amount" Field="@(x => x.amount)" Sortable="true" Filterable="true" Width="10%" />
         <Column TableItem="Insurance" Title="VIN" Field="@(x => x.vehicle)" Sortable="true" Filterable="true" Width="10%" />
         
@@ -29,7 +29,7 @@ else
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
     </Table>
 }
-
+<a href="insurances/create" class="btn btn-primary" role="button">Add Insurance</a>
 @code {
 
 

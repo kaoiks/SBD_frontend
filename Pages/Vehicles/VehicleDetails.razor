@@ -7,16 +7,45 @@
 
 @inject VehicleService VehicleService
 
-<h1>@id</h1>
+<h1>Details of the Selected Vehicle</h1>
 
 @if (vehicle == null)
 {
 }
 else{
-<div scope="row">@vehicle.vin</div>
+@*<div scope="row">@vehicle.vin</div>
 <div scope="row">@vehicle.kilometers_done</div>
 <div scope="row">@vehicle.year_of_production</div>
-<div scope="row">@vehicle.car_review</div>
+<div scope="row">@vehicle.car_review</div>*@
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col text-center">Vin</th>
+                <th scope="col text-center">Kilometers Done</th>
+                <th scope="col text-center">Year of Production</th>
+                <th scope="col text-center">Car Review</th>
+                <th scope="col text-center">Fuel Usage</th>
+                
+
+            </tr>
+        </thead>
+        <tbody>
+
+
+
+            <tr>
+
+                <td scope="row">@vehicle.vin</td>
+                <td scope="row">@vehicle.kilometers_done</td>
+                <td scope="row">@vehicle.year_of_production</td>
+                <td scope="row">@vehicle.car_review</td>
+                <td scope="row">@vehicle.fuel_usage</td>
+
+
+            </tr>
+
+        </tbody>
+    </table>
 }
 @code {
     [Parameter]

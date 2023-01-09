@@ -7,19 +7,43 @@
 
 @inject InsuranceService InsuranceService
 
-<h1>@id</h1>
+<h1>Details of the Selected Insurance</h1>
 
 @if (insurance == null)
 {
 }
 else
 {
-    <div scope="row">@insurance.insurance_number</div>
-    <div scope="row">@insurance.start_date</div>
-    <div scope="row">@insurance.end_date</div>
-    <div scope="row">@insurance.amount</div>
-    <div scope="row">@insurance.vehicle</div>
-  
+    
+
+    <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col text-center">Insurance Number</th>
+                    <th scope="col text-center">Start Date</th>
+                    <th scope="col text-center">End Date</th>
+                    <th scope="col text-center">Amount</th>
+                        <th scope="col text-center">VIN</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+
+
+                <tr>
+
+                <td scope="row">@insurance.insurance_number</td>
+                <td scope="row">@insurance.start_date</td>
+                <td scope="row">@insurance.end_date</td>
+                <td scope="row">@insurance.amount</td>
+                <td scope="row">@insurance.vehicle</td>
+
+
+                </tr>
+
+            </tbody>
+        </table>
 
 }
 @code {

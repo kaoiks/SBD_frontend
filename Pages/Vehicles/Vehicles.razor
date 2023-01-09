@@ -3,12 +3,11 @@
 
 @using BlazorApp1.Data
 @using BlazorApp1.Services
-
+@using BlazorTable
 @inject VehicleService VehicleService
-
+@inject NavigationManager NavManager
 <h1>Vehicles</h1>
 
-<a href="vehicles/create" class="btn btn-primary" role="button">Add Vehicle</a>
 
 @if (vehicles == null)
 {
@@ -16,40 +15,18 @@
 }
 else
 {
-            <table class="table table-hover">
-        <thead>
-            <tr>
-                        <th scope="col text-center">Vin</th>
-                        <th scope="col text-center">Kilometers Done</th>
-                        <th scope="col text-center">Production Year</th>
-                        <th scope="col text-center">Car Review</th>
-                        <th scope="col text-center">See Details</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var vehicle in vehicles)
-            {
 
-
-                <tr ondblclick="window.location='vehicles/@vehicle.vin'">
-
-                        <td scope="row">@vehicle.vin</td>
-                        <td scope="row">@vehicle.kilometers_done</td>
-                        <td scope="row">@vehicle.year_of_production</td>
-                        <td scope="row">@vehicle.car_review</td>
-                        <td scope="row">
-                            <a href="vehicles/@vehicle.vin">
-                                Details
-                            </a>
-                        </td>
-                </tr>
-                    
-                    
-            }
-        </tbody>
-    </table>
+    <Table RowClickAction="ItemClicked" TableItem="Vehicle" Items="vehicles" PageSize="100">
+        <Column TableItem="Vehicle" Title="VIN" Field="@(x => x.vin)" Sortable="true" Filterable="true" Width="20%" />
+        @*<Column TableItem="Vehicle" Title="Kilometers Done" Field="@(x => x.kilometers_done)" Sortable="true" Filterable="true" Width="15%" />*@
+            <Column TableItem="Vehicle" Title="Year of Production" Field="@(x => x.year_of_production)" Sortable="true" Filterable="true" Width="15%" />
+                @*<Column TableItem="Vehicle" Title="Car Review" Field="@(x => x.car_review)" Sortable="true" Filterable="true" Width="15%" />*@
+        
+        <Pager ShowPageNumber="true" ShowTotalCount="true" />
+    </Table>
 }
 
+<a href="vehicles/create" class="btn btn-primary" role="button" value="right">Add Vehicle</a>
 @code {
     private Vehicle[]? vehicles;
 
@@ -62,6 +39,11 @@ else
 
     }
 
+    private void ItemClicked(Vehicle vehicle)
+    {
+
+        NavManager.NavigateTo("/vehicles/" + vehicle.vin);
+    }
 
     private int currentCount = 0;
 

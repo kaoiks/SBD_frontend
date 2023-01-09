@@ -9,23 +9,52 @@
 
 
 
-<h1>@id</h1>
+<h1>Details of the Selected Settlement</h1>
 
 @if (settlement == null)
 {
 }
 else
 {
-    <div scope="row">@settlement.id</div>
-    <div scope="row">@settlement.month</div>
-    <div scope="row">@settlement.year</div>
-        <div scope="row">@settlement.days_stationary</div>
-    <div scope="row">@settlement.days_leave</div>
-    <div scope="row">@settlement.saturdays</div>
-    <div scope="row">@settlement.rate_for_kilometer</div>
-    <div scope="row">@settlement.kilometers_done</div>
-        <div scope="row">@settlement.driver</div>
+   
 
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col text-center">ID</th>
+                <th scope="col text-center">Month</th>
+                <th scope="col text-center">Year</th>
+                <th scope="col text-center">Days Stationary</th>
+                    <th scope="col text-center">Days Leave</th>
+                    <th scope="col text-center">Saturdays</th>
+                    <th scope="col text-center">Rate for Kilometer</th>
+                      
+                            <th scope="col text-center">Kilometers Done</th>
+                                <th scope="col text-center">Driver</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+
+
+            <tr>
+
+                 <td scope="row">@settlement.id</td>
+                <td scope="row">@settlement.month</td>
+                <td scope="row">@settlement.year</td>
+                  <td scope="row">@settlement.days_stationary</td>
+                <td scope="row">@settlement.days_leave</td>
+                <td scope="row">@settlement.saturdays</td>
+                <td scope="row">@settlement.rate_for_kilometer</td>
+                <td scope="row">@settlement.kilometers_done</td>
+                <td scope="row">@settlement.driver</td>
+
+
+            </tr>
+
+        </tbody>
+    </table>
 
 
 }

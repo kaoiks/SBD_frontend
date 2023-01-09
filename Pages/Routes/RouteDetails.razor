@@ -10,26 +10,56 @@
 @inject VehicleService VehicleService
 @inject ContractorService ContractorService
 
-<h1>@id</h1>
+<h1>Details of the Selected Route</h1>
 
 @if (trail == null)
 {
 }
 else
 {
-    <div scope="row">@trail.route_id</div>
-    <div scope="row">@trail.driver.pesel</div>
-    <div scope="row">@trail.driver.name</div>
-    <div scope="row">@trail.driver.surname</div>
-    <div scope="row">@trail.contractor.nip</div>
-    <div scope="row">@trail.contractor.name</div>
-    <div scope="row">@trail.vehicle.vin</div>
-    <div scope="row">@trail.vehicle.fuel_usage</div>
-    <div scope="row">@trail.date</div>
-    <div scope="row">@trail.begin</div>
-        <div scope="row">@trail.end</div>
-    <div scope="row">@trail.distance</div>
+    
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col text-center">ID</th>
+                <th scope="col text-center">Pesel</th>
+                <th scope="col text-center">Name</th>
+                <th scope="col text-center">Surname</th>
+                <th scope="col text-center">NIP</th>
+                <th scope="col text-center">Contractor</th>
+                <th scope="col text-center">VIN</th>
+                    <th scope="col text-center">Fuel Usage</th>
+                <th scope="col text-center">Date</th>
+                <th scope="col text-center">Begin</th>
+                <th scope="col text-center">End</th>
+                <th scope="col text-center">Distance</th>
 
+            </tr>
+        </thead>
+        <tbody>
+
+
+
+            <tr>
+
+                <td scope="row">@trail.route_id</td>
+                <td scope="row">@trail.driver.pesel</td>
+                <td scope="row">@trail.driver.name</td>
+                <td scope="row">@trail.driver.surname</td>
+                <td scope="row">@trail.contractor.nip</td>
+                <td scope="row">@trail.contractor.name</td>
+                <td scope="row">@trail.vehicle.vin</td>
+                <td scope="row">@trail.vehicle.fuel_usage</td>
+                <td scope="row">@trail.date</td>
+                <td scope="row">@trail.begin</td>
+                    <td scope="row">@trail.end</td>
+                <td scope="row">@trail.distance</td>
+
+
+            </tr>
+
+        </tbody>
+    </table>
 
 
 }

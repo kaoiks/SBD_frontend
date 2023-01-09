@@ -8,24 +8,53 @@
 @inject DriverService DriverService
 @inject AddressService AddressService
 
-<h1>@id</h1>
+<h1>Details of the Selected Driver</h1>
 
 @if (driver == null)
 {
 }
 else
 {
-    <div scope="row">@driver.name</div>
-    <div scope="row">@driver.surname</div>
-    <div scope="row">@driver.pesel</div>
-    <div scope="row">@driver.address.street</div>
-    <div scope="row">@driver.address.city</div>
-    <div scope="row">@driver.address.postal_code</div>
-    <div scope="row">@driver.date_of_birth</div>
-    <div scope="row">@driver.driver_license_number</div>
-    <div scope="row">@driver.date_qualification_certificate</div>
-    <div scope="row">@driver.date_bhp_course</div>
+    
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col text-center">Name</th>
+                <th scope="col text-center">Surname</th>
+                <th scope="col text-center">PESEL</th>
+                <th scope="col text-center">Street</th>
+                <th scope="col text-center">City</th>
+                <th scope="col text-center">Postal Code</th>
+                <th scope="col text-center">Date of Birth</th>
+                <th scope="col text-center">Driver License Number</th>
+                <th scope="col text-center">Exp. Date of Qualification Certificate</th>
+                <th scope="col text-center">Exp. Date of BHP Course</th>
+                
 
+            </tr>
+        </thead>
+        <tbody>
+
+
+
+            <tr>
+
+                <td scope="row">@driver.name</td>
+                <td scope="row">@driver.surname</td>
+                <td scope="row">@driver.pesel</td>
+                <td scope="row">@driver.address.street</td>
+                <td scope="row">@driver.address.city</td>
+                <td scope="row">@driver.address.postal_code</td>
+                <td scope="row">@driver.date_of_birth</td>
+                <td scope="row">@driver.driver_license_number</td>
+                <td scope="row">@driver.date_qualification_certificate</td>
+                <td scope="row">@driver.date_bhp_course</td>
+
+
+            </tr>
+
+        </tbody>
+    </table>
 }
 
 

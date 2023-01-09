@@ -7,22 +7,48 @@
 @inject RepairService RepairService
 @inject RepairCostService RepairCostService
 
-<h1>@id</h1>
+<h1>Details of the Selected Repair</h1>
 
 @if (repair == null)
 {
 }
 else
 {
-    <div scope="row">@repair.repair_date</div>
+    @*<div scope="row">@repair.repair_date</div>
     <div scope="row">@repair.description</div>
-    <div scope="row">@repair.vehicle</div>
+    <div scope="row">@repair.vehicle</div>*@
 
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col text-center">ID</th>
+                        <th scope="col text-center">Repair Date</th>
+                        <th scope="col text-center">Description</th>
+                        <th scope="col text-center">Vehicle</th>
+                        
+            </tr>
+        </thead>
+        <tbody>
+            
+
+
+                <tr >
+
+                    <td scope="row">@repair.id</td>
+                    <td scope="row">@repair.repair_date</td>
+                    <td scope="row">@repair.description</td>
+                        <td scope="row">@repair.vehicle</td>
+                      
+                      
+                </tr>
+            
+            </tbody>
+            </table>
                 
 
 }
-<a href="costs/create/@id" class="btn btn-primary" role="button">Add Cost</a>
-
+<br />
+<h1>Repair Costs</h1>
 @if (repairCosts == null)
 {
 <p><em>Loading...</em></p>
@@ -40,6 +66,7 @@ else
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
 }
+<a href="costs/create/@id" class="btn btn-primary" role="button">Add Cost</a>
 @code {
     
     [Parameter]

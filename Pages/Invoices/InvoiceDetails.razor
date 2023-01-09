@@ -7,18 +7,40 @@
 
 @inject InvoiceService InvoiceService
 
-<h1>@id</h1>
+<h1>Details of the Selected Invoice</h1>
 
 @if (invoice == null)
 {
 }
 else
 {
-    <div scope="row">@invoice.invoice_number</div>
-    <div scope="row">@invoice.date</div>
-    <div scope="row">@invoice.amount</div>
-    <div scope="row">@invoice.contractor_name</div>
+   
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col text-center">Invoice Number</th>
+                <th scope="col text-center">Date</th>
+                <th scope="col text-center">Amount</th>
+                <th scope="col text-center">Contractor</th>
 
+            </tr>
+        </thead>
+        <tbody>
+
+
+
+            <tr>
+
+                <td scope="row">@invoice.invoice_number</td>
+                <td scope="row">@invoice.date</td>
+                <td scope="row">@invoice.amount</td>
+                <td scope="row">@invoice.contractor_name</td>
+
+
+            </tr>
+
+        </tbody>
+    </table>
 }
 @code {
     [Parameter]
