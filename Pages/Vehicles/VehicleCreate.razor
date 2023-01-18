@@ -9,58 +9,86 @@
 @using Blazored.Toast.Configuration
 
 
-<h1>Add Vehicle</h1>
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
 
-<div class="d-flex justify-content-start bd-highlight mb-3">
 <EditForm Model="@vehicle" OnValidSubmit="@HandleValidSubmit">
+
+    <h3>Add Vehicle</h3>
+    <hr />
     <DataAnnotationsValidator />
-    <ValidationSummary />
 
-    <p>
-        <label>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
             VIN:
-               <InputText @bind-Value="vehicle.vin"/>
         </label>
-    </p>
-    <p>
-        <label>
-            Year of production:
-            <InputNumber @bind-Value="vehicle.year_of_production"/>
+        <div class="col-sm-5">
+            <InputText id="vin" Class="form-control" placeholder="VIN" @bind-Value="vehicle.vin" />
+            <ValidationMessage For="@(() => vehicle.vin)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Year of Production:
         </label>
-    </p>
-    <p>
-        <label>
-            Car Review:
-            <InputDate @bind-Value="vehicle.car_review"/>
-        </label>
-    </p>
-    <p>
-        <label>
-            Fuel Usage:
-            <InputNumber @bind-Value="vehicle.fuel_usage"/>
-        </label>
-    </p>
-    <p>
-        <label>
-            Kilometers Done:
-            <InputNumber @bind-Value="vehicle.kilometers_done"/>
-        </label>
-    </p>
-    
+        <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Year of Production" @bind-Value="vehicle.year_of_production" />
+            <ValidationMessage For="@(() => vehicle.year_of_production)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
 
-    <button class="btn btn-primary" type="submit">Submit</button>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Car Review:
+        </label>
+        <div class="col-sm-5">
+            <InputDate class="form-control" placeholder="Car Review" @bind-Value="vehicle.car_review" />
+            <ValidationMessage For="@(() => vehicle.car_review)"></ValidationMessage>
+        </div>
+    </div>
+
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Fuel Usage:
+        </label>
+        <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Fuel Usage" @bind-Value="vehicle.fuel_usage" />
+            <ValidationMessage For="@(() => vehicle.fuel_usage)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Kilometers Done:
+        </label>
+        <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Kilometers Done" @bind-Value="vehicle.kilometers_done" />
+            <ValidationMessage For="@(() => vehicle.kilometers_done)"></ValidationMessage>
+        </div>
+    </div>
+
+    
+    <br />
+
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </div>
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
 
 </EditForm>
 
-
-<BlazoredToasts Position="ToastPosition.BottomRight"
-                Timeout="10"
-                IconType="IconType.FontAwesome"
-                SuccessClass="success-toast-override"
-                SuccessIcon="fa fa-thumbs-up"
-                ErrorIcon="fa fa-bug" />
-
-</div>
 @code {
 
 

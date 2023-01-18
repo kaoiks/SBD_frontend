@@ -4,7 +4,8 @@ using Blazored.Toast;
 using BlazorTable;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Components.Forms;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

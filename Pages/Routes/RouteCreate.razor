@@ -12,106 +12,142 @@
 @using Blazored.Toast.Configuration
 
 
-<h1>Add Route</h1>
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
 
-<div class="d-flex justify-content-start bd-highlight mb-3">
-    <EditForm Model="@trail" OnValidSubmit="@HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+<EditForm Model="@trail" OnValidSubmit="@HandleValidSubmit">
 
+    <h3>Add Route</h3>
+    <hr />
+    <DataAnnotationsValidator />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Date:
+        </label>
+        <div class="col-sm-5">
+            <InputDate class="form-control" placeholder="Date"  @bind-Value="trail.date" />
+            <ValidationMessage For="@(() => trail.date)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Begin:
+        </label>
+        <div class="col-sm-5">
+            <InputText class="form-control" placeholder="Begin" @bind-Value="trail.begin" />
+            <ValidationMessage For="@(() => trail.begin)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            End:
+        </label>
+        <div class="col-sm-5">
+            <InputText class="form-control" placeholder="End" @bind-Value="trail.end" />
+            <ValidationMessage For="@(() => trail.end)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Distance:
+        </label>
+        <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Distance" @bind-Value="trail.distance" />
+            <ValidationMessage For="@(() => trail.distance)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
 
-        <p>
-            <label>
-                Date:
-                <InputDate @bind-Value="trail.date" />
+        @if (drivers == null)
+        {
+
+        }
+        else
+        {
+            <label for="drivers" class="col-sm-2 col-form-label ">
+                Driver:
             </label>
-        </p>
-        <p>
-            <label>
-                Begin:
-                <InputText @bind-Value="trail.begin" />
+            <div class="col-sm-5">
+
+                <InputSelect @bind-Value=trail.driver class="form-select" style="color:darkgray;">
+                    <option value="NULL">--Choose Driver--</option>
+                    @foreach (var driver in drivers)
+                    {
+                        <option value="@driver.pesel" style="color:black;">@driver.surname</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => trail.driver)"></ValidationMessage>
+            </div>
+
+
+
+        }
+    </div>
+    <br />
+    <div class="form-group row">
+
+        @if (vehicles == null)
+        {
+
+        }
+        else
+        {
+            <label for="VIN" class="col-sm-2 col-form-label ">
+                VIN:
             </label>
-        </p>
-        <p>
-            <label>
-                End:
-                <InputText @bind-Value="trail.end" />
+            <div class="col-sm-5">
+
+                <InputSelect @bind-Value=trail.vehicle class="form-select" style="color:darkgray;">
+                    <option value="NULL">--Choose VIN--</option>
+                    @foreach (var vehicle in vehicles)
+                    {
+                        <option value="@vehicle.vin" style="color:black;">@vehicle.vin</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => trail.vehicle)"></ValidationMessage>
+            </div>
+        }
+    </div>
+    <br />
+    <div class="form-group row">
+
+        @if (contractors == null)
+        {
+
+        }
+        else
+        {
+            <label for="contractor" class="col-sm-2 col-form-label ">
+                Contractor:
             </label>
-        </p>
-        <p>
-            <label>
-                Distance:
-                <InputNumber @bind-Value="trail.distance" />
-            </label>
-        </p>
-        <p>
-            @if (drivers == null)
-            {
+            <div class="col-sm-5">
 
-            }
-            else
-            {
-                <label>
-                    Driver:
-                    <InputSelect @bind-Value=trail.driver>
-                        @foreach (var driver in drivers)
-                        {
-                            <option value="@driver.pesel">@driver.surname</option>
-                        }
-                    </InputSelect>
-                </label>
-
-            }
-
-        </p>
-        <p>
-            @if (vehicles == null)
-            {
-
-            }
-            else
-            {
-                <label>
-                    Vehicle:
-                    <InputSelect @bind-Value=trail.vehicle>
-                        @foreach (var vehicle in vehicles)
-                        {
-                            <option value="@vehicle.vin">@vehicle.vin</option>
-                        }
-                    </InputSelect>
-                </label>
-
-            }
-
-        </p>
-        <p>
-            @if (contractors == null)
-            {
-
-            }
-            else
-            {
-                <label>
-                    Contractor:
-                    <InputSelect @bind-Value=trail.contractor>
-                        @foreach (var contractor in contractors)
-                        {
-                            <option value="@contractor.nip">@contractor.name</option>
-                        }
-                    </InputSelect>
-                </label>
-
-            }
-
-        </p>
-        
+                <InputSelect @bind-Value=trail.contractor class="form-select" style="color:darkgray;">
+                    <option value="NULL">--Choose Contractor--</option>
+                    @foreach (var contractor in contractors)
+                    {
+                        <option value="@contractor.nip" style="color:black;">@contractor.name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => trail.contractor)"></ValidationMessage>
+            </div>
 
 
 
-        <button class="btn btn-primary" type="submit">Submit</button>
+        }
 
-    </EditForm>
 
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </div>
 
     <BlazoredToasts Position="ToastPosition.BottomRight"
                     Timeout="10"
@@ -120,7 +156,7 @@
                     SuccessIcon="fa fa-thumbs-up"
                     ErrorIcon="fa fa-bug" />
 
-</div>
+</EditForm>
 @code {
 
 

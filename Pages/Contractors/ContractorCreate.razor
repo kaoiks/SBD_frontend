@@ -9,59 +9,85 @@
 @inject IToastService toastService
 @using Blazored.Toast.Configuration
 
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
 
-<h1>Add Contractor</h1>
+<EditForm Model="@contractor"  OnValidSubmit="@HandleValidSubmit">
+    
+    <h3>Add Contractor</h3>
+    <hr />
+    <DataAnnotationsValidator />
+   
 
-<div class="d-flex justify-content-start bd-highlight mb-3">
-    <EditForm Model="@contractor" OnValidSubmit="@HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-
-
-        <p>
-            <label>
-                Name:
-                <InputText @bind-Value="contractor.name" />
-            </label>
-        </p>
-        <p>
-            <label>
-                NIP:
-                <InputText @bind-Value="contractor.nip" />
-            </label>
-        </p>
-       <p>
-            <label>
-                Street:
-                <InputText @bind-Value="address.street" />
-            </label>
-        </p>
-       
-        <p>
-            <label>
-                City:
-                <InputText @bind-Value="address.city" />
-            </label>
-        </p>
-        <p>
-            <label>
-                Postal Code:
-                <InputText @bind-Value="address.postal_code" />
-            </label>
-        </p>
-        
-        <p>
-            <label>
-                Country ID:
-                <InputText @bind-Value="contractor.country_id" />
-            </label>
-        </p>
-
-
-        <button class="btn btn-primary" type="submit">Submit</button>
-
-    </EditForm>
-
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Name:
+        </label>
+        <div class="col-sm-5">
+            <InputText id="name" Class="form-control" placeholder="Name" @bind-Value="contractor.name" />
+            <ValidationMessage For="@(() => contractor.name)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            NIP:
+        </label>
+        <div class="col-sm-5">
+            <InputText class="form-control" placeholder="NIP" @bind-Value="contractor.nip" />
+            <ValidationMessage For="@(() => contractor.nip)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+   
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Street:
+        </label>
+        <div class="col-sm-5">
+            <InputText class="form-control" placeholder="Street" @bind-Value="address.street" />
+            <ValidationMessage For="@(() => address.street)"></ValidationMessage>
+        </div>
+    </div>
+ 
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            City:
+        </label>
+        <div class="col-sm-5">
+            <InputText class="form-control" placeholder="City" @bind-Value="address.city" />
+            <ValidationMessage For="@(() => address.city)"></ValidationMessage>
+        </div>
+    </div>
+     <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Postal Code:
+        </label>
+        <div class="col-sm-5">
+            <InputText class="form-control" placeholder="Postal Code" @bind-Value="address.postal_code" />
+            <ValidationMessage For="@(() => address.postal_code)"></ValidationMessage>
+        </div>
+    </div>
+ 
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Country ID:
+        </label>
+        <div class="col-sm-5">
+            <InputText class="form-control" placeholder="Country ID" @bind-Value="contractor.country_id" />
+            <ValidationMessage For="@(() => contractor.country_id)"></ValidationMessage>
+        </div>
+    </div>
+     <br />
+    
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </div>
 
     <BlazoredToasts Position="ToastPosition.BottomRight"
                     Timeout="10"
@@ -70,7 +96,9 @@
                     SuccessIcon="fa fa-thumbs-up"
                     ErrorIcon="fa fa-bug" />
 
-</div>
+</EditForm>
+
+
 @code {
 
 

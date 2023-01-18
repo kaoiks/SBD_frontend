@@ -10,41 +10,55 @@
 @using Blazored.Toast.Configuration
 
 
-<h1>Add RepairCost</h1>
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
 
-<div class="d-flex justify-content-start bd-highlight mb-3">
-    <EditForm Model="@repairCost" OnValidSubmit="@HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+<EditForm Model="@repairCost"  OnValidSubmit="@HandleValidSubmit">
 
-
-        <p>
-            <label>
-                Invoice Number:
-                <InputText @bind-Value="repairCost.invoice_id" />
-            </label>
-        </p>
-        <p>
-            <label>
-                Date:
-                <InputDate @bind-Value="repairCost.date" />
-            </label>
-        </p>
-        <p>
-            <label>
-                Amount:
-                <InputNumber @bind-Value="repairCost.amount" step='0.01' />
-            </label>
-        </p>
-       
+    <h3>Add Repair Cost</h3>
+    <hr />
+    <DataAnnotationsValidator />
 
 
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Invoice Number:
+        </label>
+        <div class="col-sm-5">
+            <InputText id="invoice_id" Class="form-control" placeholder="Invoice ID" @bind-Value="repairCost.invoice_id" />
+            <ValidationMessage For="@(() => repairCost.invoice_id)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Date:
+        </label>
+        <div class="col-sm-5">
+            <InputDate class="form-control" placeholder="Date" @bind-Value="repairCost.date" />
+            <ValidationMessage For="@(() => repairCost.date)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
 
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Amount:
+        </label>
+        <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Amount" @bind-Value="repairCost.amount" step='0.01' />
+            <ValidationMessage For="@(() => repairCost.amount)"></ValidationMessage>
+        </div>
+    </div>
 
-        <button class="btn btn-primary" type="submit">Submit</button>
+   
+    <br />
 
-    </EditForm>
-
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </div>
 
     <BlazoredToasts Position="ToastPosition.BottomRight"
                     Timeout="10"
@@ -53,7 +67,7 @@
                     SuccessIcon="fa fa-thumbs-up"
                     ErrorIcon="fa fa-bug" />
 
-</div>
+</EditForm>
 @code {
     [Parameter]
     public string id { get; set; }

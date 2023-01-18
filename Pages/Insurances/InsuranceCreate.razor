@@ -10,66 +10,91 @@
 @using Blazored.Toast.Configuration
 
 
-<h1>Add Insurance</h1>
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
 
-<div class="d-flex justify-content-start bd-highlight mb-3">
-    <EditForm Model="@insurance" OnValidSubmit="@HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+<EditForm Model="@insurance" OnValidSubmit="@HandleValidSubmit">
+
+    <h3>Add Insurance</h3>
+    <hr />
+    <DataAnnotationsValidator />
 
 
-        <p>
-            <label>
-                Insurance Number:
-                <InputText @bind-Value="insurance.insurance_number" />
-            </label>
-        </p>
-        <p>
-            <label>
-                Start Date:
-                <InputDate @bind-Value="insurance.start_date" />
-            </label>
-        </p>
-        <p>
-            <label>
-                End Date:
-                <InputDate @bind-Value="insurance.end_date" />
-            </label>
-        </p>
-        <p>
-            <label>
-                Amount:
-                <InputNumber @bind-Value="insurance.amount" />
-            </label>
-        </p>
-        <p>
-            @if (vehicles == null)
-            {
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Insurance Number:
+        </label>
+        <div class="col-sm-5">
+            <InputText id="insurance_number" Class="form-control" placeholder="Insurance Number" @bind-Value="insurance.insurance_number" />
+            <ValidationMessage For="@(() => insurance.insurance_number)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Start Date:
+        </label>
+        <div class="col-sm-5">
+            <InputDate class="form-control" placeholder="Start Date" @bind-Value="insurance.start_date" />
+            <ValidationMessage For="@(() => insurance.start_date)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            End Date:
+        </label>
+        <div class="col-sm-5">
+            <InputDate class="form-control" placeholder="End Date" @bind-Value="insurance.end_date" />
+            <ValidationMessage For="@(() => insurance.end_date)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Amount:
+        </label>
+        <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Amount" @bind-Value="insurance.amount" step='0.01' />
+            <ValidationMessage For="@(() => insurance.amount)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+   
+        @if (vehicles == null)
+        {
 
-            }
-            else
-            {
-                <label>
-                VIN:
-                <InputSelect @bind-Value=insurance.vin>
-                    @foreach (var vehicle in vehicles)
-                    {
-                        <option value="@vehicle.vin">@vehicle.vin</option>
-                    }
-                </InputSelect>
+        }
+        else
+        {
+                <label for="VIN" class="col-sm-2 col-form-label ">
+                    VIN:
                 </label>
+                    <div class="col-sm-5">
 
-            }
+                <InputSelect @bind-Value=insurance.vin class="form-select" style="color:darkgray;">
+                    <option value="NULL" >--Choose VIN--</option>
+                        @foreach (var vehicle in vehicles)
+                        {
+                        <option value="@vehicle.vin" style="color:black;">@vehicle.vin</option>
+                        }
+                    </InputSelect>
+                <ValidationMessage For="@(() => insurance.vin)"></ValidationMessage>
+                    </div>
+                
+              
 
-        </p>
-
-
-
-
-        <button class="btn btn-primary" type="submit">Submit</button>
-
-    </EditForm>
-
+        }
+        
+    
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </div>
 
     <BlazoredToasts Position="ToastPosition.BottomRight"
                     Timeout="10"
@@ -78,7 +103,7 @@
                     SuccessIcon="fa fa-thumbs-up"
                     ErrorIcon="fa fa-bug" />
 
-</div>
+</EditForm>
 @code {
 
 

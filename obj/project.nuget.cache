@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "NjoldI2NxqEcBhrziEbhgSDOBJ6ktRoo7fQQYHdHDsmancwtxH6nayZ4pjj2URUVS/Bzni5bgLbihE7WK5MQ4Q==",
+  "dgSpecHash": "O1P49GUErzMjFh5q3hOXBgv8EA0OwZ7DnVcVtD7N/8AWWp0UpAxQ/q8sfiS5r4UnAAnCivDd3UMsonVCMFf0vg==",
   "success": true,
   "projectFilePath": "C:\\rzeczy z pulpitu\\STUDIA\\SEMESTR 5\\SQL\\projekt\\kody\\frontend_sbd\\BlazorApp1.csproj",
   "expectedPackageFiles": [
@@ -112,6 +112,7 @@
     "C:\\Users\\kubzy\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\kubzy\\.nuget\\packages\\system.collections.concurrent\\4.3.0\\system.collections.concurrent.4.3.0.nupkg.sha512",
     "C:\\Users\\kubzy\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
+    "C:\\Users\\kubzy\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512",
     "C:\\Users\\kubzy\\.nuget\\packages\\system.composition\\1.0.31\\system.composition.1.0.31.nupkg.sha512",
     "C:\\Users\\kubzy\\.nuget\\packages\\system.composition.attributedmodel\\1.0.31\\system.composition.attributedmodel.1.0.31.nupkg.sha512",
     "C:\\Users\\kubzy\\.nuget\\packages\\system.composition.convention\\1.0.31\\system.composition.convention.1.0.31.nupkg.sha512",

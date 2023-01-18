@@ -10,60 +10,82 @@
 @using Blazored.Toast.Configuration
 
 
-<h1>Add Invoice</h1>
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
 
-<div class="d-flex justify-content-start bd-highlight mb-3">
-    <EditForm Model="@invoice" OnValidSubmit="@HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+<EditForm Model="@invoice" OnValidSubmit="@HandleValidSubmit">
+
+    <h3>Add Invoice</h3>
+    <hr />
+    <DataAnnotationsValidator />
 
 
-        <p>
-            <label>
-                Invoice Number:
-                <InputText @bind-Value="invoice.invoice_number" />
-            </label>
-        </p>
-        <p>
-            <label>
-                Date:
-                <InputDate @bind-Value="invoice.date" />
-            </label>
-        </p>
-        <p>
-            <label>
-                Amount:
-                <InputText @bind-Value="invoice.amount" />
-            </label>
-        </p>
-        <p>
-            @if (contractors == null)
-            {
-    
-            }
-            else
-            {
-                <label>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Invoice Number:
+        </label>
+        <div class="col-sm-5">
+            <InputText id="invoice_number" Class="form-control" placeholder="Invoice Number" @bind-Value="invoice.invoice_number" />
+            <ValidationMessage For="@(() => invoice.invoice_number)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Date:
+        </label>
+        <div class="col-sm-5">
+            <InputDate class="form-control" placeholder="Date" @bind-Value="invoice.date" />
+            <ValidationMessage For="@(() => invoice.date)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Amount:
+        </label>
+        <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Amount" @bind-Value="invoice.amount" />
+            <ValidationMessage For="@(() => invoice.amount)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+
+    <div class="form-group row">
+
+        @if (contractors == null)
+        {
+
+        }
+        else
+        {
+            <label for="contractor" class="col-sm-2 col-form-label ">
                 Contractor:
-                <InputSelect @bind-Value=invoice.contractor>
-                @foreach (var contractor in contractors)
-                {
-                    <option value="@contractor.nip">@contractor.name</option>
-                }
+            </label>
+            <div class="col-sm-5">
+
+                <InputSelect @bind-Value=invoice.contractor class="form-select" style="color:darkgray;">
+                    <option value="NULL">--Choose Contractor--</option>
+                    @foreach (var contractor in contractors)
+                    {
+                        <option value="@contractor.nip" style="color:black;">@contractor.name</option>
+                    }
                 </InputSelect>
-                </label>
-            
-            }
-            
-        </p>
-      
+                <ValidationMessage For="@(() => invoice.contractor)"></ValidationMessage>
+            </div>
 
-       
 
-        <button class="btn btn-primary" type="submit">Submit</button>
 
-    </EditForm>
+        }
 
+
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </div>
 
     <BlazoredToasts Position="ToastPosition.BottomRight"
                     Timeout="10"
@@ -72,7 +94,7 @@
                     SuccessIcon="fa fa-thumbs-up"
                     ErrorIcon="fa fa-bug" />
 
-</div>
+</EditForm>
 @code {
 
 
