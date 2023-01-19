@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Components.Forms;
+using BS.Forms.ValidatorComponent.Components;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -22,6 +24,8 @@ builder.Services.AddSingleton<RepairCostService>();
 builder.Services.AddSingleton<DriverService>();
 builder.Services.AddSingleton<RouteService>();
 builder.Services.AddSingleton<SettlementService>();
+builder.Services.AddSingleton<CustomValidator>();
+
 builder.Services.AddBlazorTable();
 builder.Services.AddBlazoredToast();
 

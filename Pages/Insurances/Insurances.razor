@@ -8,7 +8,7 @@
 
 @inject InsuranceService InsuranceService
 @inject NavigationManager NavManager
-<h1>Insurances</h1>
+<h1>Insurances          <a href="insurances/create" class="btn btn-primary" role="button">Add Insurance</a></h1>
 
 
 @if (insurances == null)
@@ -29,7 +29,7 @@ else
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
     </Table>
 }
-<a href="insurances/create" class="btn btn-primary" role="button">Add Insurance</a>
+
 @code {
 
 

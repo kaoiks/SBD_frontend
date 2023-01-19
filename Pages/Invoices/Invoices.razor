@@ -8,7 +8,7 @@
 
 @inject InvoiceService InvoiceService
 @inject NavigationManager NavManager
-<h1>Invoices</h1>
+<h1>Invoices          <a href="invoices/create" class="btn btn-primary" role="button">Add Invoice</a></h1>
 
 
 @if (invoices == null)
@@ -28,7 +28,7 @@ else
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
     </Table>
 }
-<a href="invoices/create" class="btn btn-primary" role="button">Add Invoice</a>
+
 @code {
     private Invoice[]? invoices;
 

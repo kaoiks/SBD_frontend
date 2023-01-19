@@ -8,7 +8,7 @@
 
 @inject RepairService RepairService
 @inject NavigationManager NavManager
-<h1>Repairs</h1>
+<h1>Repairs          <a href="repairs/create" class="btn btn-primary" role="button">Add Repair</a></h1>
 
 
 @if (repairs == null)
@@ -28,7 +28,7 @@ else
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
     </Table>
 }
-<a href="repairs/create" class="btn btn-primary" role="button">Add Repair</a>
+
 @code {
     private Repair[]? repairs;
 

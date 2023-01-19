@@ -8,7 +8,7 @@
 
 @inject DriverService DriverService
 @inject NavigationManager NavManager
-<h1>Drivers</h1>
+<h1>Drivers          <a href="drivers/create" class="btn btn-primary" role="button">Add Driver</a></h1>
 
 
 @if (drivers == null)
@@ -30,7 +30,7 @@ else
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
     </Table>
 }
-<a href="drivers/create" class="btn btn-primary" role="button">Add Driver</a>
+
 @code {
     private Driver[]? drivers;
 

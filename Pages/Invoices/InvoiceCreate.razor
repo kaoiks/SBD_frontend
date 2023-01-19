@@ -5,10 +5,11 @@
 @using BlazorApp1.Data
 @inject InvoiceService InvoiceService
 @inject ContractorService ContractorService
+@inject RepairCostService RepairCostService
 @inject NavigationManager NavManager
 @inject IToastService toastService
 @using Blazored.Toast.Configuration
-
+@using BS.Forms.ValidatorComponent.Components
 
 @using Microsoft.AspNetCore.Components.Forms
 @using System.ComponentModel.DataAnnotations
@@ -18,15 +19,16 @@
     <h3>Add Invoice</h3>
     <hr />
     <DataAnnotationsValidator />
-
+    <CustomValidator @ref="customValidator"></CustomValidator>
 
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">
             Invoice Number:
         </label>
         <div class="col-sm-5">
-            <InputText id="invoice_number" Class="form-control" placeholder="Invoice Number" @bind-Value="invoice.invoice_number" />
+            <InputText asp-for="invoice.invoice_number" id="invoice_number" Class="form-control" placeholder="Invoice Number" @bind-Value="invoice.invoice_number" />
             <ValidationMessage For="@(() => invoice.invoice_number)"></ValidationMessage>
+            <span asp-validation-for="invoice.invoice_number" class="text-danger"></span>
         </div>
     </div>
     <br />
@@ -102,6 +104,10 @@
 
     private Contractor[]? contractors;
 
+    private CustomValidator customValidator;
+    public RepairCost[]? repairCost_check;
+    public Invoice[]? invoice_check;
+
     protected override async Task OnInitializedAsync()
     {
         var contractors_service = await ContractorService.GetContractorsAsync();
@@ -114,19 +120,49 @@
     {
         Logger.LogInformation("HandleValidSubmit called");
 
-     
+        var repairCost_service = await RepairCostService.GetRepairCostsAsync();
+        var invoice_service = await InvoiceService.GetInvoicesAsync();
 
-        var result = await InvoiceService.AddInvoiceAsync(invoice);
-
-        if (result == null)
+        repairCost_check = repairCost_service.ToArray();
+        invoice_check = invoice_service.ToArray();
+        int exist = 0;
+        for (int i = 0; i < repairCost_check.Length; i++)
         {
-
+            if (repairCost_check[i].invoice_id == invoice.invoice_number)
+            {
+                exist = 1;
+            }
+        }
+        for (int i = 0; i < invoice_check.Length; i++)
+        {
+            if (invoice_check[i].invoice_number == invoice.invoice_number)
+            {
+                exist = 1;
+            }
+        }
+        var errors = new Dictionary<string, List<string>>();
+        if (exist == 1)
+        {
+            errors.Add(nameof(invoice.invoice_number), new List<string> { "This Invoice Number already exists" });
+            customValidator.DisplayErrors(errors);
         }
         else
         {
-            toastService.ShowSuccess("Invoice created successfully.");
-            NavManager.NavigateTo("/invoices");
+            var result = await InvoiceService.AddInvoiceAsync(invoice);
+
+            if (result == null)
+            {
+
+            }
+            else
+            {
+                toastService.ShowSuccess("Invoice created successfully.");
+                NavManager.NavigateTo("/invoices");
+            }
         }
+     
+
+       
     }
 
 

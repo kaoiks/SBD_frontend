@@ -8,7 +8,7 @@
 
 @inject ContractorService ContractorService
 @inject NavigationManager NavManager
-<h1>Contractors</h1>
+<h1>Contractors          <a href="contractors/create" class="btn btn-primary" role="button">Add Contractor</a></h1>
 
 
 @if (contractors == null)
@@ -27,7 +27,7 @@ else
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
             </Table>
 }
-<a href="contractors/create" class="btn btn-primary" role="button">Add Contractor</a>
+
 @code {
     private Contractor[]? contractors;
 

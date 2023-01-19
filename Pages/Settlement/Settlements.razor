@@ -8,7 +8,7 @@
 
 @inject SettlementService SettlementService
 @inject NavigationManager NavManager
-<h1>Settlements</h1>
+<h1>Settlements          <a href="settlements/create" class="btn btn-primary" role="button">Add Settlement</a></h1>
 
 
 @if (settlements == null)
@@ -32,7 +32,7 @@ else
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
     </Table>
 }
-<a href="settlements/create" class="btn btn-primary" role="button">Add Settlement</a>
+
 @code {
     private Settlement[]? settlements;
 

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazorApp1.Data
 {
@@ -24,7 +26,7 @@ namespace BlazorApp1.Data
     public class RepairCost
     {
         public int id { get; set; }
-        public string amount { get; set; }
+        public double amount { get; set; }
         public string date { get; set; }
         public string invoice_id { get; set; }
         public int repair { get; set; }
@@ -53,7 +55,7 @@ namespace BlazorApp1.Data
     public class Invoice
     {
         public int id { get; set; }
-        public string amount { get; set; }
+        public double amount { get; set; }
         public string invoice_number { get; set; }
         public string date { get; set; }
 
@@ -95,10 +97,13 @@ namespace BlazorApp1.Data
 
     public class FormContractor
     {
+        [BindProperty]
         [Required(ErrorMessage = "NIP is required.")]
         [MinLength(10, ErrorMessage = "NIP consists of 10 digits.")]
         [MaxLength(10, ErrorMessage = "NIP consists of 10 digits.")]
         [RegularExpression(@"\d+", ErrorMessage = "NIP consists of numbers only.")]
+        [PageRemote(HttpMethod ="post", 
+            PageHandler ="CheckNIP",ErrorMessage ="This NIP already exists!")]
         public string nip { get; set; }
 
         public int address { get; set; }
@@ -110,6 +115,8 @@ namespace BlazorApp1.Data
         [MaxLength(2, ErrorMessage = "Country ID consists of 2 letters.")]
         [RegularExpression(@"[A-Z]+", ErrorMessage = "Country ID consists of capital letters.")]
         public string country_id { get; set; }
+
+       
     }
 
     public class FormAddress

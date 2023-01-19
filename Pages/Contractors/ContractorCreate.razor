@@ -1,4 +1,5 @@
 ﻿@page "/contractors/create"
+@using Microsoft.AspNetCore.Mvc;
 @using Microsoft.Extensions.Logging
 @inject ILogger<ContractorCreate> Logger
 @using BlazorApp1.Services
@@ -8,7 +9,7 @@
 @inject NavigationManager NavManager
 @inject IToastService toastService
 @using Blazored.Toast.Configuration
-
+@using BS.Forms.ValidatorComponent.Components
 @using Microsoft.AspNetCore.Components.Forms
 @using System.ComponentModel.DataAnnotations
 
@@ -17,7 +18,7 @@
     <h3>Add Contractor</h3>
     <hr />
     <DataAnnotationsValidator />
-   
+    <CustomValidator @ref="customValidator"></CustomValidator>
 
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">
@@ -34,8 +35,9 @@
             NIP:
         </label>
         <div class="col-sm-5">
-            <InputText class="form-control" placeholder="NIP" @bind-Value="contractor.nip" />
+            <InputText asp-for="contractor.nip" class="form-control" placeholder="NIP" @bind-Value="contractor.nip" />
             <ValidationMessage For="@(() => contractor.nip)"></ValidationMessage>
+            <span asp-validation-for="contractor.nip" class="text-danger"></span>
         </div>
     </div>
     <br />
@@ -83,11 +85,11 @@
     </div>
      <br />
     
-    <div class="row">
-        <div class="col-md-12 text-right">
+   
+        <div class="text-right mt-2">
             <button type="submit" class="btn btn-success">Submit</button>
         </div>
-    </div>
+    
 
     <BlazoredToasts Position="ToastPosition.BottomRight"
                     Timeout="10"
@@ -99,34 +101,62 @@
 </EditForm>
 
 
+
 @code {
 
+    private CustomValidator customValidator;
 
     private FormAddress address = new() { type = 1 };
 
     private FormContractor contractor = new() ;
 
+    public Contractor[]? contractor_check;
+
     private async void HandleValidSubmit()
     {
         Logger.LogInformation("HandleValidSubmit called");
-
-        var result_address = await AddressService.AddAddressAsync(address);
-
-    
-        contractor.address = result_address.id;
-
-        var result = await ContractorService.AddContractorAsync(contractor);
-
-        if (result == null)
+       
+        var contractor_service = await ContractorService.GetContractorsAsync();
+        contractor_check = contractor_service.ToArray();
+        int exist = 0;
+        for(int i=0;i<contractor_check.Length;i++)
         {
-
+            if (contractor_check[i].nip==contractor.nip)
+            {
+                exist = 1;
+            }
+        }
+        var errors = new Dictionary<string, List<string>>();
+        if (exist == 1)
+        {
+            errors.Add(nameof(contractor.nip), new List<string> { "This NIP already exists" });
+            customValidator.DisplayErrors(errors);
         }
         else
         {
-            toastService.ShowSuccess("Contractor created successfully.");
-            NavManager.NavigateTo("/contractors");
+            var result_address = await AddressService.AddAddressAsync(address);
+
+
+            contractor.address = result_address.id;
+
+            var result = await ContractorService.AddContractorAsync(contractor);
+
+            if (result == null)
+            {
+
+            }
+            else
+            {
+                toastService.ShowSuccess("Contractor created successfully.");
+                NavManager.NavigateTo("/contractors");
+            }
         }
+      
+
+        
     }
+
+    
 
 
 }

@@ -57,6 +57,26 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\rzeczy z pulpitu\\STUDIA\\SEMESTR 5\\SQL\\projekt\\kody\\frontend_sbd\\wwwroot\\lib\\jquery-ajax-unobtrusive\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery-ajax-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Id": "C:\\rzeczy z pulpitu\\STUDIA\\SEMESTR 5\\SQL\\projekt\\kody\\frontend_sbd\\wwwroot\\lib\\jquery-ajax-unobtrusive\\README.md",
+      "PackagePath": "staticwebassets\\lib\\jquery-ajax-unobtrusive\\README.md"
+    },
+    {
+      "Id": "C:\\rzeczy z pulpitu\\STUDIA\\SEMESTR 5\\SQL\\projekt\\kody\\frontend_sbd\\wwwroot\\lib\\jquery-ajax-unobtrusive\\dist\\jquery.unobtrusive-ajax.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-ajax-unobtrusive\\dist\\jquery.unobtrusive-ajax.js"
+    },
+    {
+      "Id": "C:\\rzeczy z pulpitu\\STUDIA\\SEMESTR 5\\SQL\\projekt\\kody\\frontend_sbd\\wwwroot\\lib\\jquery-ajax-unobtrusive\\dist\\jquery.unobtrusive-ajax.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-ajax-unobtrusive\\dist\\jquery.unobtrusive-ajax.min.js"
+    },
+    {
+      "Id": "C:\\rzeczy z pulpitu\\STUDIA\\SEMESTR 5\\SQL\\projekt\\kody\\frontend_sbd\\wwwroot\\lib\\jquery-ajax-unobtrusive\\package.json",
+      "PackagePath": "staticwebassets\\lib\\jquery-ajax-unobtrusive\\package.json"
+    },
+    {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.BlazorApp1.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

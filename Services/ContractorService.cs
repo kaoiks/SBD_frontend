@@ -1,4 +1,5 @@
 ﻿using BlazorApp1.Data;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Text;
@@ -27,14 +28,16 @@ namespace BlazorApp1.Services
 
         public async Task<Contractor> GetContractorAsync(string nip)
         {
+           
             var model = await httpClient.GetFromJsonAsync<Contractor>("api/contractors/" + nip);
             return model;
 
         }
 
+        
         public async Task<Contractor> AddContractorAsync(FormContractor form_contractor)
         {
-
+            
             string jsonString = JsonConvert.SerializeObject(form_contractor, new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
 
             Console.WriteLine(jsonString);

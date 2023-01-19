@@ -7,5 +7,7 @@ namespace BlazorApp1.Services
         Task<List<Contractor>> GetContractorsAsync();
 
         Task<Contractor> GetContractorAsync(string nip);
+
+       // bool IsNIPExist(string nip);
     }
 }

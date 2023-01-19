@@ -48,7 +48,7 @@ else
 
 }
 <br />
-<h1>Repair Costs</h1>
+<h3>Repair Costs           <a href="costs/create/@id" class="btn btn-primary" role="button">Add Cost</a></h3>
 @if (repairCosts == null)
 {
 <p><em>Loading...</em></p>
@@ -66,7 +66,7 @@ else
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
 }
-<a href="costs/create/@id" class="btn btn-primary" role="button">Add Cost</a>
+
 @code {
     
     [Parameter]

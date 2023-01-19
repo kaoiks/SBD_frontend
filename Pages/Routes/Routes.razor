@@ -8,7 +8,9 @@
 
 @inject RouteService RouteService
 @inject NavigationManager NavManager
-<h1>Routes</h1>
+<h1>
+    Routes          <a href="routes/create" class="btn btn-primary" role="button">Add Route</a>
+</h1>
 
 
 @if (routes == null)
@@ -31,7 +33,6 @@ else
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
     </Table>
 }
-<a href="routes/create" class="btn btn-primary" role="button">Add Route</a>
 @code {
     private Trail[]? routes;
 

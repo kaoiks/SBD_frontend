@@ -6,7 +6,7 @@
 @using BlazorTable
 @inject VehicleService VehicleService
 @inject NavigationManager NavManager
-<h1>Vehicles</h1>
+<h1>Vehicles          <a href="vehicles/create" class="btn btn-primary" role="button" value="right">Add Vehicle</a></h1>
 
 
 @if (vehicles == null)
@@ -26,7 +26,7 @@ else
     </Table>
 }
 
-<a href="vehicles/create" class="btn btn-primary" role="button" value="right">Add Vehicle</a>
+
 @code {
     private Vehicle[]? vehicles;
 

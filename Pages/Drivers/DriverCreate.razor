@@ -8,7 +8,7 @@
 @inject NavigationManager NavManager
 @inject IToastService toastService
 @using Blazored.Toast.Configuration
-
+@using BS.Forms.ValidatorComponent.Components
 
 @using Microsoft.AspNetCore.Components.Forms
 @using System.ComponentModel.DataAnnotations
@@ -18,7 +18,7 @@
     <h3>Add Driver</h3>
     <hr />
     <DataAnnotationsValidator />
-
+    <CustomValidator @ref="customValidator"></CustomValidator>
 
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">
@@ -46,8 +46,9 @@
             PESEL:
         </label>
         <div class="col-sm-5">
-            <InputText class="form-control" placeholder="PESEL" @bind-Value="driver.pesel"  />
+            <InputText asp-for="driver.pesel" class="form-control" placeholder="PESEL" @bind-Value="driver.pesel" />
             <ValidationMessage For="@(() => driver.pesel)"></ValidationMessage>
+            <span asp-validation-for="driver.pesel" class="text-danger"></span>
         </div>
     </div>
     <br />
@@ -96,8 +97,9 @@
             Driver License Number:
         </label>
         <div class="col-sm-5">
-            <InputText class="form-control" placeholder="Driver License Number" @bind-Value="driver.driver_license_number" />
+            <InputText asp-for="driver.driver_license_number" class="form-control" placeholder="Driver License Number" @bind-Value="driver.driver_license_number" />
             <ValidationMessage For="@(() => driver.driver_license_number)"></ValidationMessage>
+            <span asp-validation-for="driver.driver_license_number" class="text-danger"></span>
         </div>
     </div>
     <br />
@@ -136,32 +138,77 @@
 
 </EditForm>
 @code {
-
+    private CustomValidator customValidator;
 
     private FormAddress address = new() { type = 2 };
 
     private FormDriver driver = new() {date_of_birth=DateTime.Now, date_bhp_course=DateTime.Now, date_qualification_certificate=DateTime.Now};
 
+    public Driver[]? driver_check;
+
     private async void HandleValidSubmit()
     {
         Logger.LogInformation("HandleValidSubmit called");
 
-        var result_address = await AddressService.AddAddressAsync(address);
-
-
-        driver.address = result_address.id;
-
-        var result = await DriverService.AddDriverAsync(driver);
-
-        if (result == null)
+        var driver_service = await DriverService.GetDriversAsync();
+        driver_check = driver_service.ToArray();
+        int exist_pesel = 0;
+        int exist_license = 0;
+        for (int i = 0; i < driver_check.Length; i++)
         {
+            if (driver_check[i].pesel == driver.pesel)
+            {
+                exist_pesel = 1;
+            }
+            if (driver_check[i].driver_license_number == driver.driver_license_number)
+            {
+                exist_license = 1;
+            }
+        }
 
+
+        var errors = new Dictionary<string, List<string>>();
+        if (exist_pesel == 1 & exist_license==1)
+        {
+            errors.Add(nameof(driver.pesel), new List<string> { "This PESEL already exists" });
+            errors.Add(nameof(driver.driver_license_number), new List<string> { "This Driver License Number already exists" });
+            customValidator.DisplayErrors(errors);
+        }
+        else if (exist_pesel == 1 & exist_license == 0)
+        {
+            errors.Add(nameof(driver.pesel), new List<string> { "This PESEL already exists" });
+            customValidator.DisplayErrors(errors);
+        }
+        else if (exist_pesel == 0 & exist_license == 1)
+        {
+            errors.Add(nameof(driver.driver_license_number), new List<string> { "This Driver License Number already exists" });
+            customValidator.DisplayErrors(errors);
         }
         else
         {
-            toastService.ShowSuccess("Driver created successfully.");
-            NavManager.NavigateTo("/drivers");
+            var result_address = await AddressService.AddAddressAsync(address);
+
+
+            driver.address = result_address.id;
+
+            var result = await DriverService.AddDriverAsync(driver);
+
+            if (result == null)
+            {
+
+            }
+            else
+            {
+                toastService.ShowSuccess("Driver created successfully.");
+                NavManager.NavigateTo("/drivers");
+            }
         }
+
+
+
+
+
+        
     }
 
 

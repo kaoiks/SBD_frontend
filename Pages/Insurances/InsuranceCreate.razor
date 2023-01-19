@@ -8,7 +8,7 @@
 @inject NavigationManager NavManager
 @inject IToastService toastService
 @using Blazored.Toast.Configuration
-
+@using BS.Forms.ValidatorComponent.Components
 
 @using Microsoft.AspNetCore.Components.Forms
 @using System.ComponentModel.DataAnnotations
@@ -18,15 +18,16 @@
     <h3>Add Insurance</h3>
     <hr />
     <DataAnnotationsValidator />
-
+    <CustomValidator @ref="customValidator"></CustomValidator>
 
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">
             Insurance Number:
         </label>
         <div class="col-sm-5">
-            <InputText id="insurance_number" Class="form-control" placeholder="Insurance Number" @bind-Value="insurance.insurance_number" />
+            <InputText asp-for="insurance.insurance_number" id="insurance_number" Class="form-control" placeholder="Insurance Number" @bind-Value="insurance.insurance_number" />
             <ValidationMessage For="@(() => insurance.insurance_number)"></ValidationMessage>
+            <span asp-validation-for="insurance.insurance_number" class="text-danger"></span>
         </div>
     </div>
     <br />
@@ -111,6 +112,10 @@
 
     private Vehicle[]? vehicles;
 
+    private CustomValidator customValidator;
+
+    public Insurance[]? insurance_check;
+
     protected override async Task OnInitializedAsync()
     {
         var vehicles_service = await VehicleService.GetVehiclesAsync();
@@ -123,20 +128,43 @@
     {
         Logger.LogInformation("HandleValidSubmit called");
 
-
-
-        var result = await InsuranceService.AddInsuranceAsync(insurance);
-
-        if (result == null)
+        var insurance_service = await InsuranceService.GetInsurancesAsync();
+        insurance_check = insurance_service.ToArray();
+        int exist = 0;
+        for (int i = 0; i < insurance_check.Length; i++)
         {
-
+            if (insurance_check[i].insurance_number == insurance.insurance_number)
+            {
+                exist = 1;
+            }
+        }
+        var errors = new Dictionary<string, List<string>>();
+        if (exist == 1)
+        {
+            errors.Add(nameof(insurance.insurance_number), new List<string> { "This Insurance Number already exists" });
+            customValidator.DisplayErrors(errors);
         }
         else
         {
-            toastService.ShowSuccess("Insurance created successfully.");
-            NavManager.NavigateTo("/insurances");
+            var result = await InsuranceService.AddInsuranceAsync(insurance);
+
+            if (result == null)
+            {
+
+            }
+            else
+            {
+                toastService.ShowSuccess("Insurance created successfully.");
+                NavManager.NavigateTo("/insurances");
             
+            }
         }
+
+
+
+
+
+        
     }
 
 

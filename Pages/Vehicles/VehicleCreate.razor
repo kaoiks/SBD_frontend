@@ -7,7 +7,7 @@
 @inject NavigationManager NavManager
 @inject IToastService toastService
 @using Blazored.Toast.Configuration
-
+@using BS.Forms.ValidatorComponent.Components
 
 @using Microsoft.AspNetCore.Components.Forms
 @using System.ComponentModel.DataAnnotations
@@ -17,15 +17,16 @@
     <h3>Add Vehicle</h3>
     <hr />
     <DataAnnotationsValidator />
-
+    <CustomValidator @ref="customValidator"></CustomValidator>
 
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">
             VIN:
         </label>
         <div class="col-sm-5">
-            <InputText id="vin" Class="form-control" placeholder="VIN" @bind-Value="vehicle.vin" />
+            <InputText asp-for="vehicle.vin" id="vin" Class="form-control" placeholder="VIN" @bind-Value="vehicle.vin" />
             <ValidationMessage For="@(() => vehicle.vin)"></ValidationMessage>
+            <span asp-validation-for="vehicle.vin" class="text-danger"></span>
         </div>
     </div>
     <br />
@@ -91,7 +92,9 @@
 
 @code {
 
+    private CustomValidator customValidator;
 
+    public Vehicle[]? vehicle_check;
 
     private FormVehicle vehicle = new() { year_of_production = 2022, car_review = DateTime.Now };
 
@@ -99,15 +102,40 @@
     {
         Logger.LogInformation("HandleValidSubmit called");
 
-        vehicle.vin = vehicle.vin.ToUpper();
-        var result = await VehicleService.AddVehicleAsync(vehicle);
-        if (result == null){
+        var vehicle_service = await VehicleService.GetVehiclesAsync();
+        vehicle_check = vehicle_service.ToArray();
+        int exist = 0;
+        for (int i = 0; i < vehicle_check.Length; i++)
+        {
+            if (vehicle_check[i].vin == vehicle.vin)
+            {
+                exist = 1;
+            }
+        }
+        var errors = new Dictionary<string, List<string>>();
+        if (exist == 1)
+        {
+            errors.Add(nameof(vehicle.vin), new List<string> { "This VIN already exists" });
+            customValidator.DisplayErrors(errors);
+        }
+        else
+        {
+            vehicle.vin = vehicle.vin.ToUpper();
+            var result = await VehicleService.AddVehicleAsync(vehicle);
+            if (result == null)
+            {
 
+            }
+            else
+            {
+                toastService.ShowSuccess("Vehicle created successfully.");
+                NavManager.NavigateTo("/vehicles");
+            }
         }
-        else{
-            toastService.ShowSuccess("Vehicle created successfully.");
-            NavManager.NavigateTo("/vehicles");
-        }
+
+
+
+        
     }
 
 
