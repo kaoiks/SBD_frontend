@@ -127,7 +127,7 @@ namespace BlazorApp1.Data
         public string street { get; set; }
         [Required(ErrorMessage = "City is required.")]
         [MaxLength(140, ErrorMessage = "City is too long.")]
-        [RegularExpression(@"[a-zA-Z]+", ErrorMessage = "City consists of letters.")]
+        [RegularExpression(@"[a-zA-Z\s\-]+", ErrorMessage = "City consists of letters.")]
         public string city { get; set; }
         [Required(ErrorMessage = "Postal Code is required.")]
         [MaxLength(10, ErrorMessage = "Postal Code is too long.")]
@@ -213,11 +213,11 @@ namespace BlazorApp1.Data
         public int address { get; set; }
         [Required(ErrorMessage = "Name is required.")]
         [MaxLength(100, ErrorMessage = "Name is too long.")]
-        [RegularExpression(@"[a-zA-Z]+", ErrorMessage = "Name consists of letters.")]
+        [RegularExpression(@"[a-zA-Z\s\-]+", ErrorMessage = "Name consists of letters.")]
         public string name { get; set; }
         [Required(ErrorMessage = "Surname is required.")]
         [MaxLength(200, ErrorMessage = "Surname is too long.")]
-        [RegularExpression(@"[a-zA-Z]+", ErrorMessage = "Surname consists of letters.")]
+        [RegularExpression(@"[a-zA-Z\s\-]+", ErrorMessage = "Surname consists of letters.")]
         public string surname { get; set; }
 
         [Required(ErrorMessage = "Date of Birth is required.")]
@@ -298,6 +298,82 @@ namespace BlazorApp1.Data
     }
 
 
+    public class FormAddressAndContractor
+    {
+        [BindProperty]
+        [Required(ErrorMessage = "NIP is required.")]
+        [MinLength(10, ErrorMessage = "NIP consists of 10 digits.")]
+        [MaxLength(10, ErrorMessage = "NIP consists of 10 digits.")]
+        [RegularExpression(@"\d+", ErrorMessage = "NIP consists of numbers only.")]
+        [PageRemote(HttpMethod = "post",
+            PageHandler = "CheckNIP", ErrorMessage = "This NIP already exists!")]
+        public string nip { get; set; }
+
+        public int address { get; set; }
+        [Required(ErrorMessage = "Name is required.")]
+        [MaxLength(256, ErrorMessage = "Name is too long.")]
+        public string name { get; set; }
+        [Required(ErrorMessage = "Country ID is required.")]
+        [MinLength(2, ErrorMessage = "Country ID consists of 2 letters.")]
+        [MaxLength(2, ErrorMessage = "Country ID consists of 2 letters.")]
+        [RegularExpression(@"[A-Z]+", ErrorMessage = "Country ID consists of capital letters.")]
+        public string country_id { get; set; }
+        // public int id { get; set; }
+        [Required(ErrorMessage = "Street is required.")]
+        [MaxLength(256, ErrorMessage = "Street is too long.")]
+        public string street { get; set; }
+        [Required(ErrorMessage = "City is required.")]
+        [MaxLength(140, ErrorMessage = "City is too long.")]
+        [RegularExpression(@"[a-zA-Z\s\-]+", ErrorMessage = "City consists of letters.")]
+        public string city { get; set; }
+        [Required(ErrorMessage = "Postal Code is required.")]
+        [MaxLength(10, ErrorMessage = "Postal Code is too long.")]
+        public string postal_code { get; set; }
+        public int type { get; set; }
+
+    }
+
+    public class FormAddressAndDriver
+    {
+        [Required(ErrorMessage = "PESEL is required.")]
+        [MinLength(11, ErrorMessage = "PESEL consists of 11 digits.")]
+        [MaxLength(11, ErrorMessage = "PESEL consists of 11 digits.")]
+        [RegularExpression(@"\d+", ErrorMessage = "PESEL consists of numbers only.")]
+        public string pesel { get; set; }
+        public int address { get; set; }
+        [Required(ErrorMessage = "Name is required.")]
+        [MaxLength(100, ErrorMessage = "Name is too long.")]
+        [RegularExpression(@"[a-zA-Z\s]+", ErrorMessage = "Name consists of letters.")]
+        public string name { get; set; }
+        [Required(ErrorMessage = "Surname is required.")]
+        [MaxLength(200, ErrorMessage = "Surname is too long.")]
+        [RegularExpression(@"[a-zA-Z\-]+", ErrorMessage = "Surname consists of letters.")]
+        public string surname { get; set; }
+
+        [Required(ErrorMessage = "Date of Birth is required.")]
+        public DateTime date_of_birth { get; set; }
+        [Required(ErrorMessage = "Driver License Number is required.")]
+        [RegularExpression(@"[A-Z0-9]+", ErrorMessage = "Driver License Number consists of capital letters and digits.")]
+        [MaxLength(100, ErrorMessage = "Driver License Number is too long.")]
+        public string driver_license_number { get; set; }
+        [Required(ErrorMessage = "Qualification Certificate Expiration Date is required.")]
+        public DateTime date_qualification_certificate { get; set; }
+        [Required(ErrorMessage = "BHP Course Expiration Date is required.")]
+
+        public DateTime date_bhp_course { get; set; }
+
+        [Required(ErrorMessage = "Street is required.")]
+        [MaxLength(256, ErrorMessage = "Street is too long.")]
+        public string street { get; set; }
+        [Required(ErrorMessage = "City is required.")]
+        [MaxLength(140, ErrorMessage = "City is too long.")]
+        [RegularExpression(@"[a-zA-Z\s\-]+", ErrorMessage = "City consists of letters.")]
+        public string city { get; set; }
+        [Required(ErrorMessage = "Postal Code is required.")]
+        [MaxLength(10, ErrorMessage = "Postal Code is too long.")]
+        public string postal_code { get; set; }
+        public int type { get; set; }
+    }
 
 
 

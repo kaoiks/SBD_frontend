@@ -13,7 +13,8 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using System.ComponentModel.DataAnnotations
 
-<EditForm Model="@contractor"  OnValidSubmit="@HandleValidSubmit">
+
+<EditForm Model="@formAddressAndContractor" OnValidSubmit="@HandleValidSubmit">
     
     <h3>Add Contractor</h3>
     <hr />
@@ -25,8 +26,8 @@
             Name:
         </label>
         <div class="col-sm-5">
-            <InputText id="name" Class="form-control" placeholder="Name" @bind-Value="contractor.name" />
-            <ValidationMessage For="@(() => contractor.name)"></ValidationMessage>
+            <InputText id="name" Class="form-control" placeholder="Name" @bind-Value="formAddressAndContractor.name" />
+            <ValidationMessage For="@(() => formAddressAndContractor.name)"></ValidationMessage>
         </div>
     </div>
     <br />
@@ -35,9 +36,9 @@
             NIP:
         </label>
         <div class="col-sm-5">
-            <InputText asp-for="contractor.nip" class="form-control" placeholder="NIP" @bind-Value="contractor.nip" />
-            <ValidationMessage For="@(() => contractor.nip)"></ValidationMessage>
-            <span asp-validation-for="contractor.nip" class="text-danger"></span>
+            <InputText asp-for="formAddressAndContractor.nip" class="form-control" placeholder="NIP" @bind-Value="formAddressAndContractor.nip" />
+            <ValidationMessage For="@(() => formAddressAndContractor.nip)"></ValidationMessage>
+            <span asp-validation-for="formAddressAndContractor.nip" class="text-danger"></span>
         </div>
     </div>
     <br />
@@ -47,8 +48,10 @@
             Street:
         </label>
         <div class="col-sm-5">
-            <InputText class="form-control" placeholder="Street" @bind-Value="address.street" />
-            <ValidationMessage For="@(() => address.street)"></ValidationMessage>
+            <InputText asp-for="formAddressAndContractor.street" class="form-control" placeholder="Street" @bind-Value="formAddressAndContractor.street" />
+            <ValidationMessage For="@(() => formAddressAndContractor.street)"></ValidationMessage>
+            <span asp-validation-for="formAddressAndContractor.street" class="text-danger"></span>
+            
         </div>
     </div>
  
@@ -58,8 +61,9 @@
             City:
         </label>
         <div class="col-sm-5">
-            <InputText class="form-control" placeholder="City" @bind-Value="address.city" />
-            <ValidationMessage For="@(() => address.city)"></ValidationMessage>
+            <InputText asp-for="formAddressAndContractor.city" class="form-control" placeholder="City" @bind-Value="formAddressAndContractor.city" />
+            <ValidationMessage For="@(() => formAddressAndContractor.city)"></ValidationMessage>
+            <span asp-validation-for="formAddressAndContractor.city" class="text-danger"></span>
         </div>
     </div>
      <br />
@@ -68,8 +72,9 @@
             Postal Code:
         </label>
         <div class="col-sm-5">
-            <InputText class="form-control" placeholder="Postal Code" @bind-Value="address.postal_code" />
-            <ValidationMessage For="@(() => address.postal_code)"></ValidationMessage>
+            <InputText asp-for="formAddressAndContractor.postal_code" class="form-control" placeholder="Postal Code" @bind-Value="formAddressAndContractor.postal_code" />
+            <ValidationMessage For="@(() => formAddressAndContractor.postal_code)"></ValidationMessage>
+            <span asp-validation-for="formAddressAndContractor.postal_code" class="text-danger"></span>
         </div>
     </div>
  
@@ -79,17 +84,17 @@
             Country ID:
         </label>
         <div class="col-sm-5">
-            <InputText class="form-control" placeholder="Country ID" @bind-Value="contractor.country_id" />
-            <ValidationMessage For="@(() => contractor.country_id)"></ValidationMessage>
+            <InputText class="form-control" placeholder="Country ID" @bind-Value="formAddressAndContractor.country_id" />
+            <ValidationMessage For="@(() => formAddressAndContractor.country_id)"></ValidationMessage>
         </div>
     </div>
      <br />
     
-   
-        <div class="text-right mt-2">
+    <div class="row">
+        <div class="col-md-12 text-right">
             <button type="submit" class="btn btn-success">Submit</button>
         </div>
-    
+    </div>
 
     <BlazoredToasts Position="ToastPosition.BottomRight"
                     Timeout="10"
@@ -112,28 +117,63 @@
 
     public Contractor[]? contractor_check;
 
+    public Address[]? address_check;
+
+    private FormAddressAndContractor formAddressAndContractor = new() { type = 1 };
+
     private async void HandleValidSubmit()
     {
         Logger.LogInformation("HandleValidSubmit called");
-       
+
         var contractor_service = await ContractorService.GetContractorsAsync();
         contractor_check = contractor_service.ToArray();
+        var address_service = await AddressService.GetAddressesAsync();
+        address_check = address_service.ToArray();
         int exist = 0;
+        int address_exist = 0;
         for(int i=0;i<contractor_check.Length;i++)
         {
-            if (contractor_check[i].nip==contractor.nip)
+            if (contractor_check[i].nip == formAddressAndContractor.nip)
             {
                 exist = 1;
             }
         }
-        var errors = new Dictionary<string, List<string>>();
-        if (exist == 1)
+        for (int i = 0; i < address_check.Length; i++)
         {
-            errors.Add(nameof(contractor.nip), new List<string> { "This NIP already exists" });
+            if (address_check[i].street == formAddressAndContractor.street & address_check[i].postal_code == formAddressAndContractor.postal_code & address_check[i].city == formAddressAndContractor.city & address_check[i].type == formAddressAndContractor.type )
+            {
+                address_exist = 1;
+            }
+        }
+        var errors = new Dictionary<string, List<string>>();
+        if (exist == 1 & address_exist==1)
+        {
+            errors.Add(nameof(formAddressAndContractor.nip), new List<string> { "This NIP already exists" });
+            errors.Add(nameof(formAddressAndContractor.street), new List<string> { "These combination of street, city and postal code already exists for contractor" });
+            errors.Add(nameof(formAddressAndContractor.city), new List<string> { "These combination of street, city and postal code already exists for contractor" });
+            errors.Add(nameof(formAddressAndContractor.postal_code), new List<string> { "These combination of street, city and postal code already exists for contractor" });
+            customValidator.DisplayErrors(errors);
+        }
+        else if (exist == 0 & address_exist == 1)
+        {
+            errors.Add(nameof(formAddressAndContractor.street), new List<string> { "These combination of street, city and postal code already exists for contractor" });
+            errors.Add(nameof(formAddressAndContractor.city), new List<string> { "These combination of street, city and postal code already exists for contractor" });
+            errors.Add(nameof(formAddressAndContractor.postal_code), new List<string> { "These combination of street, city and postal code already exists for contractor" });
+            customValidator.DisplayErrors(errors);
+        }
+        else if (exist == 1 & address_exist == 0)
+        {
+            errors.Add(nameof(formAddressAndContractor.nip), new List<string> { "This NIP already exists" });
             customValidator.DisplayErrors(errors);
         }
         else
         {
+            address.street = formAddressAndContractor.street;
+            address.city = formAddressAndContractor.city;
+            address.postal_code = formAddressAndContractor.postal_code;
+            contractor.nip = formAddressAndContractor.nip;
+            contractor.name = formAddressAndContractor.name;
+            contractor.country_id = formAddressAndContractor.country_id;
             var result_address = await AddressService.AddAddressAsync(address);
 
 

@@ -34,7 +34,12 @@ namespace BlazorApp1.Services
 
         }
 
-        
+        public async Task DeleteContractorAsync(string nip)
+        {
+            await httpClient.DeleteAsync($"api/contractors/{nip}");
+            
+        }
+
         public async Task<Contractor> AddContractorAsync(FormContractor form_contractor)
         {
             

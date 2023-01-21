@@ -31,7 +31,7 @@ namespace BlazorApp1.Services
         {
             var model = await httpClient.GetFromJsonAsync<Vehicle>("api/vehicles/" + nip);
             return model;
-
+            
         }
         public async Task<Vehicle> AddVehicleAsync(FormVehicle form_vehicle)
         {

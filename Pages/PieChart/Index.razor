@@ -1,0 +1,142 @@
+﻿@page "/"
+
+
+<PageTitle>Costs and Profits</PageTitle>
+
+@using BlazorApp1.Data
+@using BlazorApp1.Services
+@using BlazorTable
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+@using BlazorApp1
+@using BlazorApp1.Shared
+@using ChartJs.Blazor.PieChart
+@inject InvoiceService InvoiceService
+@inject RepairCostService RepairCostService
+
+@if(balance<0)
+{
+    <h3> Balance: <b style = "color: darkred"> @balance PLN</b></h3>
+}
+else
+{
+    <h3> Balance: <b style="color: darkgreen">@balance PLN</b></h3>
+}
+
+
+<Chart Config="_pieConfig" >
+</Chart>
+
+
+
+@code{
+    private PieConfig _pieConfig;
+    public Invoice[]? invoice;
+    public RepairCost[]? repairCost;
+    public double profits = 0.0;
+    double costs=0.0;
+    double balance=0.0;
+
+    protected override void OnInitialized()
+    {
+        ConfigurePieConfig();
+    }
+
+    private  void ConfigurePieConfig()
+    {
+        var task = Task.Run(async () => await calculateProfits()).ConfigureAwait(false);
+        profits = task.GetAwaiter().GetResult();
+        profits = Math.Round(profits, 2);
+
+        var task1 = Task.Run(async () => await calculateCosts()).ConfigureAwait(false);
+        costs = task1.GetAwaiter().GetResult();
+        costs = Math.Round(costs, 2);
+        balance = profits - costs;
+        balance=Math.Round(balance, 2);
+        _pieConfig = new PieConfig();
+        _pieConfig.Options = new PieOptions
+            {
+                Responsive = true,
+
+
+                Title = new OptionsTitle
+                {
+                    Display = false,
+                    Text = "Costs and Profits"
+                }
+
+
+            };
+
+        foreach(var item in new[] {"Profits", "Costs "})
+        {
+            _pieConfig.Data.Labels.Add(item);
+        }
+
+
+
+        
+
+        var dataset = new PieDataset<double>(new[] { profits, costs })
+            {
+                BackgroundColor = new[]
+                {
+                ColorUtil.ColorHexString(1,105,68),
+                ColorUtil.ColorHexString(105,1,41)
+            }
+            };
+
+        _pieConfig.Data.Datasets.Add(dataset);
+    }
+
+    public async Task<double> calculateProfits()
+    {
+        var invoice_service = await InvoiceService.GetInvoicesAsync();
+        invoice = invoice_service.ToArray();
+
+        
+        double profits1 = 0.0;
+
+        for (int i = 0; i < invoice.Length; i++)
+        {
+
+            var span = invoice[i].amount;
+
+            profits1 = profits1 + double.Parse(span.ToString());
+
+
+        }
+        return profits1;
+
+
+    }
+
+    public async Task<double> calculateCosts()
+    {
+        var repairCost_service = await RepairCostService.GetRepairCostsAsync();
+        repairCost = repairCost_service.ToArray();
+
+        double costs1 = 0.0;
+
+        for (int i = 0; i < repairCost.Length; i++)
+        {
+
+            var span = repairCost[i].amount;
+
+            costs1 = costs1 + double.Parse(span.ToString());
+
+
+        }
+        return costs1;
+
+
+    }
+
+         
+
+  
+
+}

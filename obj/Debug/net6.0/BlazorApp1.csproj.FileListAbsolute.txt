@@ -569,3 +569,4 @@ C:\rzeczy z pulpitu\STUDIA\SEMESTR 5\SQL\projekt\kody\frontend_sbd\obj\Debug\net
 C:\rzeczy z pulpitu\STUDIA\SEMESTR 5\SQL\projekt\kody\frontend_sbd\obj\Debug\net6.0\BlazorApp1.pdb
 C:\rzeczy z pulpitu\STUDIA\SEMESTR 5\SQL\projekt\kody\frontend_sbd\obj\Debug\net6.0\BlazorApp1.genruntimeconfig.cache
 C:\rzeczy z pulpitu\STUDIA\SEMESTR 5\SQL\projekt\kody\frontend_sbd\obj\Debug\net6.0\ref\BlazorApp1.dll
+C:\rzeczy z pulpitu\STUDIA\SEMESTR 5\SQL\projekt\kody\frontend_sbd\bin\Debug\net6.0\ChartJs.Blazor.dll

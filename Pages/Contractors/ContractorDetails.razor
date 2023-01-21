@@ -7,7 +7,7 @@
 
 @inject ContractorService ContractorService
 @inject AddressService AddressService
-
+@inject NavigationManager NavManager
 <h3>Details of the Selected Contractor</h3>
 
 @if (contractor == null)
@@ -41,7 +41,9 @@ else{
                 <td scope="row">@contractor.address.street</td>
                 <td scope="row">@contractor.address.city</td>
                 <td scope="row">@contractor.address.postal_code</td>
-
+                <button class="btn btn-danger" type="button" @onclick="Delete_Click">
+                    Delete
+                </button>
 
             </tr>
 
@@ -61,5 +63,10 @@ else{
         var contractors_service = await ContractorService.GetContractorAsync(id);
 
         contractor = contractors_service;
+    }
+    protected async Task Delete_Click()
+    {
+        await ContractorService.DeleteContractorAsync(contractor.nip);
+        NavManager.NavigateTo("/contractors");
     }
 }

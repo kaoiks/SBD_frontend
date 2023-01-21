@@ -27,6 +27,8 @@ namespace BlazorApp1.Services
 
         }
 
+     
+
         public async Task<Invoice> GetInvoiceAsync(string nip)
         {
             var model = await httpClient.GetFromJsonAsync<Invoice>("api/invoices/" + nip);
