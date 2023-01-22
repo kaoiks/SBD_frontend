@@ -19,8 +19,8 @@ else
     <Table RowClickAction="ItemClicked" TableItem="Vehicle" Items="vehicles" PageSize="100">
         <Column TableItem="Vehicle" Title="VIN" Field="@(x => x.vin)" Sortable="true" Filterable="true" Width="20%" />
         @*<Column TableItem="Vehicle" Title="Kilometers Done" Field="@(x => x.kilometers_done)" Sortable="true" Filterable="true" Width="15%" />*@
-            <Column TableItem="Vehicle" Title="Year of Production" Field="@(x => x.year_of_production)" Sortable="true" Filterable="true" Width="15%" />
-                @*<Column TableItem="Vehicle" Title="Car Review" Field="@(x => x.car_review)" Sortable="true" Filterable="true" Width="15%" />*@
+            <Column TableItem="Vehicle" Title="Year of Production" Field="@(x => x.year_of_production)" Sortable="true" Filterable="true" Width="20%" />
+                <Column TableItem="Vehicle" Title="Car Review" Field="@(x => x.car_review)" Sortable="true" Filterable="true" Width="20%" />
         
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
     </Table>

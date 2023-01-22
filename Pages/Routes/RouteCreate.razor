@@ -71,17 +71,36 @@
             <label for="drivers" class="col-sm-2 col-form-label ">
                 Driver:
             </label>
-            <div class="col-sm-5">
 
-                <InputSelect @bind-Value=trail.driver class="form-select" style="color:darkgray;">
-                    <option value="NULL">--Choose Driver--</option>
-                    @foreach (var driver in drivers)
-                    {
-                        <option value="@driver.pesel" style="color:black;">@driver.surname</option>
-                    }
-                </InputSelect>
-                <ValidationMessage For="@(() => trail.driver)"></ValidationMessage>
-            </div>
+            @if(trail.driver=="NULL")
+            {
+                <div class="col-sm-5">
+
+                    <InputSelect @bind-Value=trail.driver class="form-select" style="color:darkgray;">
+                        <option value="NULL">--Choose Driver--</option>
+                        @foreach (var driver in drivers)
+                        {
+                            <option value="@driver.pesel" style="color:black;">@driver.name @driver.surname</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => trail.driver)"></ValidationMessage>
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-5">
+
+                    <InputSelect @bind-Value=trail.driver class="form-select">
+                        <option value="NULL">--Choose Driver--</option>
+                        @foreach (var driver in drivers)
+                        {
+                            <option value="@driver.pesel" style="color:black;">@driver.name @driver.surname</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => trail.driver)"></ValidationMessage>
+                </div>
+            }
+            
 
 
 
@@ -99,7 +118,9 @@
             <label for="VIN" class="col-sm-2 col-form-label ">
                 VIN:
             </label>
-            <div class="col-sm-5">
+            @if(trail.vehicle=="NULL")
+            {
+                <div class="col-sm-5">
 
                 <InputSelect @bind-Value=trail.vehicle class="form-select" style="color:darkgray;">
                     <option value="NULL">--Choose VIN--</option>
@@ -109,7 +130,23 @@
                     }
                 </InputSelect>
                 <ValidationMessage For="@(() => trail.vehicle)"></ValidationMessage>
-            </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-5">
+
+                    <InputSelect @bind-Value=trail.vehicle class="form-select">
+                        <option value="NULL">--Choose VIN--</option>
+                        @foreach (var vehicle in vehicles)
+                        {
+                            <option value="@vehicle.vin" style="color:black;">@vehicle.vin</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => trail.vehicle)"></ValidationMessage>
+                </div>
+            }
+
         }
     </div>
     <br />
@@ -124,7 +161,9 @@
             <label for="contractor" class="col-sm-2 col-form-label ">
                 Contractor:
             </label>
-            <div class="col-sm-5">
+            @if(trail.contractor=="NULL")
+            {
+                 <div class="col-sm-5">
 
                 <InputSelect @bind-Value=trail.contractor class="form-select" style="color:darkgray;">
                     <option value="NULL">--Choose Contractor--</option>
@@ -135,6 +174,22 @@
                 </InputSelect>
                 <ValidationMessage For="@(() => trail.contractor)"></ValidationMessage>
             </div>
+            }
+            else
+            {
+                 <div class="col-sm-5">
+
+                <InputSelect @bind-Value=trail.contractor class="form-select">
+                    <option value="NULL">--Choose Contractor--</option>
+                    @foreach (var contractor in contractors)
+                    {
+                        <option value="@contractor.nip" style="color:black;">@contractor.name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => trail.contractor)"></ValidationMessage>
+            </div>
+            }
+           
 
 
 
@@ -179,6 +234,10 @@
         var drivers_service = await DriverService.GetDriversAsync();
 
         drivers = drivers_service.ToArray();
+
+        trail.driver="NULL";
+        trail.contractor="NULL";
+        trail.vehicle="NULL";
 
     }
 

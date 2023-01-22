@@ -33,17 +33,35 @@
             <label for="VIN" class="col-sm-2 col-form-label ">
                 VIN:
             </label>
-            <div class="col-sm-5">
+            @if(repair.vin=="NULL")
+            {
+                <div class="col-sm-5">
 
-                <InputSelect @bind-Value=repair.vin class="form-select" style="color:darkgray;">
-                    <option value="NULL">--Choose VIN--</option>
-                    @foreach (var vehicle in vehicles)
-                    {
-                        <option value="@vehicle.vin" style="color:black;">@vehicle.vin</option>
-                    }
-                </InputSelect>
-                <ValidationMessage For="@(() => repair.vin)"></ValidationMessage>
-            </div>
+                    <InputSelect @bind-Value=repair.vin class="form-select" style="color:darkgray;">
+                        <option value="NULL">--Choose VIN--</option>
+                        @foreach (var vehicle in vehicles)
+                        {
+                            <option value="@vehicle.vin" style="color:black;">@vehicle.vin</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => repair.vin)"></ValidationMessage>
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-5">
+
+                    <InputSelect @bind-Value=repair.vin class="form-select">
+                        <option value="NULL">--Choose VIN--</option>
+                        @foreach (var vehicle in vehicles)
+                        {
+                            <option value="@vehicle.vin" style="color:black;">@vehicle.vin</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => repair.vin)"></ValidationMessage>
+                </div>
+            }
+
 
 
 
@@ -86,7 +104,7 @@
         var vehicles_service = await VehicleService.GetVehiclesAsync();
 
         vehicles = vehicles_service.ToArray();
-
+        repair.vin = "NULL";
     }
 
     private async void HandleValidSubmit()

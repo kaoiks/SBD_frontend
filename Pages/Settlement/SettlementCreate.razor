@@ -1,0 +1,238 @@
+﻿@page "/settlements/create"
+
+@using Microsoft.Extensions.Logging
+@inject ILogger<SettlementCreate> Logger
+@using BlazorApp1.Data
+@using BlazorApp1.Services
+@using BlazorTable
+@inject SettlementService SettlementService
+@inject NavigationManager NavManager
+@inject RouteService RouteService
+@inject DriverService DriverService
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+
+@using BS.Forms.ValidatorComponent.Components
+
+
+
+@if (settlement == null)
+{
+}
+else
+{   <EditForm Model="@settlement" OnValidSubmit="@HandleValidSubmit">
+    <h3>Details of the Selected Settlement</h3>
+        <hr />
+        <DataAnnotationsValidator />
+        <CustomValidator @ref="customValidator"></CustomValidator>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Month:
+            </label>
+            <div class="col-sm-5">
+                 
+
+            <InputNumber asp-for="settlement.month" class="form-control" placeholder="Month" @bind-Value="settlement.month" />
+            <ValidationMessage For="@(() => settlement.month)"></ValidationMessage>
+                <span asp-validation-for="settlement.month" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Year:
+            </label>
+            <div class="col-sm-5">
+            <InputNumber asp-for="settlement.year" class="form-control" placeholder="Year" @bind-Value="settlement.year" />
+            <ValidationMessage For="@(() => settlement.year)"></ValidationMessage>
+                <span asp-validation-for="settlement.year" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            @if (drivers == null)
+            {
+
+            }
+            else
+            {
+                <label for="drivers" class="col-sm-2 col-form-label ">
+                    Driver:
+                </label>
+
+                if(settlement.driver=="NULL")
+                {
+                    <div class="col-sm-5">
+
+                    <InputSelect asp-for="settlement.driver" @bind-Value=settlement.driver class="form-select" style="color:darkgray;">
+                        <option value="NULL">--Choose Driver--</option>
+                        @foreach (var driver in drivers)
+                        {
+                            <option value="@driver.pesel" style="color:black;">@driver.name @driver.surname</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => settlement.driver)"></ValidationMessage>
+                    <span asp-validation-for="settlement.driver" class="text-danger"></span>
+                </div>
+                }
+                else
+                {
+                    <div class="col-sm-5">
+
+                    <InputSelect asp-for="settlement.driver" @bind-Value=settlement.driver class="form-select">
+                        <option value="NULL">--Choose Driver--</option>
+                        @foreach (var driver in drivers)
+                        {
+                            <option value="@driver.pesel" style="color:black;">@driver.name @driver.surname</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => settlement.driver)"></ValidationMessage>
+                    <span asp-validation-for="settlement.driver" class="text-danger"></span>
+                </div>
+                }
+                
+
+
+
+            }
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Days Stationary:
+            </label>
+            <div class="col-sm-5">
+                 <InputNumber class="form-control" placeholder="Days Stationary" @bind-Value="settlement.days_stationary" />
+            <ValidationMessage For="@(() => settlement.days_stationary)"></ValidationMessage>  
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Days Leave:
+            </label>
+            <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Days Leave" @bind-Value="settlement.days_leave" />
+            <ValidationMessage For="@(() => settlement.days_leave)"></ValidationMessage>
+        </div>
+        </div>
+        <br />
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Saturdays in work:
+            </label>
+            <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Saaturdays" @bind-Value="settlement.saturdays" />
+            <ValidationMessage For="@(() => settlement.saturdays)"></ValidationMessage>
+            </div>
+        </div>
+        <br />
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Rate for Kilometer:
+            </label>
+            <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Rate for Kilometer" @bind-Value="settlement.rate_for_kilometer" />
+            <ValidationMessage For="@(() => settlement.rate_for_kilometer)"></ValidationMessage>
+            </div>
+        </div>
+        <br />
+          
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <button type="submit" class="btn btn-success">Calculate</button>
+            </div>
+        </div>
+
+        <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
+    </EditForm>
+
+
+}
+
+
+@code {
+
+
+
+
+
+    private CustomValidator customValidator;
+    private Settlement[]? settlement_check;
+    private FormSettlement settlement=new();
+    private Driver[]? drivers;
+    private Trail[]? routes;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var drivers_service = await DriverService.GetDriversAsync();
+
+        drivers = drivers_service.ToArray();
+
+        settlement.driver = "NULL";
+
+
+
+    }
+    private async void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+
+        var settlements_service = await SettlementService.GetSettlementsAsync();
+        settlement_check = settlements_service.ToArray();
+
+        int exist = 0;
+        for (int i = 0; i <settlement_check.Length; i++)
+        {
+            if (settlement_check[i].month == settlement.month & settlement_check[i].year == settlement.year & settlement_check[i].driver == settlement.driver)
+            {
+                exist = 1;
+            }
+        }
+        var errors = new Dictionary<string, List<string>>();
+        if (exist == 1)
+        {
+            errors.Add(nameof(settlement.month), new List<string> { "Settlement for this driver, month and year already exists." });
+            errors.Add(nameof(settlement.year), new List<string> { "Settlement for this driver, month and year already exists." });
+            errors.Add(nameof(settlement.driver), new List<string> { "Settlement for this driver, month and year already exists." });
+            customValidator.DisplayErrors(errors);
+        }
+        else
+        {
+            var routes_service = await RouteService.GetRoutesWithFilterAsync(settlement.month, settlement.year, settlement.driver);
+            routes = routes_service.ToArray();
+            int distance = 0;
+            Console.WriteLine(routes.Length);
+            for (int i = 0; i < routes.Length; i++)
+            {
+
+                distance = distance + routes[i].distance;
+            }
+            settlement.kilometers_done = distance;
+
+            var result = await SettlementService.AddSettlementAsync(settlement);
+            if (result == null)
+            {
+
+            }
+            else
+            {
+                toastService.ShowSuccess("Settlement created successfully.");
+                NavManager.NavigateTo("/settlements/" + result.id);
+            }
+        }
+        
+    }
+   
+}
+
+
+

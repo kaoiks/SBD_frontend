@@ -136,6 +136,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm91dGVzXFJvdXRlVXBkYXRlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Settlement/SettlementCreate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGxlbWVudFxTZXR0bGVtZW50Q3JlYXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Settlement/SettlementDetails.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGxlbWVudFxTZXR0bGVtZW50RGV0YWlscy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

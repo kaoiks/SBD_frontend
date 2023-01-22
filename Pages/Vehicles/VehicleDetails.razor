@@ -50,9 +50,17 @@ else{
             <label class="col-sm-2 col-form-label">
                 Car Review:
             </label>
-            <div class="col-sm-5">
-                 <Text Class="form-control">@vehicle.car_review</Text>  
+           
+        @if (DateTime.Parse(vehicle.car_review)<DateTime.Now)
+        { <div class="col-sm-5">
+                <Text Class="form-control" style="color: red">@vehicle.car_review (Needed new car review) </Text>
             </div>
+        }
+        else
+        { <div class="col-sm-5">
+                <Text Class="form-control">@vehicle.car_review </Text>
+                </div>
+        }
         </div>
         <br />
          <div class="form-group row">
@@ -62,6 +70,23 @@ else{
             <div class="col-sm-5">
                  <Text Class="form-control">@vehicle.fuel_usage</Text>  
             </div>
+        </div>
+        <br />
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Insurance Valid Until:
+            </label>
+           
+        @if (insurance_valid_until == "Any valid insurance")
+        { <div class="col-sm-5">
+                <Text Class="form-control" style="color: red">@insurance_valid_until </Text>
+            </div>
+        }
+        else
+        { <div class="col-sm-5">
+                <Text Class="form-control">@insurance_valid_until </Text>
+                </div>
+        }
         </div>
         <br />
         <div>
@@ -79,7 +104,8 @@ else{
     [Parameter]
     public string? id { get; set; }
 
-
+    private string insurance_valid_until;
+    private Insurance[]? vehicle_insurance;
     private Vehicle? vehicle;
     private Trail[]? routes;
     private Insurance[]? insurances;
@@ -90,6 +116,30 @@ else{
 
         vehicle = vehicles_service;
 
+        vehicle_insurance = vehicles_service.insurances.ToArray();
+       
+        insurance_valid_until = "1800-01-01";
+        
+        
+        if (vehicle_insurance != null)
+        {
+            for (int i = 0; i < vehicle_insurance.Length; i++)
+            {
+                if (DateTime.Parse(vehicle_insurance[i].end_date) > DateTime.Parse(insurance_valid_until))
+                {
+                    insurance_valid_until = vehicle_insurance[i].end_date.ToString();
+                }
+            }
+            if (DateTime.Parse(insurance_valid_until)<DateTime.Now)
+            {
+                insurance_valid_until = "Any valid insurance";
+            }
+        }
+        else
+        {
+            insurance_valid_until = "Any valid insurance";
+        }
+       
 
         var routes_service = await RouteService.GetRoutesAsync();
 

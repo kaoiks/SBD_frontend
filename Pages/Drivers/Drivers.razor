@@ -19,14 +19,14 @@ else
 {
 
     <Table RowClickAction="ItemClicked" TableItem="Driver" Items="drivers" PageSize="100">
-        <Column TableItem="Driver" Title="Name" Field="@(x => x.name)" Sortable="true" Filterable="true" Width="15%" />
-        <Column TableItem="Driver" Title="Surname" Field="@(x => x.surname)" Sortable="true" Filterable="true" Width="15%" />
+        <Column TableItem="Driver" Title="Name" Field="@(x => x.name)" Sortable="true" Filterable="true" Width="20%" />
+        <Column TableItem="Driver" Title="Surname" Field="@(x => x.surname)" Sortable="true" Filterable="true" Width="20%" />
         
-        <Column TableItem="Driver" Title="Date of Birth" Field="@(x => x.date_of_birth)" Sortable="true" Filterable="true" Width="10%" />
+        @*<Column TableItem="Driver" Title="Date of Birth" Field="@(x => x.date_of_birth)" Sortable="true" Filterable="true" Width="20%" />*@
           @*      <Column TableItem="Driver" Title="PESEL" Field="@(x => x.pesel)" Sortable="true" Filterable="true" Width="15%" />
-        <Column TableItem="Driver" Title="Driver License Number" Field="@(x => x.driver_license_number)" Sortable="true" Filterable="true" Width="15%" />
-        <Column TableItem="Driver" Title="Qualification Certificate" Field="@(x => x.date_qualification_certificate)" Sortable="true" Filterable="true" Width="10%" />
-        <Column TableItem="Driver" Title="BHP Course" Field="@(x => x.date_bhp_course)" Sortable="true" Filterable="true" Width="10%" />*@
+    <Column TableItem="Driver" Title="Driver License Number" Field="@(x => x.driver_license_number)" Sortable="true" Filterable="true" Width="15%" />*@
+        <Column TableItem="Driver" Title="Qualification Certificate" Field="@(x => x.date_qualification_certificate)" Sortable="true" Filterable="true" Width="20%" />
+        <Column TableItem="Driver" Title="BHP Course" Field="@(x => x.date_bhp_course)" Sortable="true" Filterable="true" Width="20%" />
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
     </Table>
 }

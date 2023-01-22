@@ -5,6 +5,7 @@
 @using BlazorApp1.Services
 @using BlazorTable
 @inject SettlementService SettlementService
+@inject DriverService DriverService
 @inject NavigationManager NavManager
 
 
@@ -27,6 +28,25 @@ else
             </div>
         </div>
         <br />
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Name and Surname:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@driver.name @driver.surname</Text>  
+            </div>
+        </div>
+        <br />
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                PESEL:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@settlement.driver</Text>  
+            </div>
+        </div>
+        <br />
+        
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">
                 Month and Year:
@@ -38,7 +58,7 @@ else
         <br />
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">
-                Days Stationary:
+                Days Stationary (50PLN per day):
             </label>
             <div class="col-sm-5">
                  <Text Class="form-control">@settlement.days_stationary</Text>  
@@ -56,7 +76,7 @@ else
         <br />
          <div class="form-group row">
             <label class="col-sm-2 col-form-label">
-                Saturdays in work:
+                Saturdays in work (extra 100PLN per day):
             </label>
             <div class="col-sm-5">
                  <Text Class="form-control">@settlement.saturdays</Text>  
@@ -81,12 +101,13 @@ else
             </div>
         </div>
         <br />
-            <div class="form-group row">
+           
+           <div class="form-group row">
             <label class="col-sm-2 col-form-label">
-                Driver:
+                To Pay:
             </label>
             <div class="col-sm-5">
-                 <Text Class="form-control">@settlement.driver</Text>  
+                 <Text Class="form-control" style="background-color: lightgreen">@salary</Text>  
             </div>
         </div>
         <br />
@@ -107,23 +128,27 @@ else
     public string? id { get; set; }
 
 
-    
 
 
+    private Driver driver;
     private Settlement? settlement;
-
+    public double salary;
 
 
     protected override async Task OnInitializedAsync()
     {
-
-
+        
+        
 
 
         var settlements_service = await SettlementService.GetSettlementAsync(id);
 
         settlement = settlements_service;
-        
+
+        salary = (settlement.rate_for_kilometer * settlement.kilometers_done) + (settlement.days_stationary * 50) + (settlement.saturdays * 100);
+        var driver_service = await DriverService.GetDriverAsync(settlement.driver);
+
+        driver = driver_service;
     }
 
     protected async Task Delete_Click()

@@ -26,6 +26,13 @@ namespace BlazorApp1.Services
             return model;
 
         }
+        public async Task<List<Trail>> GetRoutesWithFilterAsync(int month, int year, string pesel)
+        {
+            var response = await httpClient.GetFromJsonAsync<Trail[]>($"api/routes?month={month}&year={year}&driver={pesel}");
+            var model = response.ToList();
+            return model;
+
+        }
         public async Task<bool> DeleteRouteAsync(int nip)
         {
             var response = await httpClient.DeleteAsync($"api/routes/{nip}");

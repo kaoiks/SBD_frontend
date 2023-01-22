@@ -61,15 +61,16 @@
             <button type="submit" class="btn btn-success">Submit</button>
         </div>
     </div>
-
     <BlazoredToasts Position="ToastPosition.BottomRight"
                     Timeout="10"
                     IconType="IconType.FontAwesome"
                     SuccessClass="success-toast-override"
                     SuccessIcon="fa fa-thumbs-up"
                     ErrorIcon="fa fa-bug" />
+    
 
 </EditForm>
+
 @code {
     [Parameter]
     public string id { get; set; }

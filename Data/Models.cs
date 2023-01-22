@@ -178,6 +178,7 @@ namespace BlazorApp1.Data
 
         //public DateTime repair_date { get; set; }
         [Required(ErrorMessage = "Description is required.")]
+        [MaxLength(72, ErrorMessage = "Description is too long.")]
         public string description { get; set; }
         [Required(ErrorMessage = "VIN is required.")]
         [MinLength(10, ErrorMessage = "VIN is required.")]
@@ -298,15 +299,28 @@ namespace BlazorApp1.Data
     }
     public class FormSettlement
     {
-       
+        [Required(ErrorMessage = "Month is required.")]
+        [Range(1, 12, ErrorMessage = "Month must be between 1 and 12.")]
         public int month { get; set; }
+        [Required(ErrorMessage = "Year is required.")]
+        [Range(1990, 2200, ErrorMessage = "Year must be between 1990 and 2200.")]
         public int year { get; set; }
+        [Required(ErrorMessage = "Days Stationary is required.")]
+        [Range(0, 31, ErrorMessage = "Days Stationary must be between 0 and 31.")]
         public int days_stationary { get; set; }
+        [Required(ErrorMessage = "Days Leave is required.")]
+        [Range(0, 31, ErrorMessage = "Days Leave must be between 0 and 31.")]
         public int days_leave { get; set; }
+        [Required(ErrorMessage = "Saturdays is required.")]
+        [Range(0, 5, ErrorMessage = "Saturdays must be between 0 and 5.")]
         public int saturdays { get; set; }
+        [Required(ErrorMessage = "Rate for Kilometer is required.")]
+        [Range(0.0, Int32.MaxValue, ErrorMessage = "Rate for Kilometer has to be higher or equal to 0.01")]
         public double rate_for_kilometer { get; set; }
 
         public int kilometers_done { get; set; }
+        [Required(ErrorMessage = "Driver is required.")]
+        [MinLength(10, ErrorMessage = "Driver is too short.")]
         public string driver { get; set; }
     }
 
@@ -341,6 +355,7 @@ namespace BlazorApp1.Data
         public string city { get; set; }
         [Required(ErrorMessage = "Postal Code is required.")]
         [MaxLength(10, ErrorMessage = "Postal Code is too long.")]
+        [RegularExpression(@"^[0-9]{2}-[0-9]{3}$", ErrorMessage = "Invalid postal code format")]
         public string postal_code { get; set; }
         public int type { get; set; }
 
@@ -384,6 +399,7 @@ namespace BlazorApp1.Data
         public string city { get; set; }
         [Required(ErrorMessage = "Postal Code is required.")]
         [MaxLength(10, ErrorMessage = "Postal Code is too long.")]
+        [RegularExpression(@"^[0-9]{2}-[0-9]{3}$", ErrorMessage = "Invalid postal code format")]
         public string postal_code { get; set; }
         public int type { get; set; }
     }

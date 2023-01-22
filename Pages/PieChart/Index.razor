@@ -16,28 +16,39 @@
 @using ChartJs.Blazor.PieChart
 @inject InvoiceService InvoiceService
 @inject RepairCostService RepairCostService
+@inject SettlementService SettlementService
+@inject InsuranceService InsuranceService
 
-@if(balance<0)
+
+
+@if (balance < 0)
 {
-    <h3> Balance: <b style = "color: darkred"> @balance PLN</b></h3>
+    <h3> Balance: </h3>
+    <h1><b style="color: darkred"> @balance PLN</b></h1>
 }
 else
 {
     <h3> Balance: <b style="color: darkgreen">@balance PLN</b></h3>
 }
+<div class="container">
+    <div class="element">
+            <Chart Config="_pieConfig">
+            </Chart>
+        </div>
 
-
-<Chart Config="_pieConfig" >
-</Chart>
-
+    </div>
 
 
 @code{
     private PieConfig _pieConfig;
     public Invoice[]? invoice;
     public RepairCost[]? repairCost;
+    public Insurance[]? insurance;
+    public Settlement[]? settlement;
     public double profits = 0.0;
     double costs=0.0;
+    double insurance_costs = 0.0;
+    double salary_costs = 0.0;
     double balance=0.0;
 
     protected override void OnInitialized()
@@ -54,8 +65,19 @@ else
         var task1 = Task.Run(async () => await calculateCosts()).ConfigureAwait(false);
         costs = task1.GetAwaiter().GetResult();
         costs = Math.Round(costs, 2);
-        balance = profits - costs;
+
+        var task2 = Task.Run(async () => await calculateSalaryCosts()).ConfigureAwait(false);
+        salary_costs = task2.GetAwaiter().GetResult();
+        salary_costs = Math.Round(salary_costs, 2);
+
+        var task3 = Task.Run(async () => await calculateInsuranceCosts()).ConfigureAwait(false);
+        insurance_costs = task3.GetAwaiter().GetResult();
+        insurance_costs = Math.Round(insurance_costs, 2);
+
+
+        balance = profits - costs-salary_costs-insurance_costs;
         balance=Math.Round(balance, 2);
+
         _pieConfig = new PieConfig();
         _pieConfig.Options = new PieOptions
             {
@@ -71,7 +93,7 @@ else
 
             };
 
-        foreach(var item in new[] {"Profits", "Costs "})
+        foreach(var item in new[] {"Profits", "Repairs", "Insurances", "Salaries"})
         {
             _pieConfig.Data.Labels.Add(item);
         }
@@ -80,12 +102,14 @@ else
 
         
 
-        var dataset = new PieDataset<double>(new[] { profits, costs })
+        var dataset = new PieDataset<double>(new[] { profits, costs, insurance_costs, salary_costs })
             {
                 BackgroundColor = new[]
                 {
-                ColorUtil.ColorHexString(1,105,68),
-                ColorUtil.ColorHexString(105,1,41)
+                ColorUtil.ColorHexString(76,0,153),
+                ColorUtil.ColorHexString(0,76,153),
+                ColorUtil.ColorHexString(0,0,204),
+                ColorUtil.ColorHexString(0,102,204)
             }
             };
 
@@ -127,6 +151,50 @@ else
             var span = repairCost[i].amount;
 
             costs1 = costs1 + double.Parse(span.ToString());
+
+
+        }
+        return costs1;
+
+
+    }
+
+    public async Task<double> calculateInsuranceCosts()
+    {
+        var insurance_service = await InsuranceService.GetInsurancesAsync();
+        insurance = insurance_service.ToArray();
+
+        double costs1 = 0.0;
+
+        for (int i = 0; i < insurance.Length; i++)
+        {
+
+            var span = insurance[i].amount;
+
+            costs1 = costs1 + double.Parse(span.ToString());
+
+
+        }
+        return costs1;
+
+
+    }
+    public async Task<double> calculateSalaryCosts()
+    {
+        var settlement_service = await SettlementService.GetSettlementsAsync();
+        settlement = settlement_service.ToArray();
+
+        double costs1 = 0.0;
+
+        for (int i = 0; i < settlement.Length; i++)
+        {
+
+            var days_stationary = settlement[i].days_stationary;
+            var saturdays = settlement[i].saturdays;
+            var distance = settlement[i].kilometers_done;
+            var per_kilometer = settlement[i].rate_for_kilometer;
+
+            costs1 = costs1 + ((double.Parse(days_stationary.ToString()) * 50) + (double.Parse(saturdays.ToString()) * 100) + (double.Parse(distance.ToString()) * double.Parse(per_kilometer.ToString())));
 
 
         }

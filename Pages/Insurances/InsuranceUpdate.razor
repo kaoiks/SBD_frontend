@@ -36,8 +36,9 @@
             Start Date:
         </label>
         <div class="col-sm-5">
-            <InputDate class="form-control" placeholder="Start Date" @bind-Value="insurance.start_date" />
+            <InputDate asp-for="insurance.start_date" class="form-control" placeholder="Start Date" @bind-Value="insurance.start_date" />
             <ValidationMessage For="@(() => insurance.start_date)"></ValidationMessage>
+            <span asp-validation-for="insurance.start_date" class="text-danger"></span>
         </div>
     </div>
     <br />
@@ -46,8 +47,9 @@
             End Date:
         </label>
         <div class="col-sm-5">
-            <InputDate class="form-control" placeholder="End Date" @bind-Value="insurance.end_date" />
+            <InputDate asp-for="insurance.end_date" class="form-control" placeholder="End Date" @bind-Value="insurance.end_date" />
             <ValidationMessage For="@(() => insurance.end_date)"></ValidationMessage>
+            <span asp-validation-for="insurance.end_date" class="text-danger"></span>
         </div>
     </div>
     <br />
@@ -72,17 +74,36 @@
             <label for="VIN" class="col-sm-2 col-form-label ">
                 VIN:
             </label>
-            <div class="col-sm-5">
+            @if (insurance.vin != "NULL")
+            {
+                <div class="col-sm-5">
 
-                <InputSelect @bind-Value=insurance.vin class="form-select" style="color:darkgray;">
-                    <option value="NULL">--Choose VIN--</option>
-                    @foreach (var vehicle in vehicles)
-                    {
-                        <option value="@vehicle.vin" style="color:black;">@vehicle.vin</option>
-                    }
-                </InputSelect>
-                <ValidationMessage For="@(() => insurance.vin)"></ValidationMessage>
-            </div>
+                    <InputSelect @bind-Value=insurance.vin class="form-select">
+                        <option value="NULL">--Choose VIN--</option>
+                        @foreach (var vehicle in vehicles)
+                        {
+                            <option value="@vehicle.vin" style="color:black;">@vehicle.vin</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => insurance.vin)"></ValidationMessage>
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-5">
+
+                    <InputSelect @bind-Value=insurance.vin class="form-select" style="color:darkgray;">
+                        <option value="NULL">--Choose VIN--</option>
+                        @foreach (var vehicle in vehicles)
+                        {
+                            <option value="@vehicle.vin" style="color:black;">@vehicle.vin</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => insurance.vin)"></ValidationMessage>
+                </div>
+
+            }
+
 
 
 
@@ -138,6 +159,11 @@
 
         var insurance_service = await InsuranceService.GetInsurancesAsync();
         insurance_check = insurance_service.ToArray();
+        int valid_dates = 0;
+        if (insurance.start_date >= insurance.end_date)
+        {
+            valid_dates = 1;
+        }
         int exist = 0;
         for (int i = 0; i < insurance_check.Length; i++)
         {
@@ -152,7 +178,17 @@
             errors.Add(nameof(insurance.insurance_number), new List<string> { "This Insurance Number already exists" });
             customValidator.DisplayErrors(errors);
         }
-        else
+
+        if (valid_dates == 1)
+        {
+            errors.Add(nameof(insurance.start_date), new List<string> { "Start Date can not be earlier than End Date." });
+            errors.Add(nameof(insurance.end_date), new List<string> { "Start Date can not be earlier than End Date." });
+            customValidator.DisplayErrors(errors);
+        }
+
+
+
+        if (exist == 0 & valid_dates == 0)
         {
             var result = await InsuranceService.UpdateInsuranceAsync(insurance);
 

@@ -64,17 +64,34 @@
             <label for="contractor" class="col-sm-2 col-form-label ">
                 Contractor:
             </label>
-            <div class="col-sm-5">
+            @if (invoice.contractor == "NULL")
+            {
+                <div class="col-sm-5">
 
-                <InputSelect @bind-Value=invoice.contractor class="form-select" style="color:darkgray;">
-                    <option value="NULL">--Choose Contractor--</option>
-                    @foreach (var contractor in contractors)
-                    {
-                        <option value="@contractor.nip" style="color:black;">@contractor.name</option>
-                    }
-                </InputSelect>
-                <ValidationMessage For="@(() => invoice.contractor)"></ValidationMessage>
-            </div>
+                    <InputSelect @bind-Value=invoice.contractor class="form-select" style="color:darkgray;">
+                        <option value="NULL">--Choose Contractor--</option>
+                        @foreach (var contractor in contractors)
+                        {
+                            <option value="@contractor.nip" style="color:black;">@contractor.name</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => invoice.contractor)"></ValidationMessage>
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-5">
+
+                    <InputSelect @bind-Value=invoice.contractor class="form-select">
+                        <option value="NULL">--Choose Contractor--</option>
+                        @foreach (var contractor in contractors)
+                        {
+                            <option value="@contractor.nip" style="color:black;">@contractor.name</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => invoice.contractor)"></ValidationMessage>
+                </div>
+            }
 
 
 

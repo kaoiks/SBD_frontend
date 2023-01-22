@@ -19,11 +19,12 @@ else
 {
 
     <Table RowClickAction="ItemClicked" TableItem="Invoice" Items="invoices" PageSize="100">
-        <Column TableItem="Invoice" Title="Invoice Number" Field="@(x => x.invoice_number)" Sortable="true" Filterable="true" Width="10%" />
-        
-        <Column TableItem="Invoice" Title="Amount" Field="@(x => x.amount)" Sortable="true" Filterable="true" Width="10%" />
-        @*<Column TableItem="Invoice" Title="Date" Field="@(x => x.date)" Sortable="true" Filterable="true" Width="20%" />
-    <Column TableItem="Invoice" Title="Contractor Name" Field="@(x => x.contractor_name)" Sortable="true" Filterable="true" Width="30%" />*@
+        <Column TableItem="Invoice" Title="Invoice Number" Field="@(x => x.invoice_number)" Sortable="true" Filterable="true" Width="20%" />
+
+        @*<Column TableItem="Invoice" Title="Amount" Field="@(x => x.amount)" Sortable="true" Filterable="true" Width="10%" />*@
+       
+    <Column TableItem="Invoice" Title="Contractor Name" Field="@(x => x.contractor_name)" Sortable="true" Filterable="true" Width="20%" />
+        <Column TableItem="Invoice" Title="Date" Field="@(x => x.date)" Sortable="true" Filterable="true" Width="20%" />
         
         <Pager ShowPageNumber="true" ShowTotalCount="true" />
     </Table>

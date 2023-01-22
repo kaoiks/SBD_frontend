@@ -4,7 +4,7 @@
 
 @using BlazorApp1.Data
 @using BlazorApp1.Services
-
+@inject SettlementService SettlementService
 @inject DriverService DriverService
 @inject AddressService AddressService
 @inject RouteService RouteService
@@ -92,23 +92,39 @@ else
                  <Text Class="form-control">@driver.driver_license_number</Text>             
             </div>
         </div>
-        <br />
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
             Exp. Date of Qualification Certificate:
-            </label>
-            <div class="col-sm-5">
-                <Text Class="form-control">@driver.date_qualification_certificate</Text>            
+        </label>
+        @if (DateTime.Parse(driver.date_qualification_certificate) < DateTime.Now) 
+        { <div class="col-sm-5">
+                <Text Class="form-control" style="color: red">@driver.date_qualification_certificate (@certificate)</Text>
             </div>
+        }
+        else
+        { <div class="col-sm-5">
+                <Text Class="form-control">@driver.date_qualification_certificate</Text>
+                </div>
+        }
+        
         </div>
         <br />
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">
             Exp. Date of BHP Course:
             </label>
-            <div class="col-sm-5">
-                 <Text Class="form-control">@driver.date_bhp_course</Text>             
+             @if (DateTime.Parse(driver.date_bhp_course) < DateTime.Now) 
+        { <div class="col-sm-5">
+                <Text Class="form-control" style="color: red">@driver.date_bhp_course (@certificate)</Text>
             </div>
+        }
+        else
+        { <div class="col-sm-5">
+                <Text Class="form-control">@driver.date_bhp_course</Text>
+                </div>
+        }
+        
         </div>
         <br />
            <div>
@@ -131,8 +147,8 @@ else
     [Parameter]
     public string? id { get; set; }
 
-
-
+    private string certificate = "Needed new certificate";
+    private Settlement[]? settlements;
     private Driver? driver;
     private Trail[]? routes;
     protected override async Task OnInitializedAsync()
@@ -145,6 +161,9 @@ else
         var routes_service = await RouteService.GetRoutesAsync();
 
         routes = routes_service.ToArray();
+        var settlements_service = await SettlementService.GetSettlementsAsync();
+
+        settlements = settlements_service.ToArray();
     }
 
     protected async Task Delete_Click()
@@ -159,8 +178,17 @@ else
                 }
             }
         }
-        
-        
+       
+        if (settlements != null)
+        {
+            for (int i = 0; i < settlements.Length; i++)
+            {
+                if (settlements[i].driver == driver.pesel)
+                {
+                    await SettlementService.DeleteSettlementAsync(settlements[i].id);
+                }
+            }
+        }
         await AddressService.DeleteAddressAsync(driver.address.id);
         await DriverService.DeleteDriverAsync(driver.pesel);
         NavManager.NavigateTo("/drivers");
