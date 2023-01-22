@@ -5,56 +5,97 @@
 @using BlazorApp1.Services
 @using BlazorTable
 @inject SettlementService SettlementService
+@inject NavigationManager NavManager
 
 
 
 
-<h3>Details of the Selected Settlement</h3>
 
 @if (settlement == null)
 {
 }
 else
 {
+    <h3>Details of the Selected Settlement</h3>
+        <hr />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                ID:
+            </label>
+            <div class="col-sm-5">
+                <Text Class="form-control">@settlement.id</Text>            
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Month and Year:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@settlement.month-@settlement.year</Text>             
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Days Stationary:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@settlement.days_stationary</Text>  
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Days Leave:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@settlement.days_leave</Text>  
+            </div>
+        </div>
+        <br />
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Saturdays in work:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@settlement.saturdays</Text>  
+            </div>
+        </div>
+        <br />
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Rate for Kilometer:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@settlement.rate_for_kilometer</Text>  
+            </div>
+        </div>
+        <br />
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Kilometers Done:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@settlement.kilometers_done</Text>  
+            </div>
+        </div>
+        <br />
+            <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Driver:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@settlement.driver</Text>  
+            </div>
+        </div>
+        <br />
+        
+        <button class="btn btn-outline-danger" type="button" @onclick="Delete_Click">
+            Delete
+        </button>
+
    
-
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col text-center">ID</th>
-                <th scope="col text-center">Month</th>
-                <th scope="col text-center">Year</th>
-                <th scope="col text-center">Days Stationary</th>
-                    <th scope="col text-center">Days Leave</th>
-                    <th scope="col text-center">Saturdays</th>
-                    <th scope="col text-center">Rate for Kilometer</th>
-                      
-                            <th scope="col text-center">Kilometers Done</th>
-                                <th scope="col text-center">Driver</th>
-
-            </tr>
-        </thead>
-        <tbody>
-
-
-
-            <tr>
-
-                 <td scope="row">@settlement.id</td>
-                <td scope="row">@settlement.month</td>
-                <td scope="row">@settlement.year</td>
-                  <td scope="row">@settlement.days_stationary</td>
-                <td scope="row">@settlement.days_leave</td>
-                <td scope="row">@settlement.saturdays</td>
-                <td scope="row">@settlement.rate_for_kilometer</td>
-                <td scope="row">@settlement.kilometers_done</td>
-                <td scope="row">@settlement.driver</td>
-
-
-            </tr>
-
-        </tbody>
-    </table>
 
 
 }
@@ -83,6 +124,13 @@ else
 
         settlement = settlements_service;
         
+    }
+
+    protected async Task Delete_Click()
+    {
+
+        await SettlementService.DeleteSettlementAsync(settlement.id);
+        NavManager.NavigateTo("/settlements");
     }
 }
 

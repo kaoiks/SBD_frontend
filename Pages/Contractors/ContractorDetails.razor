@@ -7,48 +7,91 @@
 
 @inject ContractorService ContractorService
 @inject AddressService AddressService
+@inject InvoiceService InvoiceService
+@inject RouteService RouteService
 @inject NavigationManager NavManager
-<h3>Details of the Selected Contractor</h3>
+@using Microsoft.AspNetCore.Components.Forms
+
 
 @if (contractor == null)
 {
 }
 else{
+   
+    <h3>Details of the Selected Contractor</h3>
+        <hr />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                NIP:
+            </label>
+            <div class="col-sm-5">
+                <Text Class="form-control">@contractor.nip</Text>            
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Name:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@contractor.name</Text>             
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Country ID:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@contractor.country_id</Text>  
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Street:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@contractor.address.street</Text>  
 
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col text-center">NIP</th>
-                <th scope="col text-center">Name</th>
-                <th scope="col text-center">Country ID</th>
-                <th scope="col text-center">Street</th>
-                <th scope="col text-center">City</th>
-                <th scope="col text-center">Postal Code</th>
-                
+            </div>
+        </div>
 
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                City:
+            </label>
+            <div class="col-sm-5">
+            <Text Class="form-control">@contractor.address.city</Text>  
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Postal Code:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@contractor.address.postal_code</Text>  
+            </div>
+        </div>
+    <br />
+    <div>
+        
+        <button class="btn btn-outline-primary" type="button" @onclick="Update_Click">
+            Edit
+        </button>
+        <button class="btn btn-outline-danger" type="button" @onclick="Delete_Click">
+            Delete
+        </button>
+    </div>
+        
+ 
+   
 
-            </tr>
-        </thead>
-        <tbody>
-
-
-
-            <tr>
-
-                <td scope="row">@contractor.nip</td>
-                <td scope="row">@contractor.name</td>
-                <td scope="row">@contractor.country_id</td>
-                <td scope="row">@contractor.address.street</td>
-                <td scope="row">@contractor.address.city</td>
-                <td scope="row">@contractor.address.postal_code</td>
-                <button class="btn btn-danger" type="button" @onclick="Delete_Click">
-                    Delete
-                </button>
-
-            </tr>
-
-        </tbody>
-    </table>
+        
+ 
+    
 }
 
 @code {
@@ -57,16 +100,54 @@ else{
 
 
     private Contractor? contractor;
+    private Invoice[]? invoices;
+    private Trail[]? routes;
 
     protected override async Task OnInitializedAsync()
     {
         var contractors_service = await ContractorService.GetContractorAsync(id);
 
         contractor = contractors_service;
+
+        var invoices_service = await InvoiceService.GetInvoicesAsync();
+
+        invoices = invoices_service.ToArray();
+
+        var routes_service = await RouteService.GetRoutesAsync();
+
+        routes = routes_service.ToArray();
     }
     protected async Task Delete_Click()
     {
+        if(routes!=null)
+        {
+            for (int i = 0; i < routes.Length; i++)
+            {
+                if (routes[i].contractor.nip == contractor.nip)
+                {
+                    await RouteService.DeleteRouteAsync(routes[i].route_id);
+                }
+            }
+        }
+        if(invoices!=null)
+        {
+            for (int i = 0; i < invoices.Length; i++)
+            {
+                if (invoices[i].contractor_name == contractor.name)
+                {
+                    await InvoiceService.DeleteInvoiceAsync(invoices[i].id);
+                }
+            }
+        }
+
+        await AddressService.DeleteAddressAsync(contractor.address.id);
         await ContractorService.DeleteContractorAsync(contractor.nip);
         NavManager.NavigateTo("/contractors");
     }
+
+    protected async Task Update_Click()
+    {
+        NavManager.NavigateTo("/contractors/update/"+id);
+    }
+
 }

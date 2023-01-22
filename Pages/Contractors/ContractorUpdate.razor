@@ -1,0 +1,205 @@
+﻿@page "/contractors/update/{id}"
+@using Microsoft.AspNetCore.Mvc;
+@using Microsoft.Extensions.Logging
+@inject ILogger<ContractorCreate> Logger
+@using BlazorApp1.Services
+@using BlazorApp1.Data
+@inject ContractorService ContractorService
+@inject AddressService AddressService
+@inject NavigationManager NavManager
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+@using BS.Forms.ValidatorComponent.Components
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+
+
+<EditForm Model="@formAddressAndContractor" OnValidSubmit="@HandleValidSubmit">
+
+    <h3>Edit Contractor</h3>
+    <hr />
+    <DataAnnotationsValidator />
+    <CustomValidator @ref="customValidator"></CustomValidator>
+     <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            NIP:
+        </label>
+        <div class="col-sm-5">
+            <Text class="form-control">@formAddressAndContractor.nip</Text>
+           
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Name:
+        </label>
+        <div class="col-sm-5">
+            <InputText id="name" Class="form-control" placeholder="Name" @bind-Value="formAddressAndContractor.name" />
+            <ValidationMessage For="@(() => formAddressAndContractor.name)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+   
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Street:
+        </label>
+        <div class="col-sm-5">
+            <InputText asp-for="formAddressAndContractor.street" class="form-control" placeholder="Street" @bind-Value="formAddressAndContractor.street" />
+            <ValidationMessage For="@(() => formAddressAndContractor.street)"></ValidationMessage>
+            <span asp-validation-for="formAddressAndContractor.street" class="text-danger"></span>
+
+        </div>
+    </div>
+
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            City:
+        </label>
+        <div class="col-sm-5">
+            <InputText asp-for="formAddressAndContractor.city" class="form-control" placeholder="City" @bind-Value="formAddressAndContractor.city" />
+            <ValidationMessage For="@(() => formAddressAndContractor.city)"></ValidationMessage>
+            <span asp-validation-for="formAddressAndContractor.city" class="text-danger"></span>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Postal Code:
+        </label>
+        <div class="col-sm-5">
+            <InputText asp-for="formAddressAndContractor.postal_code" class="form-control" placeholder="Postal Code" @bind-Value="formAddressAndContractor.postal_code" />
+            <ValidationMessage For="@(() => formAddressAndContractor.postal_code)"></ValidationMessage>
+            <span asp-validation-for="formAddressAndContractor.postal_code" class="text-danger"></span>
+        </div>
+    </div>
+
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Country ID:
+        </label>
+        <div class="col-sm-5">
+            <InputText class="form-control" placeholder="Country ID" @bind-Value="formAddressAndContractor.country_id" />
+            <ValidationMessage For="@(() => formAddressAndContractor.country_id)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </div>
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
+
+</EditForm>
+
+
+
+@code {
+    [Parameter]
+    public string? id { get; set; }
+
+    private CustomValidator customValidator;
+
+    private FormAddress address = new() { type = 1 };
+    private Address address_get;
+    private Contractor contractor_get;
+    private FormContractor contractor = new();
+
+    public Contractor[]? contractor_check;
+
+    public Address[]? address_check;
+
+    private FormAddressAndContractor formAddressAndContractor = new() { type = 1 };
+
+    protected async override Task OnInitializedAsync()
+    {
+        contractor_get = await ContractorService.GetContractorAsync(id);
+        address_get = await AddressService.GetAddressAsync(contractor_get.address.id);
+        formAddressAndContractor.street = address_get.street;
+        formAddressAndContractor.city = address_get.city;
+        formAddressAndContractor.postal_code = address_get.postal_code;
+        formAddressAndContractor.nip = contractor_get.nip;
+        formAddressAndContractor.name = contractor_get.name;
+        formAddressAndContractor.country_id = contractor_get.country_id;
+    }
+
+
+
+    private async void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+
+        var contractor_service = await ContractorService.GetContractorsAsync();
+        contractor_check = contractor_service.ToArray();
+        var address_service = await AddressService.GetAddressesAsync();
+        address_check = address_service.ToArray();
+        int exist = 0;
+        int address_exist = 0;
+
+        for (int i = 0; i < address_check.Length; i++)
+        {
+            if (address_check[i].street == formAddressAndContractor.street & address_check[i].postal_code == formAddressAndContractor.postal_code & address_check[i].city == formAddressAndContractor.city & address_check[i].type == formAddressAndContractor.type & (address_get.street != formAddressAndContractor.street || address_get.postal_code != formAddressAndContractor.postal_code || address_get.city != formAddressAndContractor.city || address_get.type != formAddressAndContractor.type))
+            {
+                address_exist = 1;
+            }
+        }
+        var errors = new Dictionary<string, List<string>>();
+
+        if (address_exist == 1)
+        {
+            errors.Add(nameof(formAddressAndContractor.street), new List<string> { "These combination of street, city and postal code already exists for contractor" });
+            errors.Add(nameof(formAddressAndContractor.city), new List<string> { "These combination of street, city and postal code already exists for contractor" });
+            errors.Add(nameof(formAddressAndContractor.postal_code), new List<string> { "These combination of street, city and postal code already exists for contractor" });
+            customValidator.DisplayErrors(errors);
+        }
+        else
+        {
+
+
+            address.id = address_get.id;
+            address.street = formAddressAndContractor.street;
+            address.city = formAddressAndContractor.city;
+            address.postal_code = formAddressAndContractor.postal_code;
+            contractor.nip = formAddressAndContractor.nip;
+            contractor.name = formAddressAndContractor.name;
+            contractor.country_id = formAddressAndContractor.country_id;
+            var result_address = await AddressService.UpdateAddressAsync(address);
+
+
+            //contractor.address = result_address.id;
+            contractor.address = address_get.id;
+            bool result = await ContractorService.UpdateContractorAsync(contractor);
+
+            if (result == false)
+            {
+
+            }
+            else
+            {
+               
+                toastService.ShowSuccess("Contractor edited successfully.");
+                NavManager.NavigateTo("/contractors/"+id);
+            }
+
+        }
+
+
+    }
+
+
+
+
+}
+

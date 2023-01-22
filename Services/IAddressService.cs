@@ -6,7 +6,7 @@ namespace BlazorApp1.Services
     {
         Task<List<Address>> GetAddressesAsync();
 
-        Task<Address> GetAddressAsync(string nip);
+        Task<Address> GetAddressAsync(int nip);
     }
 }
 

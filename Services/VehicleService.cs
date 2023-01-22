@@ -26,7 +26,35 @@ namespace BlazorApp1.Services
             return model;
 
         }
+        public async Task<bool> DeleteVehicleAsync(string nip)
+        {
+            var response = await httpClient.DeleteAsync($"api/vehicles/{nip}");
+            return response.IsSuccessStatusCode;
 
+
+        }
+        public async Task<bool> UpdateVehicleAsync(FormVehicle vehicle)
+        {
+            string jsonString = JsonConvert.SerializeObject(vehicle, new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
+            var request = new HttpRequestMessage(HttpMethod.Put, $"api/vehicles/{vehicle.vin}");
+            request.Content = new StringContent(jsonString,
+                                                            Encoding.UTF8,
+                                                                "application/json");
+            request.Headers.Add("Accept", "application/json");
+            var response = await httpClient.SendAsync(request);
+
+            var result = response.Content.ReadAsStringAsync().Result;
+            if ((int)response.StatusCode == 200)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
         public async Task<Vehicle> GetVehicleAsync(string nip)
         {
             var model = await httpClient.GetFromJsonAsync<Vehicle>("api/vehicles/" + nip);

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Net.Http.Json;
 using System.Text;
 
 namespace BlazorApp1.Services
@@ -34,11 +35,37 @@ namespace BlazorApp1.Services
 
         }
 
-        public async Task DeleteContractorAsync(string nip)
+        public async Task<bool> DeleteContractorAsync(string nip)
         {
-            await httpClient.DeleteAsync($"api/contractors/{nip}");
+            var response=await httpClient.DeleteAsync($"api/contractors/{nip}");
+            return response.IsSuccessStatusCode;
+            
             
         }
+
+        public async Task<bool> UpdateContractorAsync(FormContractor contractor)
+        {
+            string jsonString = JsonConvert.SerializeObject(contractor, new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
+            var request = new HttpRequestMessage(HttpMethod.Put, $"api/contractors/{contractor.nip}");
+            request.Content = new StringContent(jsonString,
+                                                            Encoding.UTF8,
+                                                                "application/json");
+            request.Headers.Add("Accept", "application/json");
+            var response = await httpClient.SendAsync(request);
+
+            var result = response.Content.ReadAsStringAsync().Result;
+            
+            if ((int)response.StatusCode == 200)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+           
+
+        } 
 
         public async Task<Contractor> AddContractorAsync(FormContractor form_contractor)
         {

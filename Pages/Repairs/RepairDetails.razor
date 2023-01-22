@@ -6,44 +6,63 @@
 @using BlazorTable
 @inject RepairService RepairService
 @inject RepairCostService RepairCostService
+@inject NavigationManager NavManager
 
-<h3>Details of the Selected Repair</h3>
 
 @if (repair == null)
 {
 }
 else
 {
-    @*<div scope="row">@repair.repair_date</div>
-    <div scope="row">@repair.description</div>
-    <div scope="row">@repair.vehicle</div>*@
+    <h3>Details of the Selected Repair</h3>
+        <hr />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                ID:
+            </label>
+            <div class="col-sm-5">
+                <Text Class="form-control">@repair.id</Text>            
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Date:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@repair.repair_date</Text>             
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Description:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@repair.description</Text>  
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Vehicle:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@repair.vehicle</Text>  
+            </div>
+        </div>
+        <br />
 
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col text-center">ID</th>
-                        <th scope="col text-center">Repair Date</th>
-                        <th scope="col text-center">Description</th>
-                        <th scope="col text-center">Vehicle</th>
-                        
-            </tr>
-        </thead>
-        <tbody>
-            
-
-
-                <tr >
-
-                    <td scope="row">@repair.id</td>
-                    <td scope="row">@repair.repair_date</td>
-                    <td scope="row">@repair.description</td>
-                        <td scope="row">@repair.vehicle</td>
-                      
-                      
-                </tr>
-            
-            </tbody>
-            </table>
+        <div>
+        <button class="btn btn-outline-primary" type="button" @onclick="Update_Click">
+        Edit
+        </button>
+        <button class="btn btn-outline-danger" type="button" @onclick="Delete_Click">
+            Delete
+        </button>
+    </div>
+        <br />
+            <br />
                 
 
 }
@@ -55,16 +74,46 @@ else
 }
 else
 {
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col text-center">Repair Cost ID</th>
+                <th scope="col text-center">Date</th>
+                <th scope="col text-center">Invoice Number</th>
+                <th scope="col text-center">Amount</th>
+                <th scope="col text-center"></th>
 
-    <Table TableItem="RepairCost" Items="repairCosts" PageSize="100">
-        <Column TableItem="RepairCost" Title="Repair Cost ID" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" />
-        <Column TableItem="RepairCost" Title="Repair Date" Field="@(x => x.date)" Sortable="true" Filterable="true" Width="20%" />
-        <Column TableItem="RepairCost" Title="Invoice Number" Field="@(x => x.invoice_id)" Sortable="true" Filterable="true" Width="20%" />
-        <Column TableItem="RepairCost" Title="Amount" Field="@(x => x.amount)" Sortable="true" Filterable="true" Width="20%" />
-                    
+            </tr>
+        </thead>
+        <tbody>
 
-    <Pager ShowPageNumber="true" ShowTotalCount="true" />
-</Table>
+
+
+            
+                @foreach (var item in repairCosts)
+                {
+                <tr>
+                <td scope="row">@item.id</td>
+                <td scope="row">@item.date</td>
+                <td scope="row">@item.invoice_id</td>
+                <td scope="row">@item.amount</td>
+                    <td scope="row">
+                        <button class="btn btn-outline-primary" type="button" @onclick="@(async()=>{await Update_Click(int.Parse(item.id.ToString()));})">
+                            Edit
+                        </button>
+                        <button class="btn btn-outline-danger" type="button" @onclick="@(async()=>{await Delete_Click_2(int.Parse(item.id.ToString()));})">
+                        Delete
+                        </button>
+                       
+                    </td>
+                </tr>
+                }
+
+            
+
+        </tbody>
+    </table>
+   
 }
 
 @code {
@@ -74,7 +123,7 @@ else
 
 
     private RepairCost[]? repairCosts;
-
+    
 
     private Repair? repair;
 
@@ -91,5 +140,32 @@ else
         repair = repairs_service;
         repairCosts = repair.repair_costs.ToArray();
     }
+
+    protected async Task Delete_Click()
+    {
+
+        await RepairService.DeleteRepairAsync(repair.id);
+        NavManager.NavigateTo("/repairs");
+    }
+
+    protected async Task Delete_Click_2(int id2)
+    {
+
+        await RepairCostService.DeleteRepairCostAsync(id2);
+        var repairs_service = await RepairService.GetRepairAsync(id);
+
+        repair = repairs_service;
+        repairCosts = repair.repair_costs.ToArray();
+        //NavManager.NavigateTo("/repairs/{id}");
+    }
+    protected async Task Update_Click(int id2)
+    {
+        NavManager.NavigateTo("/costs/update/" + id2);
+    }
+    protected async Task Update_Click()
+    {
+        NavManager.NavigateTo("/repairs/update/" + id);
+    }
+
 }
 

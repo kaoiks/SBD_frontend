@@ -33,7 +33,37 @@ namespace BlazorApp1.Services
             return model;
 
         }
-       
+        public async Task<bool> DeleteRepairCostAsync(int nip)
+        {
+            var response = await httpClient.DeleteAsync($"api/costs/{nip}");
+            return response.IsSuccessStatusCode;
+
+
+        }
+
+        public async Task<bool> UpdateRepairCostAsync(FormRepairCost repairCost)
+        {
+            string jsonString = JsonConvert.SerializeObject(repairCost, new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
+            var request = new HttpRequestMessage(HttpMethod.Put, $"api/costs/{repairCost.id}");
+            request.Content = new StringContent(jsonString,
+                                                            Encoding.UTF8,
+                                                                "application/json");
+            request.Headers.Add("Accept", "application/json");
+            var response = await httpClient.SendAsync(request);
+
+            var result = response.Content.ReadAsStringAsync().Result;
+
+            if ((int)response.StatusCode == 200)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
         public async Task<RepairCost> AddRepairCostAsync(FormRepairCost form_repairCost)
         {
 

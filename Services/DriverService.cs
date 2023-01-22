@@ -34,6 +34,36 @@ namespace BlazorApp1.Services
             return model;
 
         }
+
+        public async Task<bool> DeleteDriverAsync(string nip)
+        {
+            var response = await httpClient.DeleteAsync($"api/drivers/{nip}");
+            return response.IsSuccessStatusCode;
+
+
+        }
+        public async Task<bool> UpdateDriverAsync(FormDriver driver)
+        {
+            string jsonString = JsonConvert.SerializeObject(driver, new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
+            var request = new HttpRequestMessage(HttpMethod.Put, $"api/drivers/{driver.pesel}");
+            request.Content = new StringContent(jsonString,
+                                                            Encoding.UTF8,
+                                                                "application/json");
+            request.Headers.Add("Accept", "application/json");
+            var response = await httpClient.SendAsync(request);
+
+            var result = response.Content.ReadAsStringAsync().Result;
+            if ((int)response.StatusCode == 200)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
         public async Task<Driver> AddDriverAsync(FormDriver form_driver)
         {
 

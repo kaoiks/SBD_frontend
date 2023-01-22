@@ -60,7 +60,8 @@ namespace BlazorApp1.Data
         public string date { get; set; }
 
         public string contractor_name { get; set; }
-
+        
+        public Int64 contractor { get; set; }
 
     }
 
@@ -93,6 +94,8 @@ namespace BlazorApp1.Data
         [Required(ErrorMessage = "Kilometers are required.")]
         [Range(0, Int32.MaxValue, ErrorMessage = "Kilometeres should be higher or equal 0.")]
         public int kilometers_done { get; set; }
+        public List<Repair> repairs { get; set; }
+        public List<Insurance> insurances { get; set; }
     }
 
     public class FormContractor
@@ -133,6 +136,7 @@ namespace BlazorApp1.Data
         [MaxLength(10, ErrorMessage = "Postal Code is too long.")]
         public string postal_code { get; set; }
         public int type { get; set; }
+        public int id { get; set; }
     }
 
     public class FormInvoice
@@ -148,6 +152,8 @@ namespace BlazorApp1.Data
         [Required(ErrorMessage = "Contractor is required.")]
         [MinLength(5, ErrorMessage = "Contractor is required.")]
         public string contractor { get; set; }
+        
+        public int id { get; set; }
     }
 
     public class FormInsurance
@@ -176,6 +182,11 @@ namespace BlazorApp1.Data
         [Required(ErrorMessage = "VIN is required.")]
         [MinLength(10, ErrorMessage = "VIN is required.")]
         public string vin { get; set; }
+        public List<RepairCost> repair_costs { get; set; }
+        public string repair_date { get; set; }
+       
+        
+        public int id { get; set; }
     }
 
     public class FormRepairCost
@@ -188,6 +199,7 @@ namespace BlazorApp1.Data
         [Required(ErrorMessage = "Invoice ID is required.")]
         public string invoice_id { get; set; }
         public int repair { get; set; }
+        public int id { get; set; }
     }
 
     public class Driver
@@ -268,6 +280,7 @@ namespace BlazorApp1.Data
         [MinLength(10, ErrorMessage = "VIN is required.")]
 
         public string vehicle { get; set; }
+        public int route_id { get; set; }
     }
 
     public class Settlement

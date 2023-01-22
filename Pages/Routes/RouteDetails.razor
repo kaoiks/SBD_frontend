@@ -9,57 +9,114 @@
 @inject DriverService DriverService
 @inject VehicleService VehicleService
 @inject ContractorService ContractorService
+@inject NavigationManager NavManager
 
-<h3>Details of the Selected Route</h3>
 
 @if (trail == null)
 {
 }
 else
 {
-    
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col text-center">ID</th>
-                <th scope="col text-center">Pesel</th>
-                <th scope="col text-center">Name</th>
-                <th scope="col text-center">Surname</th>
-                <th scope="col text-center">NIP</th>
-                <th scope="col text-center">Contractor</th>
-                <th scope="col text-center">VIN</th>
-                    <th scope="col text-center">Fuel Usage</th>
-                <th scope="col text-center">Date</th>
-                <th scope="col text-center">Begin</th>
-                <th scope="col text-center">End</th>
-                <th scope="col text-center">Distance</th>
-
-            </tr>
-        </thead>
-        <tbody>
-
-
-
-            <tr>
-
-                <td scope="row">@trail.route_id</td>
-                <td scope="row">@trail.driver.pesel</td>
-                <td scope="row">@trail.driver.name</td>
-                <td scope="row">@trail.driver.surname</td>
-                <td scope="row">@trail.contractor.nip</td>
-                <td scope="row">@trail.contractor.name</td>
-                <td scope="row">@trail.vehicle.vin</td>
-                <td scope="row">@trail.vehicle.fuel_usage</td>
-                <td scope="row">@trail.date</td>
-                <td scope="row">@trail.begin</td>
-                    <td scope="row">@trail.end</td>
-                <td scope="row">@trail.distance</td>
-
-
-            </tr>
-
-        </tbody>
-    </table>
+     <h3>Details of the Selected Route</h3>
+        <hr />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                ID:
+            </label>
+            <div class="col-sm-5">
+                <Text Class="form-control">@trail.route_id</Text>            
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                PESEL:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@trail.driver.pesel</Text>             
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Name and Surname:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@trail.driver.name @trail.driver.surname</Text>  
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                NIP:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@trail.contractor.nip</Text>  
+            </div>
+        </div>
+        <br />
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Contractor Name:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@trail.contractor.name</Text>  
+            </div>
+        </div>
+        <br />
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                VIN:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@trail.vehicle.vin</Text>  
+            </div>
+        </div>
+        <br />
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Fuel Usage:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@trail.vehicle.fuel_usage</Text>  
+            </div>
+        </div>
+        <br />
+            <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Date:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@trail.date</Text>  
+            </div>
+        </div>
+        <br />
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Begin and End:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@trail.begin - @trail.end</Text>  
+            </div>
+        </div>
+        <br />
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Distance:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@trail.distance</Text>  
+            </div>
+        </div>
+        <br />
+        <div>
+        <button class="btn btn-outline-primary" type="button" @onclick="Update_Click">
+        Edit
+        </button>
+        <button class="btn btn-outline-danger" type="button" @onclick="Delete_Click">
+            Delete
+        </button>
+        </div>
 
 
 }
@@ -76,5 +133,16 @@ else
         var trails_service = await RouteService.GetRouteAsync(id);
 
         trail = trails_service;
+    }
+
+    protected async Task Delete_Click()
+    {
+
+        await RouteService.DeleteRouteAsync(trail.route_id);
+        NavManager.NavigateTo("/routes");
+    }
+    protected async Task Update_Click()
+    {
+        NavManager.NavigateTo("/routes/update/" + id);
     }
 }

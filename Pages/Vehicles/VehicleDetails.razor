@@ -6,46 +6,74 @@
 @using BlazorApp1.Services
 
 @inject VehicleService VehicleService
+@inject RepairService RepairService
 
-<h3>Details of the Selected Vehicle</h3>
+@inject InsuranceService InsuranceService
+@inject RouteService RouteService
+@inject NavigationManager NavManager
+
 
 @if (vehicle == null)
 {
 }
 else{
-@*<div scope="row">@vehicle.vin</div>
-<div scope="row">@vehicle.kilometers_done</div>
-<div scope="row">@vehicle.year_of_production</div>
-<div scope="row">@vehicle.car_review</div>*@
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col text-center">Vin</th>
-                <th scope="col text-center">Kilometers Done</th>
-                <th scope="col text-center">Year of Production</th>
-                <th scope="col text-center">Car Review</th>
-                <th scope="col text-center">Fuel Usage</th>
-                
-
-            </tr>
-        </thead>
-        <tbody>
-
-
-
-            <tr>
-
-                <td scope="row">@vehicle.vin</td>
-                <td scope="row">@vehicle.kilometers_done</td>
-                <td scope="row">@vehicle.year_of_production</td>
-                <td scope="row">@vehicle.car_review</td>
-                <td scope="row">@vehicle.fuel_usage</td>
-
-
-            </tr>
-
-        </tbody>
-    </table>
+     <h3>Details of the Selected Vehicle</h3>
+        <hr />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                VIN:
+            </label>
+            <div class="col-sm-5">
+                <Text Class="form-control">@vehicle.vin</Text>            
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Kilometers Done:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@vehicle.kilometers_done</Text>             
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Year of Production:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@vehicle.year_of_production</Text>  
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Car Review:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@vehicle.car_review</Text>  
+            </div>
+        </div>
+        <br />
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Fuel Usage:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@vehicle.fuel_usage</Text>  
+            </div>
+        </div>
+        <br />
+        <div>
+        <button class="btn btn-outline-primary" type="button" @onclick="Update_Click">
+        Edit
+        </button>
+    <button class="btn btn-outline-danger" type="button" @onclick="Delete_Click">
+        Delete
+    </button>
+        </div>
+        
+    
 }
 @code {
     [Parameter]
@@ -53,13 +81,74 @@ else{
 
 
     private Vehicle? vehicle;
-
+    private Trail[]? routes;
+    private Insurance[]? insurances;
+    private Repair[]? repairs;
     protected override async Task OnInitializedAsync()
     {
         var vehicles_service = await VehicleService.GetVehicleAsync(id);
 
         vehicle = vehicles_service;
 
-        //forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+
+        var routes_service = await RouteService.GetRoutesAsync();
+
+        routes = routes_service.ToArray();
+
+        var insurances_service = await InsuranceService.GetInsurancesAsync();
+
+        insurances = insurances_service.ToArray();
+
+        var repairs_service = await RepairService.GetRepairsAsync();
+
+        repairs = repairs_service.ToArray();
+
+        
+
+    }
+
+    protected async Task Delete_Click()
+    {
+        if(routes!=null)
+        {
+            for (int i = 0; i < routes.Length; i++)
+            {
+                if (routes[i].vehicle.vin == vehicle.vin)
+                {
+                    await RouteService.DeleteRouteAsync(routes[i].route_id);
+                }
+            }
+        }
+        
+        if(insurances!=null)
+        {
+             for (int i = 0; i < insurances.Length; i++)
+                {
+                    if (insurances[i].vehicle == vehicle.vin)
+                    {
+                        await InsuranceService.DeleteInsuranceAsync(insurances[i].insurance_number);
+                    }
+                }
+        }
+       
+        if(repairs!=null)
+        {
+            for (int i = 0; i < repairs.Length; i++)
+            {
+                if (repairs[i].vehicle == vehicle.vin)
+                {
+
+                    await RepairService.DeleteRepairAsync(repairs[i].id);
+                }
+            }
+        }
+        
+        
+        await VehicleService.DeleteVehicleAsync(vehicle.vin);
+        NavManager.NavigateTo("/vehicles");
+    }
+    protected async Task Update_Click()
+    {
+        NavManager.NavigateTo("/vehicles/update/" + id);
     }
 }

@@ -1,0 +1,182 @@
+﻿@page "/invoices/update/{id}"
+@using Microsoft.Extensions.Logging
+@inject ILogger<InvoiceCreate> Logger
+@using BlazorApp1.Services
+@using BlazorApp1.Data
+@inject InvoiceService InvoiceService
+@inject ContractorService ContractorService
+@inject RepairCostService RepairCostService
+@inject NavigationManager NavManager
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+@using BS.Forms.ValidatorComponent.Components
+
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="@invoice" OnValidSubmit="@HandleValidSubmit">
+
+    <h3>Edit Invoice</h3>
+    <hr />
+    <DataAnnotationsValidator />
+    <CustomValidator @ref="customValidator"></CustomValidator>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Invoice Number:
+        </label>
+        <div class="col-sm-5">
+            <InputText asp-for="invoice.invoice_number" id="invoice_number" Class="form-control" placeholder="Invoice Number" @bind-Value="invoice.invoice_number" />
+            <ValidationMessage For="@(() => invoice.invoice_number)"></ValidationMessage>
+            <span asp-validation-for="invoice.invoice_number" class="text-danger"></span>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Date:
+        </label>
+        <div class="col-sm-5">
+            <InputDate class="form-control" placeholder="Date" @bind-Value="invoice.date" />
+            <ValidationMessage For="@(() => invoice.date)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Amount:
+        </label>
+        <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Amount" @bind-Value="invoice.amount" step='0.01' />
+            <ValidationMessage For="@(() => invoice.amount)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+
+    <div class="form-group row">
+
+        @if (contractors == null)
+        {
+
+        }
+        else
+        {
+            <label for="contractor" class="col-sm-2 col-form-label ">
+                Contractor:
+            </label>
+            <div class="col-sm-5">
+
+                <InputSelect @bind-Value=invoice.contractor class="form-select" style="color:darkgray;">
+                    <option value="NULL">--Choose Contractor--</option>
+                    @foreach (var contractor in contractors)
+                    {
+                        <option value="@contractor.nip" style="color:black;">@contractor.name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => invoice.contractor)"></ValidationMessage>
+            </div>
+
+
+
+        }
+
+
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </div>
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
+
+</EditForm>
+@code {
+    [Parameter]
+    public string? id { get; set; }
+
+    private FormInvoice invoice = new() { date = DateTime.Now };
+
+    private Contractor[]? contractors;
+    private Invoice invoice_get;
+    private CustomValidator customValidator;
+    public RepairCost[]? repairCost_check;
+    public Invoice[]? invoice_check;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var contractors_service = await ContractorService.GetContractorsAsync();
+
+        contractors = contractors_service.ToArray();
+
+        invoice_get = await InvoiceService.GetInvoiceAsync(id);
+        invoice.invoice_number = invoice_get.invoice_number;
+        invoice.id = invoice_get.id;
+        invoice.amount = invoice_get.amount;
+        invoice.contractor=invoice_get.contractor.ToString();
+       
+        invoice.date = DateTime.Parse(invoice_get.date);
+       
+        
+
+    }
+
+    private async void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+
+        var repairCost_service = await RepairCostService.GetRepairCostsAsync();
+        var invoice_service = await InvoiceService.GetInvoicesAsync();
+
+        repairCost_check = repairCost_service.ToArray();
+        invoice_check = invoice_service.ToArray();
+        int exist = 0;
+        for (int i = 0; i < repairCost_check.Length; i++)
+        {
+            if (repairCost_check[i].invoice_id == invoice.invoice_number & invoice.invoice_number != invoice_get.invoice_number)
+            {
+                exist = 1;
+            }
+        }
+        for (int i = 0; i < invoice_check.Length; i++)
+        {
+            if (invoice_check[i].invoice_number == invoice.invoice_number & invoice.invoice_number != invoice_get.invoice_number)
+            {
+                exist = 1;
+            }
+        }
+        var errors = new Dictionary<string, List<string>>();
+        if (exist == 1)
+        {
+            errors.Add(nameof(invoice.invoice_number), new List<string> { "This Invoice Number already exists" });
+            customValidator.DisplayErrors(errors);
+        }
+        else
+        {
+            var result = await InvoiceService.UpdateInvoiceAsync(invoice);
+
+            if (result == false)
+            {
+
+            }
+            else
+            {
+                toastService.ShowSuccess("Invoice updated successfully.");
+                NavManager.NavigateTo("/invoices/"+id);
+            }
+        }
+
+
+
+    }
+
+
+}
+
+

@@ -1,0 +1,218 @@
+﻿@page "/routes/update/{id}"
+@using Microsoft.Extensions.Logging
+@inject ILogger<RouteCreate> Logger
+@using BlazorApp1.Services
+@using BlazorApp1.Data
+@inject RouteService RouteService
+@inject ContractorService ContractorService
+@inject DriverService DriverService
+@inject VehicleService VehicleService
+@inject NavigationManager NavManager
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+
+
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="@trail" OnValidSubmit="@HandleValidSubmit">
+
+    <h3>Edit Route</h3>
+    <hr />
+    <DataAnnotationsValidator />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Date:
+        </label>
+        <div class="col-sm-5">
+            <InputDate class="form-control" placeholder="Date" @bind-Value="trail.date" />
+            <ValidationMessage For="@(() => trail.date)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Begin:
+        </label>
+        <div class="col-sm-5">
+            <InputText class="form-control" placeholder="Begin" @bind-Value="trail.begin" />
+            <ValidationMessage For="@(() => trail.begin)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            End:
+        </label>
+        <div class="col-sm-5">
+            <InputText class="form-control" placeholder="End" @bind-Value="trail.end" />
+            <ValidationMessage For="@(() => trail.end)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Distance:
+        </label>
+        <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Distance" @bind-Value="trail.distance" />
+            <ValidationMessage For="@(() => trail.distance)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+
+        @if (drivers == null)
+        {
+
+        }
+        else
+        {
+            <label for="drivers" class="col-sm-2 col-form-label ">
+                Driver:
+            </label>
+            <div class="col-sm-5">
+
+                <InputSelect @bind-Value=trail.driver class="form-select" style="color:darkgray;">
+                    <option value="NULL">--Choose Driver--</option>
+                    @foreach (var driver in drivers)
+                    {
+                        <option value="@driver.pesel" style="color:black;">@driver.surname</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => trail.driver)"></ValidationMessage>
+            </div>
+
+
+
+        }
+    </div>
+    <br />
+    <div class="form-group row">
+
+        @if (vehicles == null)
+        {
+
+        }
+        else
+        {
+            <label for="VIN" class="col-sm-2 col-form-label ">
+                VIN:
+            </label>
+            <div class="col-sm-5">
+
+                <InputSelect @bind-Value=trail.vehicle class="form-select" style="color:darkgray;">
+                    <option value="NULL">--Choose VIN--</option>
+                    @foreach (var vehicle in vehicles)
+                    {
+                        <option value="@vehicle.vin" style="color:black;">@vehicle.vin</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => trail.vehicle)"></ValidationMessage>
+            </div>
+        }
+    </div>
+    <br />
+    <div class="form-group row">
+
+        @if (contractors == null)
+        {
+
+        }
+        else
+        {
+            <label for="contractor" class="col-sm-2 col-form-label ">
+                Contractor:
+            </label>
+            <div class="col-sm-5">
+
+                <InputSelect @bind-Value=trail.contractor class="form-select" style="color:darkgray;">
+                    <option value="NULL">--Choose Contractor--</option>
+                    @foreach (var contractor in contractors)
+                    {
+                        <option value="@contractor.nip" style="color:black;">@contractor.name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => trail.contractor)"></ValidationMessage>
+            </div>
+
+
+
+        }
+
+
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </div>
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
+
+</EditForm>
+@code {
+
+    [Parameter]
+    public string? id { get; set; }
+    private FormTrail trail = new() { date = DateTime.Now };
+    private Trail trail_get;
+    private Contractor[]? contractors;
+    private Driver[]? drivers;
+    private Vehicle[]? vehicles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var contractors_service = await ContractorService.GetContractorsAsync();
+
+        contractors = contractors_service.ToArray();
+
+        var vehicles_service = await VehicleService.GetVehiclesAsync();
+
+        vehicles = vehicles_service.ToArray();
+
+        var drivers_service = await DriverService.GetDriversAsync();
+
+        drivers = drivers_service.ToArray();
+
+        trail_get = await RouteService.GetRouteAsync(id);
+        trail.route_id = trail_get.route_id;
+        trail.driver = trail_get.driver.pesel;
+        trail.contractor=trail_get.contractor.nip;
+        trail.vehicle = trail_get.vehicle.vin;
+        trail.date=DateTime.Parse(trail_get.date);
+        trail.begin=trail_get.begin;
+        trail.end = trail_get.end;
+        trail.distance = trail_get.distance;
+    }
+
+    private async void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+
+
+
+        var result = await RouteService.UpdateRouteAsync(trail);
+
+        if (result == false)
+        {
+
+        }
+        else
+        {
+            toastService.ShowSuccess("Route updated successfully.");
+            NavManager.NavigateTo("/routes/"+id);
+        }
+    }
+
+
+}
+
+
+

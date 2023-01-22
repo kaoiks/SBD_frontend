@@ -1,0 +1,182 @@
+﻿@page "/insurances/update/{id}"
+@using Microsoft.Extensions.Logging
+@inject ILogger<InsuranceCreate> Logger
+@using BlazorApp1.Services
+@using BlazorApp1.Data
+@inject InsuranceService InsuranceService
+@inject VehicleService VehicleService
+@inject NavigationManager NavManager
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+@using BS.Forms.ValidatorComponent.Components
+
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="@insurance" OnValidSubmit="@HandleValidSubmit">
+
+    <h3>Edit Insurance</h3>
+    <hr />
+    <DataAnnotationsValidator />
+    <CustomValidator @ref="customValidator"></CustomValidator>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Insurance Number:
+        </label>
+        <div class="col-sm-5">
+            <InputText asp-for="insurance.insurance_number" id="insurance_number" Class="form-control" placeholder="Insurance Number" @bind-Value="insurance.insurance_number" />
+            <ValidationMessage For="@(() => insurance.insurance_number)"></ValidationMessage>
+            <span asp-validation-for="insurance.insurance_number" class="text-danger"></span>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Start Date:
+        </label>
+        <div class="col-sm-5">
+            <InputDate class="form-control" placeholder="Start Date" @bind-Value="insurance.start_date" />
+            <ValidationMessage For="@(() => insurance.start_date)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            End Date:
+        </label>
+        <div class="col-sm-5">
+            <InputDate class="form-control" placeholder="End Date" @bind-Value="insurance.end_date" />
+            <ValidationMessage For="@(() => insurance.end_date)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Amount:
+        </label>
+        <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Amount" @bind-Value="insurance.amount" step='0.01' />
+            <ValidationMessage For="@(() => insurance.amount)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+
+        @if (vehicles == null)
+        {
+
+        }
+        else
+        {
+            <label for="VIN" class="col-sm-2 col-form-label ">
+                VIN:
+            </label>
+            <div class="col-sm-5">
+
+                <InputSelect @bind-Value=insurance.vin class="form-select" style="color:darkgray;">
+                    <option value="NULL">--Choose VIN--</option>
+                    @foreach (var vehicle in vehicles)
+                    {
+                        <option value="@vehicle.vin" style="color:black;">@vehicle.vin</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => insurance.vin)"></ValidationMessage>
+            </div>
+
+
+
+        }
+
+
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </div>
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
+
+</EditForm>
+@code {
+
+    [Parameter]
+    public string id { get; set; }
+    private FormInsurance insurance = new() { start_date = DateTime.Now, end_date = DateTime.Now };
+
+    private Vehicle[]? vehicles;
+
+    private Insurance insurance_get;
+
+    private CustomValidator customValidator;
+
+    public Insurance[]? insurance_check;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var vehicles_service = await VehicleService.GetVehiclesAsync();
+
+        vehicles = vehicles_service.ToArray();
+        insurance_get = await InsuranceService.GetInsuranceAsync(id);
+        insurance.insurance_number = insurance_get.insurance_number;
+        insurance.start_date =  DateTime.Parse(insurance_get.start_date);
+        insurance.end_date = DateTime.Parse(insurance_get.end_date);
+        insurance.amount= insurance_get.amount;
+        insurance.vin = insurance_get.vehicle;
+    }
+   
+    private async void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+
+        var insurance_service = await InsuranceService.GetInsurancesAsync();
+        insurance_check = insurance_service.ToArray();
+        int exist = 0;
+        for (int i = 0; i < insurance_check.Length; i++)
+        {
+            if (insurance_check[i].insurance_number == insurance.insurance_number & insurance_get.insurance_number != insurance.insurance_number)
+            {
+                exist = 1;
+            }
+        }
+        var errors = new Dictionary<string, List<string>>();
+        if (exist == 1)
+        {
+            errors.Add(nameof(insurance.insurance_number), new List<string> { "This Insurance Number already exists" });
+            customValidator.DisplayErrors(errors);
+        }
+        else
+        {
+            var result = await InsuranceService.UpdateInsuranceAsync(insurance);
+
+            if (result == false)
+            {
+
+            }
+            else
+            {
+                toastService.ShowSuccess("Insurance updated successfully.");
+                NavManager.NavigateTo("/insurances/"+id);
+
+            }
+        }
+
+
+
+
+
+
+    }
+
+
+}
+
+
+

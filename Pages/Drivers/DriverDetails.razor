@@ -7,54 +7,119 @@
 
 @inject DriverService DriverService
 @inject AddressService AddressService
+@inject RouteService RouteService
+@inject NavigationManager NavManager
 
-<h3>Details of the Selected Driver</h3>
+
 
 @if (driver == null)
 {
 }
 else
 {
+    <h3>Details of the Selected Driver</h3>
+        <hr />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Name:
+            </label>
+            <div class="col-sm-5">
+                <Text Class="form-control">@driver.name</Text>            
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Surname:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@driver.surname</Text>             
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                PESEL:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@driver.pesel</Text>  
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Street:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@driver.address.street</Text>  
+
+            </div>
+        </div>
+
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                City:
+            </label>
+            <div class="col-sm-5">
+            <Text Class="form-control">@driver.address.city</Text>  
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Postal Code:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@driver.address.postal_code</Text>  
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Date of Birth:
+            </label>
+            <div class="col-sm-5">
+                <Text Class="form-control">@driver.date_of_birth</Text>            
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Driver License Number:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@driver.driver_license_number</Text>             
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+            Exp. Date of Qualification Certificate:
+            </label>
+            <div class="col-sm-5">
+                <Text Class="form-control">@driver.date_qualification_certificate</Text>            
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+            Exp. Date of BHP Course:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@driver.date_bhp_course</Text>             
+            </div>
+        </div>
+        <br />
+           <div>
+    <button class="btn btn-outline-primary" type="button" @onclick="Update_Click">
+        Edit
+    </button>
+        <button class="btn btn-outline-danger" type="button" @onclick="Delete_Click">
+            Delete
+        </button>
+        </div>
     
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col text-center">Name</th>
-                <th scope="col text-center">Surname</th>
-                <th scope="col text-center">PESEL</th>
-                <th scope="col text-center">Street</th>
-                <th scope="col text-center">City</th>
-                <th scope="col text-center">Postal Code</th>
-                <th scope="col text-center">Date of Birth</th>
-                <th scope="col text-center">Driver License Number</th>
-                <th scope="col text-center">Exp. Date of Qualification Certificate</th>
-                <th scope="col text-center">Exp. Date of BHP Course</th>
-                
-
-            </tr>
-        </thead>
-        <tbody>
-
-
-
-            <tr>
-
-                <td scope="row">@driver.name</td>
-                <td scope="row">@driver.surname</td>
-                <td scope="row">@driver.pesel</td>
-                <td scope="row">@driver.address.street</td>
-                <td scope="row">@driver.address.city</td>
-                <td scope="row">@driver.address.postal_code</td>
-                <td scope="row">@driver.date_of_birth</td>
-                <td scope="row">@driver.driver_license_number</td>
-                <td scope="row">@driver.date_qualification_certificate</td>
-                <td scope="row">@driver.date_bhp_course</td>
-
-
-            </tr>
-
-        </tbody>
-    </table>
 }
 
 
@@ -69,12 +134,39 @@ else
 
 
     private Driver? driver;
-
+    private Trail[]? routes;
     protected override async Task OnInitializedAsync()
     {
         var drivers_service = await DriverService.GetDriverAsync(id);
 
 
         driver = drivers_service;
+
+        var routes_service = await RouteService.GetRoutesAsync();
+
+        routes = routes_service.ToArray();
+    }
+
+    protected async Task Delete_Click()
+    {
+        if(routes!=null)
+        {
+            for (int i = 0; i < routes.Length; i++)
+            {
+                if (routes[i].driver.pesel == driver.pesel)
+                {
+                    await RouteService.DeleteRouteAsync(routes[i].route_id);
+                }
+            }
+        }
+        
+        
+        await AddressService.DeleteAddressAsync(driver.address.id);
+        await DriverService.DeleteDriverAsync(driver.pesel);
+        NavManager.NavigateTo("/drivers");
+    }
+    protected async Task Update_Click()
+    {
+        NavManager.NavigateTo("/drivers/update/" + id);
     }
 }

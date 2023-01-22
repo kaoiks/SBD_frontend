@@ -1,0 +1,120 @@
+﻿@page "/repairs/update/{id}"
+@using Microsoft.Extensions.Logging
+@inject ILogger<RepairCreate> Logger
+@using BlazorApp1.Services
+@using BlazorApp1.Data
+@inject RepairService RepairService
+@inject VehicleService VehicleService
+@inject NavigationManager NavManager
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+
+
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="@repair" OnValidSubmit="@HandleValidSubmit">
+
+    <h3>Edit Repair</h3>
+    <hr />
+    <DataAnnotationsValidator />
+
+
+
+
+    <div class="form-group row">
+
+        @if (vehicles == null)
+        {
+
+        }
+        else
+        {
+            <label for="VIN" class="col-sm-2 col-form-label ">
+                VIN:
+            </label>
+            <div class="col-sm-5">
+
+                <InputSelect @bind-Value=repair.vin class="form-select" style="color:darkgray;">
+                    <option value="NULL">--Choose VIN--</option>
+                    @foreach (var vehicle in vehicles)
+                    {
+                        <option value="@vehicle.vin" style="color:black;">@vehicle.vin</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => repair.vin)"></ValidationMessage>
+            </div>
+
+
+
+        }
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Description:
+        </label>
+        <div class="col-sm-5">
+            <InputText class="form-control" placeholder="Description" style="width=50%; height=50%;" @bind-Value="repair.description" />
+            <ValidationMessage For="@(() => repair.description)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </div>
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
+
+</EditForm>
+@code {
+    [Parameter]
+    public string? id { get; set; }
+    private Repair repair_get;
+    private FormRepair repair = new();//{ repair_date = DateTime.Now };
+
+    private Vehicle[]? vehicles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var vehicles_service = await VehicleService.GetVehiclesAsync();
+
+        vehicles = vehicles_service.ToArray();
+        repair_get = await RepairService.GetRepairAsync(id);
+        repair.id=repair_get.id;
+        repair.repair_costs = repair_get.repair_costs;
+        repair.repair_date=repair_get.repair_date;
+        repair.description = repair_get.description;
+        repair.vin = repair_get.vehicle;
+    }
+
+    private async void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+
+
+
+        var result = await RepairService.UpdateRepairAsync(repair);
+
+        if (result == false)
+        {
+
+        }
+        else
+        {
+            toastService.ShowSuccess("Repair updated successfully.");
+            NavManager.NavigateTo("/repairs/"+id);
+        }
+    }
+
+
+}
+
+

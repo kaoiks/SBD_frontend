@@ -4,46 +4,75 @@
 
 @using BlazorApp1.Data
 @using BlazorApp1.Services
-
+@inject NavigationManager NavManager
 @inject InsuranceService InsuranceService
 
-<h3>Details of the Selected Insurance</h3>
+
 
 @if (insurance == null)
 {
 }
 else
 {
-    
+    <h3>Details of the Selected Insurance</h3>
+        <hr />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Insurance Number:
+            </label>
+            <div class="col-sm-5">
+                <Text Class="form-control">@insurance.insurance_number</Text>            
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Start Date:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@insurance.start_date</Text>             
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                End Date:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@insurance.end_date</Text>  
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Amount:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@insurance.amount</Text>  
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                VIN:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@insurance.vehicle</Text>  
+            </div>
+        </div>
 
-    <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col text-center">Insurance Number</th>
-                    <th scope="col text-center">Start Date</th>
-                    <th scope="col text-center">End Date</th>
-                    <th scope="col text-center">Amount</th>
-                        <th scope="col text-center">VIN</th>
 
-                </tr>
-            </thead>
-            <tbody>
+        <br />
+        <div>
+    <button class="btn btn-outline-primary" type="button" @onclick="Update_Click">
+        Edit
+    </button>
+        <button class="btn btn-outline-danger" type="button" @onclick="Delete_Click">
+            Delete
+        </button>
+    </div>
 
-
-
-                <tr>
-
-                <td scope="row">@insurance.insurance_number</td>
-                <td scope="row">@insurance.start_date</td>
-                <td scope="row">@insurance.end_date</td>
-                <td scope="row">@insurance.amount</td>
-                <td scope="row">@insurance.vehicle</td>
-
-
-                </tr>
-
-            </tbody>
-        </table>
+   
 
 }
 @code {
@@ -58,6 +87,17 @@ else
         var insurances_service = await InsuranceService.GetInsuranceAsync(id);
 
         insurance = insurances_service;
+    }
+
+    protected async Task Delete_Click()
+    {
+        
+        await InsuranceService.DeleteInsuranceAsync(insurance.insurance_number);
+        NavManager.NavigateTo("/insurances");
+    }
+    protected async Task Update_Click()
+    {
+        NavManager.NavigateTo("/insurances/update/" + id);
     }
 }
 

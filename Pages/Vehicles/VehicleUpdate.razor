@@ -1,0 +1,154 @@
+﻿@page "/vehicles/update/{id}"
+@using Microsoft.Extensions.Logging
+@inject ILogger<VehicleCreate> Logger
+@using BlazorApp1.Services
+@using BlazorApp1.Data
+@inject VehicleService VehicleService
+@inject NavigationManager NavManager
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+@using BS.Forms.ValidatorComponent.Components
+
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="@vehicle" OnValidSubmit="@HandleValidSubmit">
+
+    <h3>Add Vehicle</h3>
+    <hr />
+    <DataAnnotationsValidator />
+    <CustomValidator @ref="customValidator"></CustomValidator>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            VIN:
+        </label>
+        <div class="col-sm-5">
+            <Text  Class="form-control">@vehicle.vin</Text>
+            
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Year of Production:
+        </label>
+        <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Year of Production" @bind-Value="vehicle.year_of_production" />
+            <ValidationMessage For="@(() => vehicle.year_of_production)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Car Review:
+        </label>
+        <div class="col-sm-5">
+            <InputDate class="form-control" placeholder="Car Review" @bind-Value="vehicle.car_review" />
+            <ValidationMessage For="@(() => vehicle.car_review)"></ValidationMessage>
+        </div>
+    </div>
+
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Fuel Usage:
+        </label>
+        <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Fuel Usage" @bind-Value="vehicle.fuel_usage" />
+            <ValidationMessage For="@(() => vehicle.fuel_usage)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Kilometers Done:
+        </label>
+        <div class="col-sm-5">
+            <InputNumber class="form-control" placeholder="Kilometers Done" @bind-Value="vehicle.kilometers_done" />
+            <ValidationMessage For="@(() => vehicle.kilometers_done)"></ValidationMessage>
+        </div>
+    </div>
+
+
+    <br />
+
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </div>
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public string? id { get; set; }
+    private CustomValidator customValidator;
+    private Vehicle vehicle_get;
+    public Vehicle[]? vehicle_check;
+
+    private FormVehicle vehicle = new() { year_of_production = 2022, car_review = DateTime.Now };
+    protected override async Task OnInitializedAsync()
+    {
+
+
+        vehicle_get = await VehicleService.GetVehicleAsync(id);
+        vehicle.vin= vehicle_get.vin;
+        vehicle.repairs= vehicle_get.repairs;
+        vehicle.insurances= vehicle_get.insurances;
+        vehicle.year_of_production = vehicle_get.year_of_production;
+        vehicle.car_review= DateTime.Parse(vehicle_get.car_review);
+        vehicle.fuel_usage = vehicle_get.fuel_usage;
+        vehicle.kilometers_done = vehicle_get.kilometers_done;
+    }
+    private async void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+
+        var vehicle_service = await VehicleService.GetVehiclesAsync();
+        vehicle_check = vehicle_service.ToArray();
+        int exist = 0;
+        for (int i = 0; i < vehicle_check.Length; i++)
+        {
+            if (vehicle_check[i].vin == vehicle.vin & vehicle_get.vin!=vehicle.vin)
+            {
+                exist = 1;
+            }
+        }
+        var errors = new Dictionary<string, List<string>>();
+        if (exist == 1)
+        {
+            errors.Add(nameof(vehicle.vin), new List<string> { "This VIN already exists" });
+            customValidator.DisplayErrors(errors);
+        }
+        else
+        {
+            vehicle.vin = vehicle.vin.ToUpper();
+            var result = await VehicleService.UpdateVehicleAsync(vehicle);
+            if (result == false)
+            {
+
+            }
+            else
+            {
+                toastService.ShowSuccess("Vehicle updated successfully.");
+                NavManager.NavigateTo("/vehicles/"+id);
+            }
+        }
+
+
+
+
+    }
+
+
+}

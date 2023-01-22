@@ -33,6 +33,13 @@ namespace BlazorApp1.Services
             return model;
 
         }
+        public async Task<bool> DeleteSettlementAsync(int nip)
+        {
+            var response = await httpClient.DeleteAsync($"api/settlements/{nip}");
+            return response.IsSuccessStatusCode;
+
+
+        }
         public async Task<Settlement> AddSettlementAsync(FormSettlement form_settlement)
         {
 

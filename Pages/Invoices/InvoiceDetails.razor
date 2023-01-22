@@ -4,43 +4,65 @@
 
 @using BlazorApp1.Data
 @using BlazorApp1.Services
-
+@inject NavigationManager NavManager
 @inject InvoiceService InvoiceService
 
-<h3>Details of the Selected Invoice</h3>
+
 
 @if (invoice == null)
 {
 }
 else
 {
+    <h3>Details of the Selected Invoice</h3>
+        <hr />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Invoice Number:
+            </label>
+            <div class="col-sm-5">
+                <Text Class="form-control">@invoice.invoice_number</Text>            
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Date:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@invoice.date</Text>             
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Amount:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@invoice.amount</Text>  
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">
+                Contractor:
+            </label>
+            <div class="col-sm-5">
+                 <Text Class="form-control">@invoice.contractor_name</Text>  
+            </div>
+        </div>
+        <br />
+        <div>
+        <button class="btn btn-outline-primary" type="button" @onclick="Update_Click">
+        Edit
+        </button>
+        
    
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col text-center">Invoice Number</th>
-                <th scope="col text-center">Date</th>
-                <th scope="col text-center">Amount</th>
-                <th scope="col text-center">Contractor</th>
-
-            </tr>
-        </thead>
-        <tbody>
-
-
-
-            <tr>
-
-                <td scope="row">@invoice.invoice_number</td>
-                <td scope="row">@invoice.date</td>
-                <td scope="row">@invoice.amount</td>
-                <td scope="row">@invoice.contractor_name</td>
-
-
-            </tr>
-
-        </tbody>
-    </table>
+        <button class="btn btn-outline-danger" type="button" @onclick="Delete_Click">
+            Delete
+        </button>
+    </div>
+    
 }
 @code {
     [Parameter]
@@ -54,5 +76,15 @@ else
         var invoices_service = await InvoiceService.GetInvoiceAsync(id);
 
         invoice = invoices_service;
+    }
+    protected async Task Delete_Click()
+    {
+
+        await InvoiceService.DeleteInvoiceAsync(invoice.id);
+        NavManager.NavigateTo("/invoices");
+    }
+    protected async Task Update_Click()
+    {
+        NavManager.NavigateTo("/invoices/update/" + id);
     }
 }

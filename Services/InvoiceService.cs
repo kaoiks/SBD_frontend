@@ -27,8 +27,35 @@ namespace BlazorApp1.Services
 
         }
 
-     
+        public async Task<bool> DeleteInvoiceAsync(int nip)
+        {
+            var response = await httpClient.DeleteAsync($"api/invoices/{nip}");
+            return response.IsSuccessStatusCode;
 
+
+        }
+        public async Task<bool> UpdateInvoiceAsync(FormInvoice invoice)
+        {
+            string jsonString = JsonConvert.SerializeObject(invoice, new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
+            var request = new HttpRequestMessage(HttpMethod.Put, $"api/invoices/{invoice.id}");
+            request.Content = new StringContent(jsonString,
+                                                            Encoding.UTF8,
+                                                                "application/json");
+            request.Headers.Add("Accept", "application/json");
+            var response = await httpClient.SendAsync(request);
+
+            var result = response.Content.ReadAsStringAsync().Result;
+            if ((int)response.StatusCode == 200)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
         public async Task<Invoice> GetInvoiceAsync(string nip)
         {
             var model = await httpClient.GetFromJsonAsync<Invoice>("api/invoices/" + nip);

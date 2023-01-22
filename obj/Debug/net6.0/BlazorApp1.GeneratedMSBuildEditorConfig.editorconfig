@@ -32,8 +32,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udHJhY3RvcnNcQ29udHJhY3RvcnMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Contractors/ContractorUpdate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udHJhY3RvcnNcQ29udHJhY3RvclVwZGF0ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Costs/RepairCostCreate.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29zdHNcUmVwYWlyQ29zdENyZWF0ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Costs/RepairCostUpdate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29zdHNcUmVwYWlyQ29zdFVwZGF0ZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Counter.razor]
@@ -52,6 +60,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRHJpdmVyc1xEcml2ZXJzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Drivers/DriverUpdate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRHJpdmVyc1xEcml2ZXJVcGRhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/FetchData.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hEYXRhLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
@@ -68,6 +80,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5zdXJhbmNlc1xJbnN1cmFuY2VzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Insurances/InsuranceUpdate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5zdXJhbmNlc1xJbnN1cmFuY2VVcGRhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Invoices/InvoiceCreate.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW52b2ljZXNcSW52b2ljZUNyZWF0ZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -78,6 +94,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Invoices/Invoices.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW52b2ljZXNcSW52b2ljZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Invoices/InvoiceUpdate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW52b2ljZXNcSW52b2ljZVVwZGF0ZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/PieChart/Index.razor]
@@ -96,6 +116,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwYWlyc1xSZXBhaXJzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Repairs/RepairUpdate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwYWlyc1xSZXBhaXJVcGRhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Routes/RouteCreate.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm91dGVzXFJvdXRlQ3JlYXRlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
@@ -106,6 +130,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Routes/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm91dGVzXFJvdXRlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Routes/RouteUpdate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm91dGVzXFJvdXRlVXBkYXRlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Settlement/SettlementDetails.razor]
@@ -126,6 +154,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Vehicles/Vehicles.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVoaWNsZXNcVmVoaWNsZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Pages/Vehicles/VehicleUpdate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVoaWNsZXNcVmVoaWNsZVVwZGF0ZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/rzeczy z pulpitu/STUDIA/SEMESTR 5/SQL/projekt/kody/frontend_sbd/Shared/SurveyPrompt.razor]

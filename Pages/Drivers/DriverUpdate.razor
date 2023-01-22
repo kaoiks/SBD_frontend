@@ -1,0 +1,262 @@
+﻿@page "/drivers/update/{id}"
+@using Microsoft.Extensions.Logging
+@inject ILogger<DriverCreate> Logger
+@using BlazorApp1.Services
+@using BlazorApp1.Data
+@inject DriverService DriverService
+@inject AddressService AddressService
+@inject NavigationManager NavManager
+@inject IToastService toastService
+@using Blazored.Toast.Configuration
+@using BS.Forms.ValidatorComponent.Components
+
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="@formAddressAndDriver" OnValidSubmit="@HandleValidSubmit">
+
+    <h3>Add Driver</h3>
+    <hr />
+    <DataAnnotationsValidator />
+    <CustomValidator @ref="customValidator"></CustomValidator>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Name:
+        </label>
+        <div class="col-sm-5">
+            <InputText id="name" Class="form-control" placeholder="Name" @bind-Value="formAddressAndDriver.name" />
+            <ValidationMessage For="@(() => formAddressAndDriver.name)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Surname:
+        </label>
+        <div class="col-sm-5">
+            <InputText class="form-control" placeholder="Surname" @bind-Value="formAddressAndDriver.surname" />
+            <ValidationMessage For="@(() => formAddressAndDriver.surname)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            PESEL:
+        </label>
+        <div class="col-sm-5">
+            <Text class="form-control">@formAddressAndDriver.pesel</Text>
+            
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Street:
+        </label>
+        <div class="col-sm-5">
+            <InputText asp-for="formAddressAndDriver.street" class="form-control" placeholder="Street" @bind-Value="formAddressAndDriver.street" />
+            <ValidationMessage For="@(() => formAddressAndDriver.street)"></ValidationMessage>
+            <span asp-validation-for="formAddressAndDriver.street" class="text-danger"></span>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            City:
+        </label>
+        <div class="col-sm-5">
+            <InputText asp-for="formAddressAndDriver.city" class="form-control" placeholder="City" @bind-Value="formAddressAndDriver.city" />
+            <ValidationMessage For="@(() => formAddressAndDriver.city)"></ValidationMessage>
+            <span asp-validation-for="formAddressAndDriver.city" class="text-danger"></span>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Postal Code:
+        </label>
+        <div class="col-sm-5">
+            <InputText asp-for="formAddressAndDriver.postal_code" class="form-control" placeholder="Postal Code" @bind-Value="formAddressAndDriver.postal_code" />
+            <ValidationMessage For="@(() => formAddressAndDriver.postal_code)"></ValidationMessage>
+            <span asp-validation-for="formAddressAndDriver.postal_code" class="text-danger"></span>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Date of Birth:
+        </label>
+        <div class="col-sm-5">
+            <InputDate class="form-control" placeholder="Date of Birth" @bind-Value="formAddressAndDriver.date_of_birth" />
+            <ValidationMessage For="@(() => formAddressAndDriver.date_of_birth)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Driver License Number:
+        </label>
+        <div class="col-sm-5">
+            <InputText asp-for="formAddressAndDriver.driver_license_number" class="form-control" placeholder="Driver License Number" @bind-Value="formAddressAndDriver.driver_license_number" />
+            <ValidationMessage For="@(() => formAddressAndDriver.driver_license_number)"></ValidationMessage>
+            <span asp-validation-for="formAddressAndDriver.driver_license_number" class="text-danger"></span>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Qualification Certificate Exp. Date:
+        </label>
+        <div class="col-sm-5">
+            <InputDate class="form-control" placeholder="Qualification Certificate Expiration Date" @bind-Value="formAddressAndDriver.date_qualification_certificate" />
+            <ValidationMessage For="@(() => formAddressAndDriver.date_qualification_certificate)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            BHP Course Exp. Date:
+        </label>
+        <div class="col-sm-5">
+            <InputDate class="form-control" placeholder="BHP Course Expiration Date" @bind-Value="formAddressAndDriver.date_bhp_course" />
+            <ValidationMessage For="@(() => formAddressAndDriver.date_bhp_course)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </div>
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                    Timeout="10"
+                    IconType="IconType.FontAwesome"
+                    SuccessClass="success-toast-override"
+                    SuccessIcon="fa fa-thumbs-up"
+                    ErrorIcon="fa fa-bug" />
+
+</EditForm>
+@code {
+    [Parameter]
+    public string id { get; set; }
+    private CustomValidator customValidator;
+    private Address address_get;
+    private Driver driver_get;
+    private FormAddress address = new() { type = 2 };
+
+    private FormDriver driver = new();
+
+    public Driver[]? driver_check;
+    public Address[]? address_check;
+
+    private FormAddressAndDriver formAddressAndDriver = new() { date_of_birth = DateTime.Now, date_bhp_course = DateTime.Now, date_qualification_certificate = DateTime.Now, type = 2 };
+
+    protected async override Task OnInitializedAsync()
+    {
+        driver_get = await DriverService.GetDriverAsync(id);
+        address_get = await AddressService.GetAddressAsync(driver_get.address.id);
+        formAddressAndDriver.street = address_get.street;
+        formAddressAndDriver.city = address_get.city;
+        formAddressAndDriver.postal_code = address_get.postal_code;
+        formAddressAndDriver.pesel = driver_get.pesel;
+        formAddressAndDriver.name = driver_get.name;
+        formAddressAndDriver.surname = driver_get.surname;
+        formAddressAndDriver.date_of_birth = DateTime.Parse(driver_get.date_of_birth);
+        formAddressAndDriver.driver_license_number=driver_get.driver_license_number;
+        formAddressAndDriver.date_qualification_certificate = DateTime.Parse(driver_get.date_qualification_certificate);
+        formAddressAndDriver.date_bhp_course = DateTime.Parse(driver_get.date_bhp_course);
+
+    }
+    private async void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+        Console.WriteLine("lolo");
+        var driver_service = await DriverService.GetDriversAsync();
+        driver_check = driver_service.ToArray();
+
+        var address_service = await AddressService.GetAddressesAsync();
+        address_check = address_service.ToArray();
+       
+        int exist_license = 0;
+        int address_exist = 0;
+        for (int i = 0; i < driver_check.Length; i++)
+        {
+
+            if (driver_check[i].driver_license_number == formAddressAndDriver.driver_license_number & formAddressAndDriver.driver_license_number!=driver_get.driver_license_number )
+            {
+                exist_license = 1;
+            }
+        }
+        for (int i = 0; i < address_check.Length; i++)
+        {
+            if (address_check[i].street == formAddressAndDriver.street & address_check[i].postal_code == formAddressAndDriver.postal_code & address_check[i].city == formAddressAndDriver.city & address_check[i].type == formAddressAndDriver.type & (address_get.street != formAddressAndDriver.street || address_get.postal_code != formAddressAndDriver.postal_code || address_get.city != formAddressAndDriver.city || address_get.type != formAddressAndDriver.type))
+            {
+                address_exist = 1;
+            }
+        }
+
+        var errors = new Dictionary<string, List<string>>();
+        if (address_exist == 1)
+        {
+
+            errors.Add(nameof(formAddressAndDriver.street), new List<string> { "These combination of street, city and postal code already exists for driver" });
+            errors.Add(nameof(formAddressAndDriver.city), new List<string> { "These combination of street, city and postal code already exists for driver" });
+            errors.Add(nameof(formAddressAndDriver.postal_code), new List<string> { "These combination of street, city and postal code already exists for driver" });
+
+        }
+
+        if (exist_license == 1)
+        {
+            errors.Add(nameof(formAddressAndDriver.driver_license_number), new List<string> { "This Driver License Number already exists" });
+            customValidator.DisplayErrors(errors);
+        }
+        customValidator.DisplayErrors(errors);
+        
+        if ( exist_license == 0 & address_exist == 0)
+        {
+            address.id = address_get.id;
+            address.street = formAddressAndDriver.street;
+            address.city = formAddressAndDriver.city;
+            address.postal_code = formAddressAndDriver.postal_code;
+            driver.pesel = formAddressAndDriver.pesel;
+            driver.name = formAddressAndDriver.name;
+            driver.surname = formAddressAndDriver.surname;
+            driver.date_of_birth = formAddressAndDriver.date_of_birth;
+            driver.driver_license_number = formAddressAndDriver.driver_license_number;
+            driver.date_qualification_certificate = formAddressAndDriver.date_qualification_certificate;
+            driver.date_bhp_course = formAddressAndDriver.date_bhp_course;
+
+
+
+            var result_address = await AddressService.UpdateAddressAsync(address);
+
+
+            driver.address = address_get.id;
+
+            var result = await DriverService.UpdateDriverAsync(driver);
+
+            if (result == false)
+            {
+
+            }
+            else
+            {
+                toastService.ShowSuccess("Driver updated successfully.");
+                NavManager.NavigateTo("/drivers/"+id);
+            }
+        }
+
+
+
+
+
+
+    }
+
+
+}
+
+
