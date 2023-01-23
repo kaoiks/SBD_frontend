@@ -85,14 +85,18 @@ namespace BlazorApp1.Data
         [RegularExpression(@"[A-Z0-9]+", ErrorMessage = "VIN consists of capital letters and digits.")]
         public string vin { get; set; }
         [Required(ErrorMessage = "Year of Production is required.")]
-        [Range(1850, 3000, ErrorMessage = "Accepted years are between 1850 and 3000.")]
-     
+
+
+        [RegularExpression(@"^[0-9]{4}", ErrorMessage = "It has to be positive integer value.")]
         public int year_of_production { get; set; }
         [Required(ErrorMessage = "Date is required.")]
+       
         public DateTime car_review { get; set; }
+        [Range(0, Int32.MaxValue, ErrorMessage = "Fuel Usage should be higher or equal 0.")]
         public double fuel_usage { get; set; }
         [Required(ErrorMessage = "Kilometers are required.")]
         [Range(0, Int32.MaxValue, ErrorMessage = "Kilometeres should be higher or equal 0.")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "It has to be positive integer value.")]
         public int kilometers_done { get; set; }
         public List<Repair> repairs { get; set; }
         public List<Insurance> insurances { get; set; }
@@ -130,7 +134,7 @@ namespace BlazorApp1.Data
         public string street { get; set; }
         [Required(ErrorMessage = "City is required.")]
         [MaxLength(140, ErrorMessage = "City is too long.")]
-        [RegularExpression(@"[a-zA-Z\s\-]+", ErrorMessage = "City consists of letters.")]
+        [RegularExpression(@"[\p{L}a-zA-Z\s\-]+", ErrorMessage = "City consists of letters.")]
         public string city { get; set; }
         [Required(ErrorMessage = "Postal Code is required.")]
         [MaxLength(10, ErrorMessage = "Postal Code is too long.")]
@@ -225,11 +229,11 @@ namespace BlazorApp1.Data
         public string pesel { get; set; }
         public int address { get; set; }
         [Required(ErrorMessage = "Name is required.")]
-        [MaxLength(100, ErrorMessage = "Name is too long.")]
+        [MaxLength(72, ErrorMessage = "Name is too long.")]
         [RegularExpression(@"[a-zA-Z\s\-]+", ErrorMessage = "Name consists of letters.")]
         public string name { get; set; }
         [Required(ErrorMessage = "Surname is required.")]
-        [MaxLength(200, ErrorMessage = "Surname is too long.")]
+        [MaxLength(72, ErrorMessage = "Surname is too long.")]
         [RegularExpression(@"[a-zA-Z\s\-]+", ErrorMessage = "Surname consists of letters.")]
         public string surname { get; set; }
 
@@ -237,7 +241,7 @@ namespace BlazorApp1.Data
         public DateTime date_of_birth { get; set; }
         [Required(ErrorMessage = "Driver License Number is required.")]
         [RegularExpression(@"[A-Z0-9]+", ErrorMessage = "Driver License Number consists of capital letters and digits.")]
-        [MaxLength(100, ErrorMessage = "Driver License Number is too long.")]
+        [MaxLength(72, ErrorMessage = "Driver License Number is too long.")]
         public string driver_license_number { get; set; }
         [Required(ErrorMessage = "Qualification Certificate Expiration Date is required.")]
         public DateTime date_qualification_certificate { get; set; }
@@ -264,12 +268,14 @@ namespace BlazorApp1.Data
         [Required(ErrorMessage = "Date is required.")]
         public DateTime date { get; set; }
         [Required(ErrorMessage = "Begin is required.")]
-        [MaxLength(100, ErrorMessage = "Begin is too long.")]
+        [MaxLength(72, ErrorMessage = "Begin is too long.")]
         public string begin { get; set; }
         [Required(ErrorMessage = "End is required.")]
-        [MaxLength(100, ErrorMessage = "End is too long.")]
+        [MaxLength(72, ErrorMessage = "End is too long.")]
         public string end { get; set; }
         [Required(ErrorMessage = "Distance is required.")]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "It has to be positive integer value.")]
+        [Range(0, Int32.MaxValue, ErrorMessage = "Distance should be higher or equal 0.")]
         public int distance { get; set; }
         [Required(ErrorMessage = "Driver is required.")]
         [MinLength(10, ErrorMessage = "Driver is required.")]
@@ -338,7 +344,7 @@ namespace BlazorApp1.Data
 
         public int address { get; set; }
         [Required(ErrorMessage = "Name is required.")]
-        [MaxLength(256, ErrorMessage = "Name is too long.")]
+        [MaxLength(72, ErrorMessage = "Name is too long.")]
         public string name { get; set; }
         [Required(ErrorMessage = "Country ID is required.")]
         [MinLength(2, ErrorMessage = "Country ID consists of 2 letters.")]
@@ -347,15 +353,15 @@ namespace BlazorApp1.Data
         public string country_id { get; set; }
         // public int id { get; set; }
         [Required(ErrorMessage = "Street is required.")]
-        [MaxLength(256, ErrorMessage = "Street is too long.")]
+        [MaxLength(72, ErrorMessage = "Street is too long.")]
         public string street { get; set; }
         [Required(ErrorMessage = "City is required.")]
-        [MaxLength(140, ErrorMessage = "City is too long.")]
-        [RegularExpression(@"[a-zA-Z\s\-]+", ErrorMessage = "City consists of letters.")]
+        [MaxLength(72, ErrorMessage = "City is too long.")]
+        [RegularExpression(@"[\p{L}a-zA-Z\s\-]+", ErrorMessage = "City consists of letters.")]
         public string city { get; set; }
         [Required(ErrorMessage = "Postal Code is required.")]
         [MaxLength(10, ErrorMessage = "Postal Code is too long.")]
-        [RegularExpression(@"^[0-9]{2}-[0-9]{3}$", ErrorMessage = "Invalid postal code format")]
+        
         public string postal_code { get; set; }
         public int type { get; set; }
 
@@ -370,19 +376,19 @@ namespace BlazorApp1.Data
         public string pesel { get; set; }
         public int address { get; set; }
         [Required(ErrorMessage = "Name is required.")]
-        [MaxLength(100, ErrorMessage = "Name is too long.")]
-        [RegularExpression(@"[a-zA-Z\s]+", ErrorMessage = "Name consists of letters.")]
+        [MaxLength(72, ErrorMessage = "Name is too long.")]
+        [RegularExpression(@"[\p{L}a-zA-Z\s]+", ErrorMessage = "Name consists of  letters.")]
         public string name { get; set; }
         [Required(ErrorMessage = "Surname is required.")]
-        [MaxLength(200, ErrorMessage = "Surname is too long.")]
-        [RegularExpression(@"[a-zA-Z\-]+", ErrorMessage = "Surname consists of letters.")]
+        [MaxLength(72, ErrorMessage = "Surname is too long.")]
+        [RegularExpression(@"[\p{L}a-zA-Z\-]+", ErrorMessage = "Surname consists of letters.")]
         public string surname { get; set; }
 
         [Required(ErrorMessage = "Date of Birth is required.")]
         public DateTime date_of_birth { get; set; }
         [Required(ErrorMessage = "Driver License Number is required.")]
         [RegularExpression(@"[A-Z0-9]+", ErrorMessage = "Driver License Number consists of capital letters and digits.")]
-        [MaxLength(100, ErrorMessage = "Driver License Number is too long.")]
+        [MaxLength(72, ErrorMessage = "Driver License Number is too long.")]
         public string driver_license_number { get; set; }
         [Required(ErrorMessage = "Qualification Certificate Expiration Date is required.")]
         public DateTime date_qualification_certificate { get; set; }
@@ -391,15 +397,15 @@ namespace BlazorApp1.Data
         public DateTime date_bhp_course { get; set; }
 
         [Required(ErrorMessage = "Street is required.")]
-        [MaxLength(256, ErrorMessage = "Street is too long.")]
+        [MaxLength(72, ErrorMessage = "Street is too long.")]
         public string street { get; set; }
         [Required(ErrorMessage = "City is required.")]
-        [MaxLength(140, ErrorMessage = "City is too long.")]
-        [RegularExpression(@"[a-zA-Z\s\-]+", ErrorMessage = "City consists of letters.")]
+        [MaxLength(72, ErrorMessage = "City is too long.")]
+        [RegularExpression(@"[\p{L}a-zA-Z\s\-]+", ErrorMessage = "City consists of letters.")]
         public string city { get; set; }
         [Required(ErrorMessage = "Postal Code is required.")]
         [MaxLength(10, ErrorMessage = "Postal Code is too long.")]
-        [RegularExpression(@"^[0-9]{2}-[0-9]{3}$", ErrorMessage = "Invalid postal code format")]
+        
         public string postal_code { get; set; }
         public int type { get; set; }
     }

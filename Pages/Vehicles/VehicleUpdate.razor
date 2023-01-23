@@ -34,8 +34,9 @@
             Year of Production:
         </label>
         <div class="col-sm-5">
-            <InputNumber class="form-control" placeholder="Year of Production" @bind-Value="vehicle.year_of_production" />
+            <InputNumber asp-for="vehicle.year_of_production" class="form-control" placeholder="Year of Production" @bind-Value="vehicle.year_of_production" />
             <ValidationMessage For="@(() => vehicle.year_of_production)"></ValidationMessage>
+            <span asp-validation-for="vehicle.year_of_production" class="text-danger"></span>
         </div>
     </div>
     <br />
@@ -116,21 +117,22 @@
 
         var vehicle_service = await VehicleService.GetVehiclesAsync();
         vehicle_check = vehicle_service.ToArray();
-        int exist = 0;
-        for (int i = 0; i < vehicle_check.Length; i++)
-        {
-            if (vehicle_check[i].vin == vehicle.vin & vehicle_get.vin!=vehicle.vin)
-            {
-                exist = 1;
-            }
-        }
+       
         var errors = new Dictionary<string, List<string>>();
-        if (exist == 1)
+        
+
+        int valid_year = 0;
+        if (vehicle.year_of_production > DateTime.Now.Year || vehicle.year_of_production < 1850)
         {
-            errors.Add(nameof(vehicle.vin), new List<string> { "This VIN already exists" });
+            valid_year = 1;
+        }
+
+        if (valid_year == 1)
+        {
+            errors.Add(nameof(vehicle.year_of_production), new List<string> { "Accepted years are between 1850 and current year." });
             customValidator.DisplayErrors(errors);
         }
-        else
+        if(valid_year==0)
         {
             vehicle.vin = vehicle.vin.ToUpper();
             var result = await VehicleService.UpdateVehicleAsync(vehicle);

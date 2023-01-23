@@ -35,8 +35,9 @@
             Year of Production:
         </label>
         <div class="col-sm-5">
-            <InputNumber class="form-control" placeholder="Year of Production" @bind-Value="vehicle.year_of_production" />
+            <InputNumber asp-for="vehicle.year_of_production" class="form-control" placeholder="Year of Production" @bind-Value="vehicle.year_of_production" />
             <ValidationMessage For="@(() => vehicle.year_of_production)"></ValidationMessage>
+            <span asp-validation-for="vehicle.year_of_production" class="text-danger"></span>
         </div>
     </div>
     <br />
@@ -96,7 +97,7 @@
 
     public Vehicle[]? vehicle_check;
 
-    private FormVehicle vehicle = new() { year_of_production = 2022, car_review = DateTime.Now };
+    private FormVehicle vehicle = new() { year_of_production = 2023, car_review = DateTime.Now };
 
     private async void HandleValidSubmit()
     {
@@ -105,6 +106,7 @@
         var vehicle_service = await VehicleService.GetVehiclesAsync();
         vehicle_check = vehicle_service.ToArray();
         int exist = 0;
+        
         for (int i = 0; i < vehicle_check.Length; i++)
         {
             if (vehicle_check[i].vin == vehicle.vin)
@@ -116,9 +118,21 @@
         if (exist == 1)
         {
             errors.Add(nameof(vehicle.vin), new List<string> { "This VIN already exists" });
-            customValidator.DisplayErrors(errors);
+            
         }
-        else
+        int valid_year = 0;
+        if (vehicle.year_of_production > DateTime.Now.Year || vehicle.year_of_production<1850)
+        {
+            valid_year = 1;
+        }
+        
+        if (valid_year == 1)
+        {
+            errors.Add(nameof(vehicle.year_of_production), new List<string> { "Accepted years are between 1850 and current year." });
+           
+        }
+        customValidator.DisplayErrors(errors);
+        if(exist==0 & valid_year==0)
         {
             vehicle.vin = vehicle.vin.ToUpper();
             var result = await VehicleService.AddVehicleAsync(vehicle);

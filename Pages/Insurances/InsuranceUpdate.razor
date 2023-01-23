@@ -176,17 +176,17 @@
         if (exist == 1)
         {
             errors.Add(nameof(insurance.insurance_number), new List<string> { "This Insurance Number already exists" });
-            customValidator.DisplayErrors(errors);
+            
         }
 
         if (valid_dates == 1)
         {
             errors.Add(nameof(insurance.start_date), new List<string> { "Start Date can not be earlier than End Date." });
             errors.Add(nameof(insurance.end_date), new List<string> { "Start Date can not be earlier than End Date." });
-            customValidator.DisplayErrors(errors);
+            
         }
 
-
+        customValidator.DisplayErrors(errors);
 
         if (exist == 0 & valid_dates == 0)
         {

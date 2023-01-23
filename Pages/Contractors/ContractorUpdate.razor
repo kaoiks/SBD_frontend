@@ -40,7 +40,16 @@
         </div>
     </div>
     <br />
-   
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">
+            Country ID:
+        </label>
+        <div class="col-sm-5">
+            <InputText class="form-control" placeholder="Country ID" @bind-Value="formAddressAndContractor.country_id" />
+            <ValidationMessage For="@(() => formAddressAndContractor.country_id)"></ValidationMessage>
+        </div>
+    </div>
+    <br />
 
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">
@@ -78,16 +87,7 @@
     </div>
 
     <br />
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label">
-            Country ID:
-        </label>
-        <div class="col-sm-5">
-            <InputText class="form-control" placeholder="Country ID" @bind-Value="formAddressAndContractor.country_id" />
-            <ValidationMessage For="@(() => formAddressAndContractor.country_id)"></ValidationMessage>
-        </div>
-    </div>
-    <br />
+   
 
     <div class="row">
         <div class="col-md-12 text-right">
