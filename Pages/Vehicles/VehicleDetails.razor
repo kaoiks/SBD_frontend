@@ -76,8 +76,8 @@ else{
             <label class="col-sm-2 col-form-label">
                 Insurance Valid Until:
             </label>
-           
-        @if (insurance_valid_until == "Any valid insurance")
+
+        @if (insurance_valid_until == "New insurance needed")
         { <div class="col-sm-5">
                 <Text Class="form-control" style="color: red">@insurance_valid_until </Text>
             </div>
@@ -132,12 +132,12 @@ else{
             }
             if (DateTime.Parse(insurance_valid_until)<DateTime.Now)
             {
-                insurance_valid_until = "Any valid insurance";
+                insurance_valid_until = "New insurance needed";
             }
         }
         else
         {
-            insurance_valid_until = "Any valid insurance";
+            insurance_valid_until = "New insurance needed";
         }
        
 
